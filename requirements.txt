@@ -1,0 +1,3 @@
+zeroconf>=0.16.0
+requests>=2.0
+xmltodict>=0.9.0

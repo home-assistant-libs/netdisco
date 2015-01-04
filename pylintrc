@@ -1,0 +1,7 @@
+[MASTER]
+reports=no
+
+disable=locally-disabled,duplicate-code
+
+[EXCEPTIONS]
+overgeneral-exceptions=Exception
