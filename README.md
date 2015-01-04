@@ -11,7 +11,7 @@ git clone https://github.com/balloob/netdisco
 pip install -r requirements.txt
 ```
 
-*Use pip3 instead of pip3 if you're using Python 3.*
+*Use pip3 instead of pip if you're using Python 3.*
 
 ## Example
 
