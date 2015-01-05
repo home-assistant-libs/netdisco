@@ -6,9 +6,6 @@ from netdisco.discoverables import SSDPDiscoverable
 class Discoverable(SSDPDiscoverable):
     """ Adds support for discovering Belkin WeMo platform devices. """
 
-    def __init__(self, nd):
-        super(Discoverable, self).__init__(nd)
-
     def info_from_entry(self, entry):
         """ Returns most important info from a uPnP entry. """
         device = entry.description.find('device')

@@ -7,9 +7,11 @@ import socket
 import logging
 from datetime import datetime, timedelta
 import threading
+import xml.etree.ElementTree as ElementTree
 
 import requests
-import xmltodict
+
+from netdisco.util import etree_to_dict
 
 DISCOVER_TIMEOUT = SSDP_MX = 5
 
@@ -19,7 +21,9 @@ MIN_TIME_BETWEEN_SCANS = timedelta(seconds=59)
 
 
 class SSDP(object):
-    """ Controls the scanning of uPnP devices and services and caches output. """
+    """
+    Controls the scanning of uPnP devices and services and caches output.
+    """
 
     def __init__(self):
         self.entries = []
@@ -118,8 +122,8 @@ class UPNPEntry(object):
         url = self.values.get('location', '_NO_LOCATION')
 
         if url not in UPNPEntry.DESCRIPTION_CACHE:
-            UPNPEntry.DESCRIPTION_CACHE[url] = xmltodict.parse(
-                requests.get(url).text)['root']
+            tree = ElementTree.fromstring(requests.get(url).text)
+            UPNPEntry.DESCRIPTION_CACHE[url] = etree_to_dict(tree)['root']
 
         return UPNPEntry.DESCRIPTION_CACHE[url]
 
