@@ -1,5 +1,5 @@
 """
-Module that implements UPNP protocol
+Module that implements SSDP protocol
 """
 import re
 import select
@@ -11,33 +11,15 @@ import threading
 import requests
 import xmltodict
 
-from netdisco.discoverables import BaseDiscoverable
-
-SSDP_ADDR = "239.255.255.250"
-SSDP_PORT = 1900
-SSDP_MX = 5
-
-SSDP_REQUEST = 'M-SEARCH * HTTP/1.1\r\n' + \
-               'HOST: {}:{:d}\r\n'.format(SSDP_ADDR, SSDP_PORT) + \
-               'MAN: "ssdp:discover"\r\n' + \
-               'MX: {:d}\r\n'.format(SSDP_MX) + \
-               'ST: ssdp:all\r\n' + \
-               '\r\n'
+DISCOVER_TIMEOUT = SSDP_MX = 5
 
 RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
 
 MIN_TIME_BETWEEN_SCANS = timedelta(seconds=59)
 
-DISCOVER_TIMEOUT = SSDP_MX
 
-
-def _setup_entry_description_cache():
-    """ Resets the entry description cache. """
-    UPNPEntry.DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
-
-
-class UPNP(object):
-    """ Controls the scanning of uPnP devices and services. """
+class SSDP(object):
+    """ Controls the scanning of uPnP devices and services and caches output. """
 
     def __init__(self):
         self.entries = []
@@ -50,7 +32,10 @@ class UPNP(object):
         _setup_entry_description_cache()
 
     def all(self):
-        """ Returns all found entries. """
+        """
+        Returns all found entries.
+        Will scan for entries if not scanned recently.
+        """
         with self._lock:
             self.update()
 
@@ -63,7 +48,7 @@ class UPNP(object):
             self.update()
 
             return [entry for entry in self.entries
-                    if entry.values.get('st') == st]
+                    if entry.st == st]
 
     def find_by_device_description(self, values):
         """
@@ -97,6 +82,11 @@ class UPNP(object):
                             if not entry.is_expired]
 
 
+def _setup_entry_description_cache():
+    """ Resets the entry description cache. """
+    UPNPEntry.DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
+
+
 class UPNPEntry(object):
     """ Found uPnP entry. """
 
@@ -115,6 +105,12 @@ class UPNPEntry(object):
     def is_expired(self):
         """ Returns if the entry is expired or not. """
         return self.expires is not None and datetime.now() > self.expires
+
+    # pylint: disable=invalid-name
+    @property
+    def st(self):
+        """ Returns ST value. """
+        return self.values.get('st')
 
     @property
     def description(self):
@@ -158,13 +154,24 @@ class UPNPEntry(object):
 _setup_entry_description_cache()
 
 
-def scan(timeout=DISCOVER_TIMEOUT, max_entries=None):
+# pylint: disable=invalid-name
+def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     """
     Sends a message over the network to discover upnp devices.
 
     Inspired by Crimsdings
     https://github.com/crimsdings/ChromeCast/blob/master/cc_discovery.py
     """
+    ssdp_st = st or "ssdp:all"
+    ssdp_target = ("239.255.255.250", 1900)
+    ssdp_request = "\r\n".join([
+        'M-SEARCH * HTTP/1.1',
+        'HOST: 239.255.255.250:1900',
+        'MAN: "ssdp:discover"',
+        'MX: {:d}'.format(SSDP_MX),
+        'ST: {}'.format(ssdp_st),
+        '', '']).encode('ascii')
+
     entries = []
 
     calc_now = datetime.now
@@ -173,7 +180,7 @@ def scan(timeout=DISCOVER_TIMEOUT, max_entries=None):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        sock.sendto(SSDP_REQUEST.encode("ascii"), (SSDP_ADDR, SSDP_PORT))
+        sock.sendto(ssdp_request, ssdp_target)
 
         sock.setblocking(0)
 
@@ -193,7 +200,7 @@ def scan(timeout=DISCOVER_TIMEOUT, max_entries=None):
 
                 entry = UPNPEntry.from_response(response)
 
-                if entry not in entries:
+                if (st is None or entry.st == st) and entry not in entries:
                     entries.append(entry)
 
                     if max_entries and len(entries) == max_entries:
@@ -207,30 +214,6 @@ def scan(timeout=DISCOVER_TIMEOUT, max_entries=None):
         sock.close()
 
     return entries
-
-
-class UPNPDiscoverable(BaseDiscoverable):
-    """ uPnP discoverable base class. """
-
-    def __init__(self, netdis):
-        self.netdis = netdis
-
-    def get_info(self):
-        """ Gets most important info, by default the description location. """
-        return list(set(
-            (entry.values['location'])
-            for entry in self.get_entries()))
-
-    # Helper functions
-
-    # pylint: disable=invalid-name
-    def find_by_st(self, st):
-        """ Find entries by ST (the device identifier). """
-        return self.netdis.upnp.find_by_st(st)
-
-    def find_by_device_description(self, values):
-        """ Find entries based on values from their description. """
-        return self.netdis.upnp.find_by_device_description(values)
 
 
 if __name__ == "__main__":

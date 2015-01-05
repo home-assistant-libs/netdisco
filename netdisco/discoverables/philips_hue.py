@@ -1,9 +1,9 @@
 """ Discovers Philips Hue bridges. """
 
-from netdisco.upnp import UPNPDiscoverable
+from netdisco.discoverables import SSDPDiscoverable
 
 
-class Discoverable(UPNPDiscoverable):
+class Discoverable(SSDPDiscoverable):
     """ Adds support for discovering Philips Hue bridges. """
 
     def __init__(self, nd):

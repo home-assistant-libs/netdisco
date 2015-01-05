@@ -1,9 +1,9 @@
 """ Discovers Belkin Wemo devices. """
 
-from netdisco.upnp import UPNPDiscoverable
+from netdisco.discoverables import SSDPDiscoverable
 
 
-class Discoverable(UPNPDiscoverable):
+class Discoverable(SSDPDiscoverable):
     """ Adds support for discovering Belkin WeMo platform devices. """
 
     def __init__(self, nd):

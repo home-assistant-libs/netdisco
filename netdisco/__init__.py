@@ -5,7 +5,7 @@ import logging
 import os
 import importlib
 
-from .upnp import UPNP
+from .ssdp import SSDP
 from .mdns import MDNS
 
 _LOGGER = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class NetworkDiscovery(object):
         self.is_discovering = False
 
         self.mdns = None
-        self.upnp = None
+        self.ssdp = None
         self.discoverables = {}
 
         self.start()
@@ -30,7 +30,7 @@ class NetworkDiscovery(object):
             return
 
         self.mdns = MDNS()
-        self.upnp = UPNP()
+        self.ssdp = SSDP()
 
         self._load_device_support()
 
@@ -42,10 +42,10 @@ class NetworkDiscovery(object):
             return
 
         self.mdns.stop()
-        self.upnp.stop()
+        self.ssdp.stop()
 
         self.mdns = None
-        self.upnp = None
+        self.ssdp = None
         self.discoverables = {}
 
         self.is_discovering = False
@@ -103,5 +103,5 @@ class NetworkDiscovery(object):
         pprint("Zeroconf")
         pprint(self.mdns.entries)
         pprint("")
-        pprint("UPNP")
-        pprint(self.upnp.entries)
+        pprint("SSDP")
+        pprint(self.ssdp.entries)

@@ -1,10 +1,10 @@
 """ Discovers DLNA services. """
 
-from netdisco.upnp import UPNPDiscoverable
+from netdisco.discoverables import SSDPDiscoverable
 
 
 # pylint: disable=too-few-public-methods
-class Discoverable(UPNPDiscoverable):
+class Discoverable(SSDPDiscoverable):
     """ Adds support for discovering DLNA services. """
 
     def __init__(self, nd):
