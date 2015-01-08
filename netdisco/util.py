@@ -3,7 +3,7 @@ from collections import defaultdict
 
 # Taken from http://stackoverflow.com/a/10077069
 def etree_to_dict(t):
-    # strip namesapce
+    # strip namespace
     tag_name = t.tag[t.tag.find("}")+1:]
 
     d = {tag_name: {} if t.attrib else None}

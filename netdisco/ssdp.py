@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ElementTree
 
 import requests
 
-from netdisco.util import etree_to_dict
+from .util import etree_to_dict
 
 DISCOVER_TIMEOUT = SSDP_MX = 5
 
@@ -30,10 +30,10 @@ class SSDP(object):
         self.last_scan = None
         self._lock = threading.RLock()
 
-    # pylint: disable=no-self-use
-    def stop(self):
-        """ Clears the description cache. """
-        _setup_entry_description_cache()
+    def scan(self):
+        """ Scan the network. """
+        with self._lock:
+            self.update()
 
     def all(self):
         """
@@ -86,13 +86,9 @@ class SSDP(object):
                             if not entry.is_expired]
 
 
-def _setup_entry_description_cache():
-    """ Resets the entry description cache. """
-    UPNPEntry.DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
-
-
 class UPNPEntry(object):
     """ Found uPnP entry. """
+    DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
 
     def __init__(self, values):
         self.values = values
@@ -115,6 +111,11 @@ class UPNPEntry(object):
     def st(self):
         """ Returns ST value. """
         return self.values.get('st')
+
+    @property
+    def location(self):
+        """ Return Location value. """
+        return self.values.get('location')
 
     @property
     def description(self):
@@ -153,9 +154,6 @@ class UPNPEntry(object):
     def __repr__(self):
         return "<UPNPEntry {} - {}>".format(
             self.values.get('st', ''), self.values.get('location', ''))
-
-
-_setup_entry_description_cache()
 
 
 # pylint: disable=invalid-name

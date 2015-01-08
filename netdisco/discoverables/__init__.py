@@ -1,5 +1,4 @@
 """ Provides helpful stuff for discoverables. """
-import zeroconf
 
 
 class BaseDiscoverable(object):
@@ -54,12 +53,14 @@ class MDNSDiscoverable(BaseDiscoverable):
     """ mDNS Discoverable base class. """
 
     def __init__(self, netdis, typ):
-        self.netdis = netdis
-
+        self.typ = typ
         self.services = {}
 
-        # TODO track ServiceBrowser in MDNS class, call .cancel on each on stop
-        zeroconf.ServiceBrowser(netdis.mdns.zeroconf, typ, self)
+        netdis.mdns.register_service(self)
+
+    def reset(self):
+        """ Reset found services. """
+        self.services.clear()
 
     def is_discovered(self):
         """ Returns True if any device has been discovered. """
@@ -68,11 +69,18 @@ class MDNSDiscoverable(BaseDiscoverable):
     # pylint: disable=unused-argument
     def remove_service(self, zconf, typ, name):
         """ Callback when a service is removed. """
-        self.services.pop(name)
+        self.services.pop(name, None)
 
     def add_service(self, zconf, typ, name):
         """ Callback when a service is found. """
-        self.services[name] = zconf.get_service_info(typ, name)
+        service = None
+        tries = 0
+        while service is None and tries < 3:
+            service = zconf.get_service_info(typ, name)
+            tries += 1
+
+        if service is not None:
+            self.services[name] = service
 
     def get_entries(self):
         """ Return all found services. """
