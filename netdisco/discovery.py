@@ -2,7 +2,7 @@
 Combines all the different protocols into a simple interface.
 """
 import logging
-import os
+import pkgutil
 import importlib
 
 from .ssdp import SSDP
@@ -82,22 +82,19 @@ class NetworkDiscovery(object):
         """ Load the devices and services that can be discovered. """
         self.discoverables = {}
 
-        for module_name in os.listdir(os.path.join(os.path.dirname(__file__),
-                                                   'discoverables')):
+        for _, pkg, _ in pkgutil.walk_packages('.discoverables'):
+            parts = pkg.rsplit('.', 1)
 
-            if module_name[-3:] != '.py' or module_name == '__init__.py':
+            if not parts[0].endswith('netdisco.discoverables'):
                 continue
-
-            module_name = module_name[:-3]
 
             if self.limit_discovery is not None and \
-               module_name not in self.limit_discovery:
+               pkg not in self.limit_discovery:
                 continue
 
-            module = importlib.import_module(
-                "netdisco.discoverables.{}".format(module_name))
+            module = importlib.import_module(pkg)
 
-            self.discoverables[module_name] = module.Discoverable(self)
+            self.discoverables[parts[1]] = module.Discoverable(self)
 
     def print_raw_data(self):
         """ Helper method to show what is discovered in your network. """
