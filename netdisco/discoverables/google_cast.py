@@ -9,7 +9,3 @@ class Discoverable(MDNSDiscoverable):
 
     def __init__(self, nd):
         super(Discoverable, self).__init__(nd, '_googlecast._tcp.local.')
-
-    def info_from_entry(self, entry):
-        """ Returns most important info from mDNS entries. """
-        return (entry.server, entry.port)

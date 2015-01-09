@@ -1,4 +1,5 @@
 """ Provides helpful stuff for discoverables. """
+import socket
 
 
 class BaseDiscoverable(object):
@@ -86,7 +87,6 @@ class MDNSDiscoverable(BaseDiscoverable):
         """ Return all found services. """
         return self.services.values()
 
-    # To be overwritten
     def info_from_entry(self, entry):
-        """ Return most important info from a mDNS service entry. """
-        return entry
+        """ Returns most important info from mDNS entries. """
+        return (socket.gethostbyname(entry.server), entry.port)
