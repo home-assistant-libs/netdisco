@@ -1,6 +1,6 @@
 """ Discovers DLNA services. """
 
-from netdisco.discoverables import SSDPDiscoverable
+from . import SSDPDiscoverable
 
 
 # pylint: disable=too-few-public-methods

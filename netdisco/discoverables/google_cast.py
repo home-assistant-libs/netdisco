@@ -1,6 +1,6 @@
 """ Discovers devices that implement the Google Cast platform. """
 
-from netdisco.discoverables import MDNSDiscoverable
+from . import MDNSDiscoverable
 
 
 # pylint: disable=too-few-public-methods

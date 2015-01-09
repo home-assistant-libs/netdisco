@@ -1,6 +1,6 @@
 """ Discovers Philips Hue bridges. """
 
-from netdisco.discoverables import SSDPDiscoverable
+from . import SSDPDiscoverable
 
 
 class Discoverable(SSDPDiscoverable):

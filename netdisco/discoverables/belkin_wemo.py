@@ -1,6 +1,6 @@
 """ Discovers Belkin Wemo devices. """
 
-from netdisco.discoverables import SSDPDiscoverable
+from . import SSDPDiscoverable
 
 
 class Discoverable(SSDPDiscoverable):
