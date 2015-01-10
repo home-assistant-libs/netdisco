@@ -124,7 +124,9 @@ class UPNPEntry(object):
 
         if url not in UPNPEntry.DESCRIPTION_CACHE:
             tree = ElementTree.fromstring(requests.get(url).text)
-            UPNPEntry.DESCRIPTION_CACHE[url] = etree_to_dict(tree)['root']
+
+            UPNPEntry.DESCRIPTION_CACHE[url] = \
+                etree_to_dict(tree).get('root', {})
 
         return UPNPEntry.DESCRIPTION_CACHE[url]
 
