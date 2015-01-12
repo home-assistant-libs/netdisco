@@ -123,14 +123,20 @@ class UPNPEntry(object):
         url = self.values.get('location', '_NO_LOCATION')
 
         if url not in UPNPEntry.DESCRIPTION_CACHE:
-            xml = requests.get(url).text
-
             try:
+                xml = requests.get(url).text
+
                 tree = ElementTree.fromstring(xml)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = \
                     etree_to_dict(tree).get('root', {})
-            except ElementTree.ParseError:
+            except requests.RequestException:
+                logging.getLogger(__name__).exception(
+                    "Error fetching description at {}".format(url))
+
+                UPNPEntry.DESCRIPTION_CACHE[url] = {}
+
+            except (requests.RequestException, ElementTree.ParseError):
                 logging.getLogger(__name__).exception(
                     "Found malformed XML at {}: {}".format(url, xml))
 
