@@ -1,5 +1,4 @@
 """ Provides helpful stuff for discoverables. """
-import socket
 
 
 class BaseDiscoverable(object):
@@ -54,6 +53,7 @@ class MDNSDiscoverable(BaseDiscoverable):
     """ mDNS Discoverable base class. """
 
     def __init__(self, netdis, typ):
+        self.netdis = netdis
         self.typ = typ
         self.services = {}
 
@@ -89,4 +89,13 @@ class MDNSDiscoverable(BaseDiscoverable):
 
     def info_from_entry(self, entry):
         """ Returns most important info from mDNS entries. """
-        return (socket.gethostbyname(entry.server), entry.port)
+        return (self.ip_from_host(entry.server), entry.port)
+
+    def ip_from_host(self, host):
+        """
+        Attempts to return the ip address from an mDNS host.
+        Returns host if failed.
+        """
+        ips = self.netdis.mdns.zeroconf.cache.entries_with_name(host.lower())
+
+        return repr(ips[0]) if ips else host
