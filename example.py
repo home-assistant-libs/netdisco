@@ -1,4 +1,5 @@
 from __future__ import print_function
+import sys
 
 import netdisco
 
@@ -6,7 +7,12 @@ nd = netdisco.NetworkDiscovery()
 
 nd.scan()
 
-for dev in nd.discover():
-    print(dev, nd.get_info(dev))
+# Pass in command line argument dump to get the raw data
+if sys.argv[-1] == 'dump':
+    nd.print_raw_data()
+
+else:
+    for dev in nd.discover():
+        print(dev, nd.get_info(dev))
 
 nd.stop()
