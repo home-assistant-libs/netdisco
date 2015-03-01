@@ -1,9 +1,9 @@
 from __future__ import print_function
 import sys
 
-import netdisco
+from netdisco.discovery import NetworkDiscovery
 
-nd = netdisco.NetworkDiscovery()
+nd = NetworkDiscovery()
 
 nd.scan()
 

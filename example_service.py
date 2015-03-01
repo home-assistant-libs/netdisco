@@ -11,12 +11,12 @@ import logging
 from datetime import datetime
 import time
 
-import netdisco
+from netdisco.service import DiscoveryService
 
 logging.basicConfig(level=logging.INFO)
 
 # Scan every 10 seconds
-nd = netdisco.DiscoveryService(10)
+nd = DiscoveryService(10)
 
 
 def new_service_listener(discoverable, service):
