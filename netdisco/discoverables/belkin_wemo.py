@@ -16,4 +16,5 @@ class Discoverable(SSDPDiscoverable):
 
     def get_entries(self):
         """ Returns all Belkin Wemo entries. """
-        return self.find_by_st('urn:Belkin:service:manufacture:1')
+        return self.find_by_device_description(
+            {'manufacturer': 'Belkin International Inc.'})
