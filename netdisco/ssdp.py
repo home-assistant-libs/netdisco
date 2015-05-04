@@ -19,6 +19,12 @@ RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
 
 MIN_TIME_BETWEEN_SCANS = timedelta(seconds=59)
 
+# Devices and services
+ST_ALL = "ssdp:all"
+
+# Devices only, some devices will only respond to this query
+ST_ROOTDEVICE = "upnp:rootdevice"
+
 
 class SSDP(object):
     """
@@ -74,8 +80,11 @@ class SSDP(object):
 
                 self.remove_expired()
 
-                self.entries.extend(entry for entry in scan()
-                                    if entry not in self.entries)
+                # Wemo does not respond to a query for all devices+services
+                # but only to a query for just root devices.
+                self.entries.extend(
+                    entry for entry in scan() + scan(ST_ROOTDEVICE)
+                    if entry not in self.entries)
 
                 self.last_scan = datetime.now()
 
@@ -180,7 +189,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     Inspired by Crimsdings
     https://github.com/crimsdings/ChromeCast/blob/master/cc_discovery.py
     """
-    ssdp_st = st or "ssdp:all"
+    ssdp_st = st or ST_ALL
     ssdp_target = ("239.255.255.250", 1900)
     ssdp_request = "\r\n".join([
         'M-SEARCH * HTTP/1.1',
