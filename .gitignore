@@ -1,1 +1,3 @@
 __pycache__
+**/*.pyc
+netdisco.egg-info/
