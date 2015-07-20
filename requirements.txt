@@ -1,2 +1,2 @@
-zeroconf>=0.16.0
+zeroconf>=0.17.2
 requests>=2.0
