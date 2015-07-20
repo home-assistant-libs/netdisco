@@ -235,7 +235,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
 
     except socket.error:
         logging.getLogger(__name__).exception(
-            "Socket error while discovering Chromecasts")
+            "Socket error while discovering SSDP devices")
 
     finally:
         sock.close()
