@@ -1,6 +1,7 @@
 """
 Combines all the different protocols into a simple interface.
 """
+from __future__ import print_function
 import logging
 import os
 import importlib
@@ -104,8 +105,8 @@ class NetworkDiscovery(object):
         """ Helper method to show what is discovered in your network. """
         from pprint import pprint
 
-        pprint("Zeroconf")
+        print("Zeroconf")
         pprint(self.mdns.entries)
-        pprint("")
-        pprint("SSDP")
+        print("")
+        print("SSDP")
         pprint(self.ssdp.entries)
