@@ -8,10 +8,9 @@ class Discoverable(SSDPDiscoverable):
 
     def info_from_entry(self, entry):
         """ Returns most important info from a uPnP entry. """
-        device = entry.description.find('device')
+        device = entry.description['device']
 
-        return (device.find('friendlyName').text,
-                device.find('modelName').text,
+        return (device['friendlyName'], device['modelName'],
                 entry.values['location'])
 
     def get_entries(self):

@@ -8,10 +8,9 @@ class Discoverable(SSDPDiscoverable):
 
     def info_from_entry(self, entry):
         """ Returns the most important info from a uPnP entry. """
-        device = entry.description.find('device')
+        desc = entry.description
 
-        return (device.find('friendlyName').text,
-                entry.description.find('URLBase').text)
+        return desc['device']['friendlyName'], desc['URLBase']
 
     def get_entries(self):
         """ Get all the Hue bridge uPnP entries. """

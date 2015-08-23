@@ -35,7 +35,11 @@ class SSDPDiscoverable(BaseDiscoverable):
     def get_info(self):
         """ Gets most important info, by default the description location. """
         return list(set(
-            entry.values['location'] for entry in self.get_entries()))
+            self.info_from_entry(entry) for entry in self.get_entries()))
+
+    def info_from_entry(self, entry):
+        """ Gets most important info, by default the description location. """
+        return entry.values['location']
 
     # Helper functions
 

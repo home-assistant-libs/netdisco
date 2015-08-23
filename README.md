@@ -6,14 +6,19 @@ It is the library that powers the device discovery within [Home Assistant](https
 
 ## Installation
 
-```bash
-git clone https://github.com/balloob/netdisco
-pip install -r requirements.txt
-```
-
-*Use pip3 instead of pip if you're using Python 3.*
+Netdisco is available on PyPi. Install using `pip3 install netdisco` (use `pip` if you're still on Python 2).
 
 ## Example
+
+From command-line:
+
+```bash
+python3 -m netdisco
+# To see all raw data:
+python3 -m netdisco dump
+```
+
+In your script:
 
 ```python
 import time

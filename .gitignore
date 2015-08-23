@@ -3,3 +3,7 @@ __pycache__
 netdisco.egg-info/
 dist
 build
+pyvenv.cfg
+bin
+lib
+pip-selfcheck.json
