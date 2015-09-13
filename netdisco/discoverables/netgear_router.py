@@ -15,8 +15,7 @@ class Discoverable(SSDPDiscoverable):
         """ Returns the most important info from a uPnP entry. """
         url = urlparse(entry.values['location'])
 
-        return (entry.description['device']['modelNumber'],
-                url.netloc.split(':')[0])
+        return (entry.description['device']['modelNumber'], url.hostname)
 
     def get_entries(self):
         """ Get all the Hue bridge uPnP entries. """
