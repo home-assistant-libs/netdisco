@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='netdisco',
-      version='0.3',
+      version='0.4',
       description='Discover devices on your local network',
       url='http://github.com/balloob/netdisco',
       author='Paulus Schoutsen',
