@@ -13,7 +13,7 @@ class Discoverable(SSDPDiscoverable):
 
     def info_from_entry(self, entry):
         """ Returns the most important info from a uPnP entry. """
-        url = urlparse(entry.description['URLBase'])
+        url = urlparse(entry.values['location'])
 
         return (entry.description['device']['modelNumber'],
                 url.netloc.split(':')[0])
