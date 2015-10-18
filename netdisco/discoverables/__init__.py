@@ -103,3 +103,27 @@ class MDNSDiscoverable(BaseDiscoverable):
         ips = self.netdis.mdns.zeroconf.cache.entries_with_name(host.lower())
 
         return repr(ips[0]) if ips else host
+
+
+class GDMDiscoverable(BaseDiscoverable):
+    """ GDM discoverable base class. """
+
+    def __init__(self, netdis):
+        self.netdis = netdis
+
+    def get_info(self):
+        """ Gets most important info, by default the description location. """
+        return [self.info_from_entry(entry) for entry in self.get_entries()]
+
+    def info_from_entry(self, entry):
+        """ Gets most important info, by default the description location. """
+        return 'https://%s:%s/' % (entry.values['location'],
+                                   entry.values['port'])
+
+    def find_by_content_type(self, value):
+        """ Find entries based on values from their content_type. """
+        return self.netdis.gdm.find_by_content_type(value)
+
+    def find_by_data(self, values):
+        """ Find entries based on values from any returned field. """
+        return self.netdis.gdm.find_by_data(values)
