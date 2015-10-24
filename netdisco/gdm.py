@@ -46,7 +46,8 @@ class GDM(object):
         '''
         self.scan()
         return [entry for entry in self.entries
-                if all(item in entry['data'].items() for item in values.items())]
+                if all(item in entry['data'].items()
+                       for item in values.items())]
 
     def update(self):
         '''
@@ -57,7 +58,7 @@ class GDM(object):
                   'Host: 53f4b5b6023d41182fe88a99b0e714ba.plex.direct'
                   'Name: myfirstplexserver'
                   'Port: 32400'
-                  'Resource-Identifier: 646ab0aa8a01e3c543e94ba975f6fd6efadc36b7'
+                  'Resource-Identifier: 646ab0aa8a01c543e94ba975f6fd6efadc36b7'
                   'Updated-At: 1444852697'
                   'Version: 0.9.12.13.1464-4ccd2ca'
           'from': ('10.10.10.100', 32414)}]

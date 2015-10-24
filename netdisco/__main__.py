@@ -1,24 +1,33 @@
+"""
+Command line tool to print discocvered devices or dump raw data.
+"""
 from __future__ import print_function
 import sys
 
 from netdisco.discovery import NetworkDiscovery
 
-nd = NetworkDiscovery()
 
-nd.scan()
+def main():
+    """ Handle command line execution. """
+    netdisco = NetworkDiscovery()
 
-# Pass in command line argument dump to get the raw data
-if sys.argv[-1] == 'dump':
-    nd.print_raw_data()
+    netdisco.scan()
+
+    # Pass in command line argument dump to get the raw data
+    if sys.argv[-1] == 'dump':
+        netdisco.print_raw_data()
+        print()
+        print()
+
+    print("Discovered devices:")
+    count = 0
+    for dev in netdisco.discover():
+        count += 1
+        print(dev, netdisco.get_info(dev))
     print()
-    print()
+    print("Discovered {} devices".format(count))
 
-print("Discovered devices:")
-count = 0
-for dev in nd.discover():
-    count += 1
-    print(dev, nd.get_info(dev))
-print()
-print("Discovered {} devices".format(count))
+    netdisco.stop()
 
-nd.stop()
+if __name__ == '__main__':
+    main()

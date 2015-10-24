@@ -1,8 +1,13 @@
+"""
+Util functions used by Netdisco
+"""
 from collections import defaultdict
 
 
 # Taken from http://stackoverflow.com/a/10077069
 def etree_to_dict(t):
+    """ Convert an ETree object to a dict. """
+    # pylint: disable=invalid-name, bad-builtin
     # strip namespace
     tag_name = t.tag[t.tag.find("}")+1:]
 
