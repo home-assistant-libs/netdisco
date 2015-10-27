@@ -11,7 +11,7 @@ class Discoverable(SSDPDiscoverable):
         device = entry.description['device']
 
         return (device['friendlyName'], device['modelName'],
-                entry.values['location'])
+                entry.values['location'], device['macAddress'])
 
     def get_entries(self):
         """ Returns all Belkin Wemo entries. """
