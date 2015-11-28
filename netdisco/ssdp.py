@@ -163,7 +163,9 @@ class UPNPEntry(object):
         if device is None:
             return False
 
-        return all(val == device.get(key)
+        return all(device.get(key) in val
+                   if isinstance(val, list)
+                   else val == device.get(key)
                    for key, val in values.items())
 
     @classmethod
