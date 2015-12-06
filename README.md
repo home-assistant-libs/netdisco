@@ -22,9 +22,9 @@ In your script:
 
 ```python
 import time
-import netdisco
+from netdisco.discovery import NetworkDiscovery
 
-netdis = netdisco.NetworkDiscovery()
+netdis = NetworkDiscovery()
 
 netdis.scan()
 
