@@ -9,7 +9,7 @@ except ImportError:
 
 
 class Discoverable(SSDPDiscoverable):
-    """ Adds support for discovering Philips Hue bridges. """
+    """ Adds support for discovering Netgear routers. """
 
     def info_from_entry(self, entry):
         """ Returns the most important info from a uPnP entry. """
