@@ -13,7 +13,8 @@ import requests
 
 from .util import etree_to_dict
 
-DISCOVER_TIMEOUT = SSDP_MX = 5
+DISCOVER_TIMEOUT = 5
+SSDP_MX = 0
 
 RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
 
@@ -190,6 +191,9 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
 
     Inspired by Crimsdings
     https://github.com/crimsdings/ChromeCast/blob/master/cc_discovery.py
+
+    Protocol explanation:
+    https://embeddedinn.wordpress.com/tutorials/upnp-device-architecture/
     """
     ssdp_st = st or ST_ALL
     ssdp_target = ("239.255.255.250", 1900)
