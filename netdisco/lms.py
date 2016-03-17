@@ -5,7 +5,7 @@ import socket
 import threading
 
 DISCOVERY_PORT = 3483
-DEFAULT_DISCOVERY_TIMEOUT = 1
+DEFAULT_DISCOVERY_TIMEOUT = 5
 
 
 class LMS(object):
@@ -46,8 +46,9 @@ class LMS(object):
             while True:
                 try:
                     data, server = sock.recvfrom(1024)
-                    entries.append({'data': data,
-                                    'from': server})
+                    if data.startswith(b'D'):
+                        entries.append({'data': data,
+                                        'from': server})
                 except socket.timeout:
                     break
         finally:
