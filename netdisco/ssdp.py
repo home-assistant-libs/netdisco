@@ -14,7 +14,7 @@ import requests
 from .util import etree_to_dict
 
 DISCOVER_TIMEOUT = 5
-SSDP_MX = 0
+SSDP_MX = 1
 
 RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
 
