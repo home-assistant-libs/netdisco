@@ -1,6 +1,13 @@
 # NetDisco
 
-NetDisco is a Python library to discover local devices and services. It uses mDNS and uPnP to scan the network and supports Python 2 and 3. It allows to scan on demand or offer a service that will scan the network in the background in a set interval.
+NetDisco is a Python (2 and 3) library to discover local devices and services. It allows to scan on demand or offer a service that will scan the network in the background in a set interval.
+
+Current methods of scanning:
+
+ - mDNS
+ - uPnP
+ - Plex Media Server using Good Day Mate protocol
+ - Logitech Media Server discovery protocol
 
 It is the library that powers the device discovery within [Home Assistant](https://home-assistant.io/).
 
