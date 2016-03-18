@@ -9,6 +9,7 @@ import importlib
 from .ssdp import SSDP
 from .mdns import MDNS
 from .gdm import GDM
+from .lms import LMS
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ class NetworkDiscovery(object):
     mDNS scans in a background thread.
     SSDP scans in the foreground.
     GDM scans in the foreground.
+    LMS scans in the foreground.
 
     start: is ready to scan
     scan: scan the network
@@ -34,6 +36,7 @@ class NetworkDiscovery(object):
         self.mdns = MDNS()
         self.ssdp = SSDP()
         self.gdm = GDM()
+        self.lms = LMS()
         self.discoverables = {}
 
         self._load_device_support()
@@ -48,6 +51,7 @@ class NetworkDiscovery(object):
 
         self.ssdp.scan()
         self.gdm.scan()
+        self.lms.scan()
 
     def stop(self):
         """ Turn discovery off. """
@@ -117,3 +121,6 @@ class NetworkDiscovery(object):
         print("")
         print("GDM")
         pprint(self.gdm.entries)
+        print("")
+        print("LMS")
+        pprint(self.lms.entries)
