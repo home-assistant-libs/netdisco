@@ -10,6 +10,7 @@ from .ssdp import SSDP
 from .mdns import MDNS
 from .gdm import GDM
 from .lms import LMS
+from .tellstick import Tellstick
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -22,6 +23,7 @@ class NetworkDiscovery(object):
     SSDP scans in the foreground.
     GDM scans in the foreground.
     LMS scans in the foreground.
+    Tellstick scans in the foreground
 
     start: is ready to scan
     scan: scan the network
@@ -37,6 +39,7 @@ class NetworkDiscovery(object):
         self.ssdp = SSDP()
         self.gdm = GDM()
         self.lms = LMS()
+        self.tellstick = Tellstick()
         self.discoverables = {}
 
         self._load_device_support()
@@ -52,6 +55,7 @@ class NetworkDiscovery(object):
         self.ssdp.scan()
         self.gdm.scan()
         self.lms.scan()
+        self.tellstick.scan()
 
     def stop(self):
         """ Turn discovery off. """
@@ -124,3 +128,6 @@ class NetworkDiscovery(object):
         print("")
         print("LMS")
         pprint(self.lms.entries)
+        print("")
+        print("Tellstick")
+        pprint(self.tellstick.entries)
