@@ -10,4 +10,4 @@ PMS = 'plex_mediaserver'
 LMS = 'logitech_mediaserver'
 NETGEAR_ROUTER = "netgear_router"
 SONOS = "sonos"
-VIERA = "viera"
+VIERA = "panasonic_viera"
