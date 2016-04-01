@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ElementTree
 
 import requests
 
-from .util import etree_to_dict
+from .util import etree_to_dict, interface_addresses
 
 DISCOVER_TIMEOUT = 5
 SSDP_MX = 1
@@ -205,30 +205,33 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
         'ST: {}'.format(ssdp_st),
         '', '']).encode('ascii')
 
-    entries = []
+    stop_wait = datetime.now() + timedelta(0, timeout)
 
-    calc_now = datetime.now
-    start = calc_now()
-
-    try:
+    sockets = []
+    for addr in interface_addresses():
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        sock.sendto(ssdp_request, ssdp_target)
+        # Set the time-to-live for messages for local network
+        sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 1)
+        sock.bind((addr, 0))
 
-        sock.setblocking(0)
+        sockets.append(sock)
+
+    entries = []
+    try:
+        for sock in sockets:
+            sock.sendto(ssdp_request, ssdp_target)
+            sock.setblocking(0)
 
         while True:
-            time_diff = calc_now() - start
-
-            # pylint: disable=maybe-no-member
-            seconds_left = timeout - time_diff.seconds
-
+            time_diff = stop_wait - datetime.now()
+            seconds_left = time_diff.total_seconds()
             if seconds_left <= 0:
-                return entries
+                break
 
-            ready = select.select([sock], [], [], seconds_left)[0]
+            ready = select.select(sockets, [], [], seconds_left)[0]
 
-            if ready:
+            for sock in ready:
                 response = sock.recv(1024).decode("ascii")
 
                 entry = UPNPEntry.from_response(response)
@@ -237,14 +240,18 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
                     entries.append(entry)
 
                     if max_entries and len(entries) == max_entries:
-                        return entries
+                        raise StopIteration
 
     except socket.error:
         logging.getLogger(__name__).exception(
             "Socket error while discovering SSDP devices")
 
+    except StopIteration:
+        pass
+
     finally:
-        sock.close()
+        for sock in sockets:
+            sock.close()
 
     return entries
 
