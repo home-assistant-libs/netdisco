@@ -203,7 +203,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
         'MAN: "ssdp:discover"',
         'MX: {:d}'.format(SSDP_MX),
         'ST: {}'.format(ssdp_st),
-        '', '']).encode('ascii')
+        '', '']).encode('utf-8')
 
     stop_wait = datetime.now() + timedelta(0, timeout)
 
@@ -232,7 +232,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
             ready = select.select(sockets, [], [], seconds_left)[0]
 
             for sock in ready:
-                response = sock.recv(1024).decode("ascii")
+                response = sock.recv(1024).decode("utf-8")
 
                 entry = UPNPEntry.from_response(response)
 
