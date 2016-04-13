@@ -32,23 +32,29 @@ class Tellstick(object):
     def update(self):
         """Scan network for Tellstick devices."""
         entries = []
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            sock.settimeout(DISCOVERY_TIMEOUT.seconds)
-            sock.sendto(DISCOVERY_PAYLOAD, (DISCOVERY_ADDRESS, DISCOVERY_PORT))
-            while True:
-                try:
-                    data, (address, port) = sock.recvfrom(1024)
-                    entry = data.decode("ascii").split(":")
-                    if len(entry) != 4: # expecting product, mac, activation code, version
-                        continue
-                    entry = (address,) + tuple(entry)
-                    entries.append(entry)
-                except socket.timeout:
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.settimeout(DISCOVERY_TIMEOUT.seconds)
+        sock.sendto(DISCOVERY_PAYLOAD, (DISCOVERY_ADDRESS, DISCOVERY_PORT))
+
+        while True:
+            try:
+                data, (address, port) = sock.recvfrom(1024)
+                entry = data.decode("ascii").split(":")
+                if len(entry) != 4: # expecting product, mac, activation code, version
+                    continue
+                entry = (address,) + tuple(entry)
+                entries.append(entry)
+
+            except socket.timeout:
                     break
 
             self.entries = entries
+
+        sock.close()
+
 
 if __name__ == "__main__":
     from pprint import pprint
