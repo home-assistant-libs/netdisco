@@ -4,6 +4,7 @@ import zeroconf
 
 class MDNS(object):
     """ Base class to discover mDNS services. """
+
     def __init__(self):
         self.zeroconf = None
         self.services = []
