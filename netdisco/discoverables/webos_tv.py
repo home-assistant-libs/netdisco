@@ -1,11 +1,7 @@
 """ Discovers LG WebOS TV devices. """
 
+from netdisco.util import urlparse
 from . import SSDPDiscoverable
-
-try:
-    from urlparse import urlparse  # Py2
-except ImportError:
-    from urllib.parse import urlparse  # Py3
 
 
 # pylint: disable=too-few-public-methods
