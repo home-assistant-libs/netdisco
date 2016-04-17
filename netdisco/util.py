@@ -3,6 +3,15 @@ Util functions used by Netdisco
 """
 from collections import defaultdict
 
+# pylint: disable=unused-import, import-error, no-name-in-module
+try:
+    # Py2
+    from urlparse import urlparse  # noqa
+except ImportError:
+    # Py3
+    from urllib.parse import urlparse  # noqa
+
+
 import netifaces
 
 

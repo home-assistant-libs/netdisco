@@ -1,9 +1,5 @@
 """Discovers Netgear routers."""
-try:
-    from urlparse import urlparse  # Py2
-except ImportError:
-    from urllib.parse import urlparse  # Py3
-
+from netdisco.util import urlparse
 from . import SSDPDiscoverable
 
 
