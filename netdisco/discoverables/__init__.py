@@ -23,7 +23,7 @@ class BaseDiscoverable(object):
     # pylint: disable=no-self-use
     def get_entries(self):
         """ Returns all the discovered entries. """
-        return []
+        raise NotImplementedError()
 
 
 class SSDPDiscoverable(BaseDiscoverable):
