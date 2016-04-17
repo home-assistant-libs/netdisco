@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ElementTree
 
 import requests
 
-from .util import etree_to_dict, interface_addresses
+from netdisco.util import etree_to_dict, interface_addresses
 
 DISCOVER_TIMEOUT = 5
 SSDP_MX = 1
@@ -196,7 +196,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     Protocol explanation:
     https://embeddedinn.wordpress.com/tutorials/upnp-device-architecture/
     """
-    # pylint: disable=too-many-nested-blocks
+    # pylint: disable=too-many-nested-blocks,too-many-branches
     ssdp_st = st or ST_ALL
     ssdp_request = "\r\n".join([
         'M-SEARCH * HTTP/1.1',
@@ -210,13 +210,30 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
 
     sockets = []
     for addr in interface_addresses():
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        # Set the time-to-live for messages for local network
-        sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 1)
-        sock.bind((addr, 0))
+            # Set the time-to-live for messages for local network
+            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 1)
+            sock.bind((addr, 0))
 
-        sockets.append(sock)
+            sockets.append(sock)
+        except OSError:
+            pass
+
+    if not sockets:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+            # Set the time-to-live for messages for local network
+            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 1)
+            sock.bind(('0.0.0.0', 0))
+
+            sockets.append(sock)
+        except OSError:
+            logging.getLogger(__name__).exception(
+                "Socket error while trying to discover SSDP devices")
+            return []
 
     entries = []
     try:
@@ -261,7 +278,7 @@ def main():
     """Test SSDP discovery."""
     from pprint import pprint
 
-    pprint("Scanning UPNP..")
+    pprint("Scanning SSDP..")
     pprint(scan())
 
 if __name__ == "__main__":
