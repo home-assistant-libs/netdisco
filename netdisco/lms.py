@@ -55,7 +55,9 @@ class LMS(object):
             sock.close()
         self.entries = entries
 
-if __name__ == "__main__":
+
+def main():
+    """Test LMS discovery."""
     from pprint import pprint
 
     # pylint: disable=invalid-name
@@ -64,3 +66,6 @@ if __name__ == "__main__":
     pprint("Scanning for Logitech Media Servers..")
     lms.update()
     pprint(lms.entries)
+
+if __name__ == "__main__":
+    main()

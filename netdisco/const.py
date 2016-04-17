@@ -1,6 +1,4 @@
-"""
-Constants of services that can be discovered.
-"""
+"""Constants of services that can be discovered."""
 
 BELKIN_WEMO = "belkin_wemo"
 DLNA = "DLNA"

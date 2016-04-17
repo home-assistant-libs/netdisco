@@ -44,15 +44,15 @@ class DiscoveryService(threading.Thread):
         self._found = defaultdict(list)
 
     def add_listener(self, listener):
-        """ Add a listener for new services. """
+        """Add a listener for new services."""
         self.listeners.append(listener)
 
     def stop(self):
-        """ Stop the service. """
+        """Stop the service."""
         self._stop.set()
 
     def run(self):
-        """ Starts the discovery service. """
+        """Starts the discovery service."""
 
         self.discovery = NetworkDiscovery(self.limit_discovery)
 
@@ -69,7 +69,7 @@ class DiscoveryService(threading.Thread):
                 seconds_since_scan += 1
 
     def _scan(self):
-        """ Scans for new devices. """
+        """Scans for new devices."""
         _LOGGER.info("Scanning")
         self.discovery.scan()
 
@@ -80,7 +80,7 @@ class DiscoveryService(threading.Thread):
         self.discovery.stop()
 
     def _service_found(self, disc, service):
-        """ Tell listeners a service was found. """
+        """Tell listeners a service was found."""
         if service not in self._found[disc]:
             self._found[disc].append(service)
 

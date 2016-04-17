@@ -1,3 +1,1 @@
-"""
-Module to scan the network using uPnP and mDNS for devices and services.
-"""
+"""Module to scan the network using uPnP and mDNS for devices and services."""

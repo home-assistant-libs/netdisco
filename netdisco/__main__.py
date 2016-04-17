@@ -1,6 +1,4 @@
-"""
-Command line tool to print discocvered devices or dump raw data.
-"""
+"""Command line tool to print discocvered devices or dump raw data."""
 from __future__ import print_function
 import sys
 
@@ -8,7 +6,7 @@ from netdisco.discovery import NetworkDiscovery
 
 
 def main():
-    """ Handle command line execution. """
+    """Handle command line execution."""
     netdisco = NetworkDiscovery()
 
     netdisco.scan()
