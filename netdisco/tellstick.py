@@ -41,24 +41,29 @@ class Tellstick(object):
 
         while True:
             try:
-                data, (address, port) = sock.recvfrom(1024)
+                data, (address, _) = sock.recvfrom(1024)
                 entry = data.decode("ascii").split(":")
-                if len(entry) != 4: # expecting product, mac, activation code, version
+                # expecting product, mac, activation code, version
+                if len(entry) != 4:
                     continue
                 entry = (address,) + tuple(entry)
                 entries.append(entry)
 
             except socket.timeout:
-                    break
+                break
 
             self.entries = entries
 
         sock.close()
 
 
-if __name__ == "__main__":
+def main():
+    """Test Tellstick discovery."""
     from pprint import pprint
     tellstick = Tellstick()
     pprint("Scanning for Tellstick devices..")
     tellstick.update()
     pprint(tellstick.entries)
+
+if __name__ == "__main__":
+    main()

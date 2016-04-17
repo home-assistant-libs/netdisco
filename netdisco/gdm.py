@@ -1,6 +1,4 @@
-"""
-Adds support for discovery using GDM (Good Day Mate),
-an in-house developped multicast protocol by Plex.
+"""Support for discovery using GDM (Good Day Mate), multicast protocol by Plex.
 
 Inspired by
   hippojay's plexGDM:
@@ -12,7 +10,7 @@ import socket
 
 
 class GDM(object):
-    """ Base class to discover GDM services. """
+    """Base class to discover GDM services."""
 
     def __init__(self):
         self.entries = []
@@ -101,12 +99,16 @@ class GDM(object):
             sock.close()
 
 
-if __name__ == "__main__":
+def main():
+    """Test GDM discovery."""
+    # pylint: disable=invalid-name
     from pprint import pprint
 
-    # pylint: disable=invalid-name
     gdm = GDM()
 
     pprint("Scanning GDM..")
     gdm.update()
     pprint(gdm.entries)
+
+if __name__ == "__main__":
+    main()

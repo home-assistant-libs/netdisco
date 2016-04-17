@@ -1,6 +1,4 @@
-"""
-Combines all the different protocols into a simple interface.
-"""
+"""Combines all the different protocols into a simple interface."""
 from __future__ import print_function
 import logging
 import os
@@ -32,7 +30,10 @@ class NetworkDiscovery(object):
 
     """
 
+    # pylint: disable=too-many-instance-attributes
+
     def __init__(self, limit_discovery=None):
+        """Initialize Discovery."""
         self.limit_discovery = limit_discovery
 
         self.mdns = MDNS()
@@ -47,7 +48,7 @@ class NetworkDiscovery(object):
         self.is_discovering = False
 
     def scan(self):
-        """ Starts and tells scanners to scan. """
+        """Start and tells scanners to scan."""
         if not self.is_discovering:
             self.mdns.start()
             self.is_discovering = True
@@ -58,7 +59,7 @@ class NetworkDiscovery(object):
         self.tellstick.scan()
 
     def stop(self):
-        """ Turn discovery off. """
+        """Turn discovery off."""
         if not self.is_discovering:
             return
 
@@ -67,32 +68,27 @@ class NetworkDiscovery(object):
         self.is_discovering = False
 
     def discover(self):
-        """ Return a list of discovered devices and services. """
+        """Return a list of discovered devices and services."""
         self._check_enabled()
 
         return [dis for dis, checker in self.discoverables.items()
                 if checker.is_discovered()]
 
     def get_info(self, dis):
-        """
-        Get a list with the most important info about discovered service or
-        device type.
-        """
+        """Get a list with the most important info about discovered type."""
         return self.discoverables[dis].get_info()
 
     def get_entries(self, dis):
-        """
-        Get a list with all info about a discovered service or device type.
-        """
+        """Get a list with all info about a discovered type."""
         return self.discoverables[dis].get_entries()
 
     def _check_enabled(self):
-        """ Raises RuntimeError if discovery is disabled. """
+        """Raise RuntimeError if discovery is disabled."""
         if not self.is_discovering:
             raise RuntimeError("NetworkDiscovery is disabled")
 
     def _load_device_support(self):
-        """ Load the devices and services that can be discovered. """
+        """Load the devices and services that can be discovered."""
         self.discoverables = {}
 
         discoverables_format = __name__.rsplit('.', 1)[0] + '.discoverables.{}'
@@ -114,7 +110,7 @@ class NetworkDiscovery(object):
             self.discoverables[module_name] = module.Discoverable(self)
 
     def print_raw_data(self):
-        """ Helper method to show what is discovered in your network. """
+        """Helper method to show what is discovered in your network."""
         from pprint import pprint
 
         print("Zeroconf")

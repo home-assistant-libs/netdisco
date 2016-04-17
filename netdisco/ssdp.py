@@ -15,6 +15,7 @@ from .util import etree_to_dict, interface_addresses
 
 DISCOVER_TIMEOUT = 5
 SSDP_MX = 1
+SSDP_TARGET = ("239.255.255.250", 1900)
 
 RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
 
@@ -38,7 +39,7 @@ class SSDP(object):
         self._lock = threading.RLock()
 
     def scan(self):
-        """ Scan the network. """
+        """Scan the network."""
         with self._lock:
             self.update()
 
@@ -54,7 +55,7 @@ class SSDP(object):
 
     # pylint: disable=invalid-name
     def find_by_st(self, st):
-        """ Return a list of entries that match the ST. """
+        """Return a list of entries that match the ST."""
         with self._lock:
             self.update()
 
@@ -74,7 +75,7 @@ class SSDP(object):
                     if entry.match_device_description(values)]
 
     def update(self, force_update=False):
-        """ Scans for new uPnP devices and services. """
+        """Scans for new uPnP devices and services."""
         with self._lock:
             if self.last_scan is None or force_update or \
                datetime.now()-self.last_scan > MIN_TIME_BETWEEN_SCANS:
@@ -90,14 +91,14 @@ class SSDP(object):
                 self.last_scan = datetime.now()
 
     def remove_expired(self):
-        """ Filter out expired entries. """
+        """Filter out expired entries."""
         with self._lock:
             self.entries = [entry for entry in self.entries
                             if not entry.is_expired]
 
 
 class UPNPEntry(object):
-    """ Found uPnP entry. """
+    """Found uPnP entry."""
     DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
 
     def __init__(self, values):
@@ -113,23 +114,23 @@ class UPNPEntry(object):
 
     @property
     def is_expired(self):
-        """ Returns if the entry is expired or not. """
+        """Returns if the entry is expired or not."""
         return self.expires is not None and datetime.now() > self.expires
 
     # pylint: disable=invalid-name
     @property
     def st(self):
-        """ Returns ST value. """
+        """Returns ST value."""
         return self.values.get('st')
 
     @property
     def location(self):
-        """ Return Location value. """
+        """Return Location value."""
         return self.values.get('location')
 
     @property
     def description(self):
-        """ Returns the description from the uPnP entry. """
+        """Returns the description from the uPnP entry."""
         url = self.values.get('location', '_NO_LOCATION')
 
         if url not in UPNPEntry.DESCRIPTION_CACHE:
@@ -171,7 +172,7 @@ class UPNPEntry(object):
 
     @classmethod
     def from_response(cls, response):
-        """ Creates a uPnP entry from a response. """
+        """Creates a uPnP entry from a response."""
         return UPNPEntry({key.lower(): item for key, item
                           in RESPONSE_REGEX.findall(response)})
 
@@ -195,8 +196,8 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     Protocol explanation:
     https://embeddedinn.wordpress.com/tutorials/upnp-device-architecture/
     """
+    # pylint: disable=too-many-nested-blocks
     ssdp_st = st or ST_ALL
-    ssdp_target = ("239.255.255.250", 1900)
     ssdp_request = "\r\n".join([
         'M-SEARCH * HTTP/1.1',
         'HOST: 239.255.255.250:1900',
@@ -220,7 +221,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     entries = []
     try:
         for sock in sockets:
-            sock.sendto(ssdp_request, ssdp_target)
+            sock.sendto(ssdp_request, SSDP_TARGET)
             sock.setblocking(0)
 
         while True:
@@ -256,8 +257,12 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     return entries
 
 
-if __name__ == "__main__":
+def main():
+    """Test SSDP discovery."""
     from pprint import pprint
 
     pprint("Scanning UPNP..")
     pprint(scan())
+
+if __name__ == "__main__":
+    main()

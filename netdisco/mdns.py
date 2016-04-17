@@ -1,9 +1,9 @@
-""" Adds support for discovering mDNS services. """
+"""Adds support for discovering mDNS services."""
 import zeroconf
 
 
 class MDNS(object):
-    """ Base class to discover mDNS services. """
+    """Base class to discover mDNS services."""
 
     def __init__(self):
         self.zeroconf = None
@@ -11,11 +11,11 @@ class MDNS(object):
         self._browsers = []
 
     def register_service(self, service):
-        """ Register a mDNS service. """
+        """Register a mDNS service."""
         self.services.append(service)
 
     def start(self):
-        """ Starts discovery. """
+        """Starts discovery."""
         self.zeroconf = zeroconf.Zeroconf()
 
         for service in self.services:
@@ -23,7 +23,7 @@ class MDNS(object):
                 zeroconf.ServiceBrowser(self.zeroconf, service.typ, service))
 
     def stop(self):
-        """ Stop discovering. """
+        """Stop discovering."""
         while self._browsers:
             self._browsers.pop().cancel()
 
@@ -35,5 +35,5 @@ class MDNS(object):
 
     @property
     def entries(self):
-        """ Return all entries in the cache. """
+        """Return all entries in the cache."""
         return self.zeroconf.cache.entries()

@@ -3,12 +3,21 @@ Util functions used by Netdisco
 """
 from collections import defaultdict
 
+# pylint: disable=unused-import, import-error, no-name-in-module
+try:
+    # Py2
+    from urlparse import urlparse  # noqa
+except ImportError:
+    # Py3
+    from urllib.parse import urlparse  # noqa
+
+
 import netifaces
 
 
 # Taken from http://stackoverflow.com/a/10077069
 def etree_to_dict(t):
-    """ Convert an ETree object to a dict. """
+    """Convert an ETree object to a dict."""
     # pylint: disable=invalid-name, bad-builtin
     # strip namespace
     tag_name = t.tag[t.tag.find("}")+1:]
@@ -36,6 +45,7 @@ def etree_to_dict(t):
 def interface_addresses(family=netifaces.AF_INET):
     """Returns local addresses of any network associated with a local interface
     that has broadcast (and probably multicast) capability."""
+    # pylint: disable=no-member
     return [addr['addr']
             for i in netifaces.interfaces()
             for addr in netifaces.ifaddresses(i).get(family) or []

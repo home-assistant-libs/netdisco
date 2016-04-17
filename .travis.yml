@@ -1,0 +1,16 @@
+sudo: false
+language: python
+cache:
+  directories:
+    - $HOME/.cache/pip
+python:
+  - 2.7
+  - 3.4
+install:
+  - pip install -r requirements.txt
+  - pip install pylint flake8
+script:
+  - pylint netdisco
+  - flake8 netdisco
+matrix:
+  fast_finish: true

@@ -1,10 +1,10 @@
-""" Discovers Logitech Media Server. """
+"""Discovers Logitech Media Server."""
 
 from . import BaseDiscoverable
 
 
 class Discoverable(BaseDiscoverable):
-    """ Adds support for discovering Logitech Media Server. """
+    """Adds support for discovering Logitech Media Server."""
 
     def __init__(self, netdis):
         self.netdis = netdis
