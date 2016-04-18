@@ -221,20 +221,6 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
         except OSError:
             pass
 
-    if not sockets:
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-            # Set the time-to-live for messages for local network
-            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 1)
-            sock.bind(('0.0.0.0', 0))
-
-            sockets.append(sock)
-        except OSError:
-            logging.getLogger(__name__).exception(
-                "Socket error while trying to discover SSDP devices")
-            return []
-
     entries = []
     for sock in [s for s in sockets]:
         try:
