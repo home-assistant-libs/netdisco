@@ -185,7 +185,7 @@ class UPNPEntry(object):
             self.values.get('st', ''), self.values.get('location', ''))
 
 
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name,too-many-locals
 def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     """
     Sends a message over the network to discover upnp devices.
@@ -236,7 +236,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
             return []
 
     entries = []
-    for sock in sockets:
+    for sock in [s for s in sockets]:
         try:
             sock.sendto(ssdp_request, SSDP_TARGET)
             sock.setblocking(False)
@@ -270,12 +270,13 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
 
                     if max_entries and len(entries) == max_entries:
                         raise StopIteration
+
     except StopIteration:
         pass
 
     finally:
-        for sock in sockets:
-            sock.close()
+        for s in sockets:
+            s.close()
 
     return entries
 
