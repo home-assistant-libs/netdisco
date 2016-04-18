@@ -218,7 +218,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
             sock.bind((addr, 0))
 
             sockets.append(sock)
-        except OSError:
+        except socket.error:
             pass
 
     entries = []
@@ -226,7 +226,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
         try:
             sock.sendto(ssdp_request, SSDP_TARGET)
             sock.setblocking(False)
-        except OSError:
+        except socket.error:
             sockets.remove(sock)
             sock.close()
 
@@ -242,7 +242,7 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
             for sock in ready:
                 try:
                     response = sock.recv(1024).decode("utf-8")
-                except OSError:
+                except socket.error:
                     logging.getLogger(__name__).exception(
                         "Socket error while discovering SSDP devices")
                     sockets.remove(sock)
