@@ -185,7 +185,7 @@ class UPNPEntry(object):
             self.values.get('st', ''), self.values.get('location', ''))
 
 
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name,too-many-locals
 def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     """
     Sends a message over the network to discover upnp devices.
@@ -218,30 +218,20 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
             sock.bind((addr, 0))
 
             sockets.append(sock)
-        except OSError:
+        except socket.error:
             pass
 
-    if not sockets:
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-            # Set the time-to-live for messages for local network
-            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 1)
-            sock.bind(('0.0.0.0', 0))
-
-            sockets.append(sock)
-        except OSError:
-            logging.getLogger(__name__).exception(
-                "Socket error while trying to discover SSDP devices")
-            return []
-
     entries = []
-    try:
-        for sock in sockets:
+    for sock in [s for s in sockets]:
+        try:
             sock.sendto(ssdp_request, SSDP_TARGET)
-            sock.setblocking(0)
+            sock.setblocking(False)
+        except socket.error:
+            sockets.remove(sock)
+            sock.close()
 
-        while True:
+    try:
+        while sockets:
             time_diff = stop_wait - datetime.now()
             seconds_left = time_diff.total_seconds()
             if seconds_left <= 0:
@@ -250,7 +240,14 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
             ready = select.select(sockets, [], [], seconds_left)[0]
 
             for sock in ready:
-                response = sock.recv(1024).decode("utf-8")
+                try:
+                    response = sock.recv(1024).decode("utf-8")
+                except socket.error:
+                    logging.getLogger(__name__).exception(
+                        "Socket error while discovering SSDP devices")
+                    sockets.remove(sock)
+                    sock.close()
+                    continue
 
                 entry = UPNPEntry.from_response(response)
 
@@ -260,16 +257,12 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
                     if max_entries and len(entries) == max_entries:
                         raise StopIteration
 
-    except socket.error:
-        logging.getLogger(__name__).exception(
-            "Socket error while discovering SSDP devices")
-
     except StopIteration:
         pass
 
     finally:
-        for sock in sockets:
-            sock.close()
+        for s in sockets:
+            s.close()
 
     return entries
 
