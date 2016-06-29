@@ -8,6 +8,7 @@ from .ssdp import SSDP
 from .mdns import MDNS
 from .gdm import GDM
 from .lms import LMS
+from .orvibo_switch import Orvibo
 from .tellstick import Tellstick
 
 _LOGGER = logging.getLogger(__name__)
@@ -40,6 +41,7 @@ class NetworkDiscovery(object):
         self.ssdp = SSDP()
         self.gdm = GDM()
         self.lms = LMS()
+        self.orvibo = Orvibo()
         self.tellstick = Tellstick()
         self.discoverables = {}
 
@@ -56,6 +58,7 @@ class NetworkDiscovery(object):
         self.ssdp.scan()
         self.gdm.scan()
         self.lms.scan()
+        self.orvibo.scan()
         self.tellstick.scan()
 
     def stop(self):
@@ -124,6 +127,9 @@ class NetworkDiscovery(object):
         print("")
         print("LMS")
         pprint(self.lms.entries)
+        print("")
+        print("Orvibo")
+        pprint(self.orvibo.entries)
         print("")
         print("Tellstick")
         pprint(self.tellstick.entries)
