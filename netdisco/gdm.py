@@ -1,4 +1,5 @@
-"""Support for discovery using GDM (Good Day Mate), multicast protocol by Plex.
+"""
+Support for discovery using GDM (Good Day Mate), multicast protocol by Plex.
 
 Inspired by
   hippojay's plexGDM:
@@ -18,38 +19,33 @@ class GDM(object):
         self._lock = threading.RLock()
 
     def scan(self):
-        ''' Scan the network. '''
+        """Scan the network."""
         with self._lock:
             self.update()
 
     def all(self):
-        """
-        Returns all found entries.
+        """Return all found entries.
+
         Will scan for entries if not scanned recently.
         """
         self.scan()
         return list(self.entries)
 
     def find_by_content_type(self, value):
-        '''
-        Return a list of entries that match the content_type
-        '''
+        """Return a list of entries that match the content_type."""
         self.scan()
         return [entry for entry in self.entries
                 if value in entry['data']['Content_Type']]
 
     def find_by_data(self, values):
-        '''
-        Return a list of entries that match the search parameters
-        '''
+        """Return a list of entries that match the search parameters."""
         self.scan()
         return [entry for entry in self.entries
                 if all(item in entry['data'].items()
                        for item in values.items())]
 
     def update(self):
-        '''
-        Scans for new GDM services.
+        """Scan for new GDM services.
 
         Example of the dict list returned by this function:
         [{'data': 'Content-Type: plex/media-server'
@@ -60,7 +56,7 @@ class GDM(object):
                   'Updated-At: 1444852697'
                   'Version: 0.9.12.13.1464-4ccd2ca'
           'from': ('10.10.10.100', 32414)}]
-        '''
+        """
 
         gdm_ip = '239.0.0.250'  # multicast to PMS
         gdm_port = 32414
@@ -86,7 +82,7 @@ class GDM(object):
             while True:
                 try:
                     data, server = sock.recvfrom(1024)
-                    data = data.decode('ascii')
+                    data = data.decode('utf-8')
                     if '200 OK' in data.splitlines()[0]:
                         data = {k: v.strip() for (k, v) in (
                             line.split(':') for line in
@@ -106,7 +102,7 @@ def main():
 
     gdm = GDM()
 
-    pprint("Scanning GDM..")
+    pprint("Scanning GDM...")
     gdm.update()
     pprint(gdm.entries)
 
