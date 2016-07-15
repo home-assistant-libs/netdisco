@@ -11,3 +11,4 @@ SONOS = "sonos"
 PANASONIC_VIERA = "panasonic_viera"
 SABNZBD = 'sabnzbd'
 KODI = 'kodi'
+MYSTROM = 'mystrom'
