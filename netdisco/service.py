@@ -1,6 +1,4 @@
-"""
-Provides a service that scans the network in intervals.
-"""
+"""Provide service that scans the network in intervals."""
 import logging
 import threading
 import time
@@ -14,11 +12,13 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class DiscoveryService(threading.Thread):
-    """
-    Service that will scan the network for devices each `interval` seconds.
+    """Service that will scan the network for devices each `interval` seconds.
+
     Add listeners to the service to be notified of new services found.
     """
+
     def __init__(self, interval=DEFAULT_INTERVAL, limit_discovery=None):
+        """Initialize the discovery."""
         super(DiscoveryService, self).__init__()
 
         # Scanning interval
@@ -52,8 +52,7 @@ class DiscoveryService(threading.Thread):
         self._stop.set()
 
     def run(self):
-        """Starts the discovery service."""
-
+        """Start the discovery service."""
         self.discovery = NetworkDiscovery(self.limit_discovery)
 
         while True:
@@ -69,7 +68,7 @@ class DiscoveryService(threading.Thread):
                 seconds_since_scan += 1
 
     def _scan(self):
-        """Scans for new devices."""
+        """Scan for new devices."""
         _LOGGER.info("Scanning")
         self.discovery.scan()
 

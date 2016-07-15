@@ -1,6 +1,4 @@
-"""
-Squeezebox/Logitech Media server discovery.
-"""
+"""Squeezebox/Logitech Media server discovery."""
 import socket
 import threading
 
@@ -12,6 +10,7 @@ class LMS(object):
     """Base class to discover Logitech Media servers."""
 
     def __init__(self):
+        """Initialize the Logitech discovery."""
         self.entries = []
         self.last_scan = None
         self._lock = threading.RLock()
@@ -63,7 +62,7 @@ def main():
     # pylint: disable=invalid-name
     lms = LMS()
 
-    pprint("Scanning for Logitech Media Servers..")
+    pprint("Scanning for Logitech Media Servers...")
     lms.update()
     pprint(lms.entries)
 

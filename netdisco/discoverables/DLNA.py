@@ -1,11 +1,10 @@
-"""Discovers DLNA services."""
-
+"""Discover DLNA services."""
 from . import SSDPDiscoverable
 
 
 # pylint: disable=too-few-public-methods
 class Discoverable(SSDPDiscoverable):
-    """Adds support for discovering DLNA services."""
+    """Add support for discovering DLNA services."""
 
     def get_entries(self):
         """Get all the DLNA service uPnP entries."""

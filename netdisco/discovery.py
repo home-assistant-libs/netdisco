@@ -1,4 +1,4 @@
-"""Combines all the different protocols into a simple interface."""
+"""Combine all the different protocols into a simple interface."""
 from __future__ import print_function
 import logging
 import os
@@ -14,8 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class NetworkDiscovery(object):
-    """
-    Scans the network for devices.
+    """Scan the network for devices.
 
     mDNS scans in a background thread.
     SSDP scans in the foreground.
@@ -27,13 +26,11 @@ class NetworkDiscovery(object):
     scan: scan the network
     discover: parse scanned data
     get_in
-
     """
 
     # pylint: disable=too-many-instance-attributes
-
     def __init__(self, limit_discovery=None):
-        """Initialize Discovery."""
+        """Initialize the discovery."""
         self.limit_discovery = limit_discovery
 
         self.mdns = MDNS()

@@ -7,6 +7,7 @@ setup(name='netdisco',
       author='Paulus Schoutsen',
       author_email='Paulus@PaulusSchoutsen.nl',
       license='MIT',
-      install_requires=['netifaces>=0.10.0', 'requests>=2.0', 'zeroconf==0.17.5'],
+      install_requires=['netifaces>=0.10.0', 'requests>=2.0',
+                        'zeroconf==0.17.5'],
       packages=find_packages(),
       zip_safe=False)

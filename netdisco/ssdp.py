@@ -1,6 +1,4 @@
-"""
-Module that implements SSDP protocol
-"""
+"""Module that implements SSDP protocol."""
 import re
 import select
 import socket
@@ -29,11 +27,10 @@ ST_ROOTDEVICE = "upnp:rootdevice"
 
 
 class SSDP(object):
-    """
-    Controls the scanning of uPnP devices and services and caches output.
-    """
+    """Control the scanning of uPnP devices and services and caches output."""
 
     def __init__(self):
+        """Initialize the discovery."""
         self.entries = []
         self.last_scan = None
         self._lock = threading.RLock()
@@ -44,8 +41,8 @@ class SSDP(object):
             self.update()
 
     def all(self):
-        """
-        Returns all found entries.
+        """Return all found entries.
+
         Will scan for entries if not scanned recently.
         """
         with self._lock:
@@ -63,8 +60,8 @@ class SSDP(object):
                     if entry.st == st]
 
     def find_by_device_description(self, values):
-        """
-        Return a list of entries that match the description.
+        """Return a list of entries that match the description.
+
         Pass in a dict with values to match against the device tag in the
         description.
         """
@@ -75,7 +72,7 @@ class SSDP(object):
                     if entry.match_device_description(values)]
 
     def update(self, force_update=False):
-        """Scans for new uPnP devices and services."""
+        """Scan for new uPnP devices and services."""
         with self._lock:
             if self.last_scan is None or force_update or \
                datetime.now()-self.last_scan > MIN_TIME_BETWEEN_SCANS:
@@ -99,9 +96,11 @@ class SSDP(object):
 
 class UPNPEntry(object):
     """Found uPnP entry."""
+
     DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
 
     def __init__(self, values):
+        """Initialize the discovery."""
         self.values = values
         self.created = datetime.now()
 
@@ -114,13 +113,13 @@ class UPNPEntry(object):
 
     @property
     def is_expired(self):
-        """Returns if the entry is expired or not."""
+        """Return if the entry is expired or not."""
         return self.expires is not None and datetime.now() > self.expires
 
     # pylint: disable=invalid-name
     @property
     def st(self):
-        """Returns ST value."""
+        """Return ST value."""
         return self.values.get('st')
 
     @property
@@ -130,7 +129,7 @@ class UPNPEntry(object):
 
     @property
     def description(self):
-        """Returns the description from the uPnP entry."""
+        """Return the description from the uPnP entry."""
         url = self.values.get('location', '_NO_LOCATION')
 
         if url not in UPNPEntry.DESCRIPTION_CACHE:
@@ -156,9 +155,9 @@ class UPNPEntry(object):
         return UPNPEntry.DESCRIPTION_CACHE[url]
 
     def match_device_description(self, values):
-        """
-        Fetches description and matches against it.
-        values should only contain lowercase keys.
+        """Fetch description and matches against it.
+
+        Values should only contain lowercase keys.
         """
         device = self.description.get('device')
 
@@ -172,23 +171,24 @@ class UPNPEntry(object):
 
     @classmethod
     def from_response(cls, response):
-        """Creates a uPnP entry from a response."""
+        """Create a uPnP entry from a response."""
         return UPNPEntry({key.lower(): item for key, item
                           in RESPONSE_REGEX.findall(response)})
 
     def __eq__(self, other):
+        """Return the comparison."""
         return (self.__class__ == other.__class__ and
                 self.values == other.values)
 
     def __repr__(self):
+        """Return the entry."""
         return "<UPNPEntry {} - {}>".format(
             self.values.get('st', ''), self.values.get('location', ''))
 
 
 # pylint: disable=invalid-name,too-many-locals
 def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
-    """
-    Sends a message over the network to discover upnp devices.
+    """Send a message over the network to discover uPnP devices.
 
     Inspired by Crimsdings
     https://github.com/crimsdings/ChromeCast/blob/master/cc_discovery.py

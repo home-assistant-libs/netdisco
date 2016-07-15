@@ -1,14 +1,14 @@
-"""Discovers Panasonic Viera TV devices."""
+"""Discover Panasonic Viera TV devices."""
 from netdisco.util import urlparse
 from . import SSDPDiscoverable
 
 
 # pylint: disable=too-few-public-methods
 class Discoverable(SSDPDiscoverable):
-    """Adds support for discovering Viera TV devices."""
+    """Add support for discovering Viera TV devices."""
 
     def info_from_entry(self, entry):
-        """Returns the most important info from a uPnP entry."""
+        """Return the most important info from a uPnP entry."""
         parsed = urlparse(entry.values['location'])
         return '{}:{}'.format(parsed.hostname, parsed.port)
 

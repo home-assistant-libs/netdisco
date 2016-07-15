@@ -1,14 +1,14 @@
-"""Discovers Sonos devices."""
+"""Discover Sonos devices."""
 from netdisco.util import urlparse
 from . import SSDPDiscoverable
 
 
 # pylint: disable=too-few-public-methods
 class Discoverable(SSDPDiscoverable):
-    """Adds support for discovering Sonos devices."""
+    """Add support for discovering Sonos devices."""
 
     def info_from_entry(self, entry):
-        """Returns the most important info from a uPnP entry."""
+        """Return the most important info from a uPnP entry."""
         return urlparse(entry.values['location']).hostname
 
     def get_entries(self):
