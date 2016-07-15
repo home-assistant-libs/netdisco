@@ -1,6 +1,4 @@
-"""
-Util functions used by Netdisco
-"""
+"""Util functions used by Netdisco."""
 from collections import defaultdict
 
 # pylint: disable=unused-import, import-error, no-name-in-module
@@ -10,15 +8,13 @@ try:
 except ImportError:
     # Py3
     from urllib.parse import urlparse  # noqa
-
-
 import netifaces
 
 
 # Taken from http://stackoverflow.com/a/10077069
+# pylint: disable=invalid-name, bad-option-value
 def etree_to_dict(t):
     """Convert an ETree object to a dict."""
-    # pylint: disable=invalid-name, bad-builtin
     # strip namespace
     tag_name = t.tag[t.tag.find("}")+1:]
 
