@@ -1,13 +1,12 @@
-"""Discovers Philips Hue bridges."""
-
+"""Discover Philips Hue bridges."""
 from . import SSDPDiscoverable
 
 
 class Discoverable(SSDPDiscoverable):
-    """Adds support for discovering Philips Hue bridges."""
+    """Add support for discovering Philips Hue bridges."""
 
     def info_from_entry(self, entry):
-        """Returns the most important info from a uPnP entry."""
+        """Return the most important info from a uPnP entry."""
         desc = entry.description
 
         return desc['device']['friendlyName'], desc['URLBase']

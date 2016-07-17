@@ -1,4 +1,4 @@
-"""Adds support for discovering mDNS services."""
+"""Add support for discovering mDNS services."""
 import zeroconf
 
 
@@ -6,6 +6,7 @@ class MDNS(object):
     """Base class to discover mDNS services."""
 
     def __init__(self):
+        """Initialize the discovery."""
         self.zeroconf = None
         self.services = []
         self._browsers = []
@@ -15,7 +16,7 @@ class MDNS(object):
         self.services.append(service)
 
     def start(self):
-        """Starts discovery."""
+        """Start discovery."""
         self.zeroconf = zeroconf.Zeroconf()
 
         for service in self.services:

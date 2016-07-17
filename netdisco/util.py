@@ -39,8 +39,11 @@ def etree_to_dict(t):
 
 
 def interface_addresses(family=netifaces.AF_INET):
-    """Returns local addresses of any network associated with a local interface
-    that has broadcast (and probably multicast) capability."""
+    """Return local addresses of any associated network.
+
+    Gathering of addresses which are bound to a local interface that has
+    broadcast (and probably multicast) capability.
+    """
     # pylint: disable=no-member
     return [addr['addr']
             for i in netifaces.interfaces()

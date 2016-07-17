@@ -1,6 +1,4 @@
-"""
-Tellstick device discovery.
-"""
+"""Tellstick device discovery."""
 import socket
 import threading
 from datetime import timedelta
@@ -16,6 +14,7 @@ class Tellstick(object):
     """Base class to discover Tellstick devices."""
 
     def __init__(self):
+        """Initialize the TEllstick discovery."""
         self.entries = []
         self._lock = threading.RLock()
 

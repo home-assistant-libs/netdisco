@@ -1,14 +1,13 @@
-"""Discovers Roku players."""
-
+"""Discover Roku players."""
 from netdisco.util import urlparse
 from . import SSDPDiscoverable
 
 
 class Discoverable(SSDPDiscoverable):
-    """Adds support for discovering Roku media players."""
+    """Add support for discovering Roku media players."""
 
     def info_from_entry(self, entry):
-        """Returns the most important info from a uPnP entry."""
+        """Return the most important info from a uPnP entry."""
         info = urlparse(entry.location)
         return info.hostname, info.port
 
