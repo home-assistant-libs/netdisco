@@ -12,3 +12,4 @@ PANASONIC_VIERA = "panasonic_viera"
 SABNZBD = 'sabnzbd'
 KODI = 'kodi'
 HOME_ASSISTANT = "home_assistant"
+MYSTROM = 'mystrom'
