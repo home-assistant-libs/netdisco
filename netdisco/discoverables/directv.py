@@ -10,7 +10,9 @@ class Discoverable(SSDPDiscoverable):
         """Return the most important info from a uPnP entry."""
         url = urlparse(entry.values['location'])
 
-        return url.hostname
+        device = entry.description['device']
+
+        return url.hostname, device['serialNumber']
 
     def get_entries(self):
         """Get all the DirecTV uPnP entries."""
