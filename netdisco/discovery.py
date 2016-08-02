@@ -111,9 +111,7 @@ class NetworkDiscovery(object):
         from pprint import pprint
 
         print("Zeroconf")
-        for entry in self.mdns.entries:
-            rep = repr(entry)
-            print(entry.decode('utf-8') if type(rep) == bytes else entry)
+        pprint(self.mdns.entries)
         print("")
         print("SSDP")
         pprint(self.ssdp.entries)
