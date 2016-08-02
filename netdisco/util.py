@@ -12,7 +12,7 @@ import netifaces
 
 
 # Taken from http://stackoverflow.com/a/10077069
-# pylint: disable=invalid-name, bad-option-value
+# pylint: disable=invalid-name
 def etree_to_dict(t):
     """Convert an ETree object to a dict."""
     # strip namespace
