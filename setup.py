@@ -8,6 +8,6 @@ setup(name='netdisco',
       author_email='Paulus@PaulusSchoutsen.nl',
       license='MIT',
       install_requires=['netifaces>=0.10.0', 'requests>=2.0',
-                        'zeroconf==0.17.5'],
+                        'zeroconf==0.17.6'],
       packages=find_packages(),
       zip_safe=False)
