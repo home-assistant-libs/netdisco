@@ -4,7 +4,7 @@ NetDisco is a Python (2 and 3) library to discover local devices and services. I
 
 Current methods of scanning:
 
- - mDNS
+ - mDNS (includes Chromecast, Homekit)
  - uPnP
  - Plex Media Server using Good Day Mate protocol
  - Logitech Media Server discovery protocol
