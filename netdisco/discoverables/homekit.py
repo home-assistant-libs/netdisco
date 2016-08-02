@@ -12,7 +12,7 @@ class Discoverable(MDNSDiscoverable):
     def info_from_entry(self, entry):
         """Return the most important info from mDNS entries."""
         info = {key.decode('utf-8'): value.decode('utf-8')
-                for key, value in entry.properties}
+                for key, value in entry.properties.items()}
         info['host'] = 'http://{}'.format(self.ip_from_host(entry.server))
         return info
 
