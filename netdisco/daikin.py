@@ -100,6 +100,5 @@ def main():
     daikin.update()
     pprint(daikin.entries)
 
-
 if __name__ == "__main__":
     main()

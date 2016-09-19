@@ -15,7 +15,6 @@ from .daikin import Daikin
 
 _LOGGER = logging.getLogger(__name__)
 
-
 class NetworkDiscovery(object):
     """Scan the network for devices.
 
