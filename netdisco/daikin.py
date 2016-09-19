@@ -1,10 +1,19 @@
 """Daikin device discovery."""
 import socket
 import threading
-import urllib
+
+# pylint: disable=unused-import, import-error, no-name-in-module
+try:
+    # Py2
+    from urlparse import unquote  # noqa
+except ImportError:
+    # Py3
+    from urllib.parse import unquote  # noqa
+    #import urllib
+
 from datetime import timedelta
 
-DISCOVERY_MSG = "DAIKIN_UDP/common/basic_info"
+DISCOVERY_MSG = b"DAIKIN_UDP/common/basic_info"
 
 UDP_SRC_PORT = 30000
 UDP_DST_PORT = 30050
@@ -40,17 +49,16 @@ class Daikin(object):
         sock.settimeout(DISCOVERY_TIMEOUT.seconds)
         sock.bind(("", UDP_SRC_PORT))
 
-
         try:
 
-            sock.sendto(bytes(DISCOVERY_MSG, 'UTF-8'), (DISCOVERY_ADDRESS, UDP_DST_PORT))
-
+            sock.sendto(DISCOVERY_MSG, (DISCOVERY_ADDRESS, UDP_DST_PORT))
 
             while True:
                 try:
                     data, (address, _) = sock.recvfrom(1024)
 
-                    entry = dict([e.split('=') for e in data.decode("UTF-8").split(',')])
+                    entry = dict([e.split('=')
+                                  for e in data.decode("UTF-8").split(',')])
 
                     # expecting product, mac, activation code, version
                     if 'ret' not in entry or entry['ret'] != 'OK':
@@ -66,14 +74,14 @@ class Daikin(object):
                         continue
 
                     if 'name' in entry:
-                        entry['name'] = urllib.parse.unquote(entry['name'])
+                        entry['name'] = unquote(entry['name'])
 
                     entries.append({
-                        'id': entry['id'],
-                        'name': entry['name'],
+                        'id': entry['id'].encode("UTF-8"),
+                        'name': entry['name'].encode("UTF-8"),
                         'ip': address,
-                        'mac': entry['mac'],
-                        'ver': entry['ver'],
+                        'mac': entry['mac'].encode("UTF-8"),
+                        'ver': entry['ver'].encode("UTF-8"),
                     })
 
                 except socket.timeout:
