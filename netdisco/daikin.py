@@ -4,7 +4,7 @@ import threading
 import urllib
 from datetime import timedelta
 
-DISCOVERY_MSG="DAIKIN_UDP/common/basic_info"
+DISCOVERY_MSG = "DAIKIN_UDP/common/basic_info"
 
 UDP_SRC_PORT = 30000
 UDP_DST_PORT = 30050
@@ -50,10 +50,10 @@ class Daikin(object):
                 try:
                     data, (address, _) = sock.recvfrom(1024)
 
-                    entry = dict([ e.split('=') for e in data.decode("UTF-8").split(',') ])
+                    entry = dict([e.split('=') for e in data.decode("UTF-8").split(',')])
 
                     # expecting product, mac, activation code, version
-                    if not 'ret' in entry or entry['ret'] != 'OK':
+                    if 'ret' not in entry or entry['ret'] != 'OK':
                         # non-OK return on response
                         continue
 
