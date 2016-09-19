@@ -9,7 +9,6 @@ try:
 except ImportError:
     # Py3
     from urllib.parse import unquote  # noqa
-    #import urllib
 
 from datetime import timedelta
 
