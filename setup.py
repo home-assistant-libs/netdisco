@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='netdisco',
-      version='0.7.1',
+      version='0.7.2',
       description='Discover devices on your local network',
       url='https://github.com/home-assistant/netdisco',
       author='Paulus Schoutsen',

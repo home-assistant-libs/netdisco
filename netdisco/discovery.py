@@ -9,6 +9,7 @@ from .mdns import MDNS
 from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
+from .daikin import Daikin
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,6 +39,7 @@ class NetworkDiscovery(object):
         self.gdm = GDM()
         self.lms = LMS()
         self.tellstick = Tellstick()
+        self.daikin = Daikin()
         self.discoverables = {}
 
         self._load_device_support()
@@ -54,6 +56,7 @@ class NetworkDiscovery(object):
         self.gdm.scan()
         self.lms.scan()
         self.tellstick.scan()
+        self.daikin.scan()
 
     def stop(self):
         """Turn discovery off."""
