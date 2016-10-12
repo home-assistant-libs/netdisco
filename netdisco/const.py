@@ -13,4 +13,4 @@ SABNZBD = 'sabnzbd'
 KODI = 'kodi'
 HOME_ASSISTANT = "home_assistant"
 MYSTROM = 'mystrom'
-HA_IOS = "ha_ios"
+HASS_IOS = "hass_ios"
