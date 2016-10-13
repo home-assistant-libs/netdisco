@@ -14,3 +14,4 @@ KODI = 'kodi'
 HOME_ASSISTANT = "home_assistant"
 MYSTROM = 'mystrom'
 HASS_IOS = "hass_ios"
+BOSE_SOUNDTOUCH = 'bose_soundtouch'
