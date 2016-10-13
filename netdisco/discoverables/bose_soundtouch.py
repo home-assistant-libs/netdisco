@@ -1,16 +1,11 @@
 """Discover Bose SoundTouch devices."""
-from netdisco.util import urlparse
-from . import SSDPDiscoverable
+from . import MDNSDiscoverable
 
 
 # pylint: disable=too-few-public-methods
-class Discoverable(SSDPDiscoverable):
+class Discoverable(MDNSDiscoverable):
     """Add support for discovering Bose SoundTouch devices."""
 
-    def info_from_entry(self, entry):
-        """Return the most important info from a uPnP entry."""
-        return urlparse(entry.values['location']).hostname
-
-    def get_entries(self):
-        """Get all the Bose SoundTouch device uPnP entries."""
-        return self.find_by_st("urn:schemas-upnp-org:device:MediaRenderer:1")
+    def __init__(self, nd):
+        """Initialize the Bose SoundTouch discovery."""
+        super(Discoverable, self).__init__(nd, '_soundtouch._tcp.local.')
