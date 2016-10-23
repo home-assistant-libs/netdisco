@@ -105,7 +105,16 @@ class MDNSDiscoverable(BaseDiscoverable):
         """
         ips = self.netdis.mdns.zeroconf.cache.entries_with_name(host.lower())
 
-        return repr(ips[0]) if ips else host
+        # zeroconf treats everrything as ipv4, so workaround that here by
+        # actually looking at the address size
+        import socket
+        if ips:
+            if len(ips[0].address) == 4:  # ipv4
+                return socket.inet_ntop(socket.AF_INET, ips[0].address)
+            elif len(ips[0].address) == 16:  # ipv6
+                return socket.inet_ntop(socket.AF_INET6, ips[0].address)
+        else:
+            return host
 
 
 class GDMDiscoverable(BaseDiscoverable):
