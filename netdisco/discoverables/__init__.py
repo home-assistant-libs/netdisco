@@ -105,7 +105,10 @@ class MDNSDiscoverable(BaseDiscoverable):
         """
         ips = self.netdis.mdns.zeroconf.cache.entries_with_name(host.lower())
 
-        return repr(ips[0]) if ips else host
+        try:
+            return repr(ips[0]) if ips else host
+        except TypeError:
+            return host
 
 
 class GDMDiscoverable(BaseDiscoverable):
