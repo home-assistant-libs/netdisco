@@ -13,7 +13,21 @@ class Discoverable(SSDPDiscoverable):
 
     def get_entries(self):
         """Get all the LG WebOS TV device uPnP entries."""
-        return self.find_by_device_description({
-            "deviceType": "urn:dial-multiscreen-org:device:dial:1",
-            "friendlyName": "[LG] webOS TV"
-        })
+
+        """ lookup for webos3 """
+        webos_entry = self.find_by_device_description(
+            {
+                "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1",
+                "manufacturer": "LG Electronics.",
+                "modelName": "LG TV"
+            }
+        )
+
+        if not len(webos_entry):
+            """ if not found look for older versions as before """
+            webos_entry = self.find_by_device_description({
+                "deviceType": "urn:dial-multiscreen-org:device:dial:1",
+                "friendlyName": "[LG] webOS TV"
+            })
+
+        return webos_entry
