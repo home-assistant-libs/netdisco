@@ -17,9 +17,8 @@ class Discoverable(SSDPDiscoverable):
         # Lookup for webos3
         webos_entry = self.find_by_device_description(
             {
-                "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1",
-                "manufacturer": "LG Electronics.",
-                "modelName": "LG TV"
+                "deviceType": "urn:schemas-upnp-org:device:Basic:1",
+                "modelName": "LG Smart TV"
             }
         )
 
