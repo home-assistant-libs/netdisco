@@ -11,4 +11,5 @@ class Discoverable(BaseDiscoverable):
 
     def get_entries(self):
         """Get all the Samsung Smart AC details."""
-        return self._netdis.samsungac.entries
+        return []
+        # return self._netdis.samsungac.entries
