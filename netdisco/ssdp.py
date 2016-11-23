@@ -274,5 +274,6 @@ def main():
     pprint("Scanning SSDP..")
     pprint(scan())
 
+
 if __name__ == "__main__":
     main()

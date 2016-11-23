@@ -108,5 +108,6 @@ def main():
     samsungac.update()
     pprint(samsungac.entries)
 
+
 if __name__ == "__main__":
     main()

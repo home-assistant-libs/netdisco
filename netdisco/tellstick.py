@@ -64,5 +64,6 @@ def main():
     tellstick.update()
     pprint(tellstick.entries)
 
+
 if __name__ == "__main__":
     main()
