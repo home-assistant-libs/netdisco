@@ -3,6 +3,7 @@ from __future__ import print_function
 import logging
 import os
 import importlib
+import threading
 
 from .ssdp import SSDP
 from .mdns import MDNS
@@ -54,12 +55,30 @@ class NetworkDiscovery(object):
             self.mdns.start()
             self.is_discovering = True
 
-        self.ssdp.scan()
-        self.gdm.scan()
-        self.lms.scan()
-        self.tellstick.scan()
-        self.daikin.scan()
+        # Start all discovery processes in parallel
+        ssdp_thread = threading.Thread(target=self.ssdp.scan)
+        ssdp_thread.start()
+
+        gdm_thread = threading.Thread(target=self.gdm.scan)
+        gdm_thread.start()
+
+        lms_thread = threading.Thread(target=self.lms.scan)
+        lms_thread.start()
+
+        tellstick_thread = threading.Thread(target=self.tellstick.scan)
+        tellstick_thread.start()
+
+        daikin_thread = threading.Thread(target=self.daikin.scan)
+        daikin_thread.start()
+
         # self.samsungac.scan()
+
+        # Wait for all discovery processes to complete
+        ssdp_thread.join()
+        gdm_thread.join()
+        lms_thread.join()
+        tellstick_thread.join()
+        daikin_thread.join()
 
     def stop(self):
         """Turn discovery off."""
