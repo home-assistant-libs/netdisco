@@ -3,6 +3,9 @@ from urllib.parse import urlparse
 
 from . import SSDPDiscoverable
 
+# For some models, Samsung forces a [TV] prefix to the user-specified name.
+FORCED_NAME_PREFIX = '[TV]'
+
 class Discoverable(SSDPDiscoverable):
     """Add support for discovering Samsung Smart TV services."""
 
@@ -14,7 +17,15 @@ class Discoverable(SSDPDiscoverable):
 
     def info_from_entry(self, entry):
         """Get most important info, by default the description location."""
-        host = urlparse(entry.values['location']).hostname
+
         name = entry.description['device']['friendlyName']
+        # Strip the forced prefix, if present
+        if name.startswith(FORCED_NAME_PREFIX):
+            name = name[len(FORCED_NAME_PREFIX):]
+
         model = entry.description['device']['modelName']
+
+        # Extract the IP address from the location; it is not given in the XML.
+        host = urlparse(entry.values['location']).hostname
+
         return name, model, host
