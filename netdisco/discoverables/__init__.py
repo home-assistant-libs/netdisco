@@ -72,7 +72,7 @@ class MDNSDiscoverable(BaseDiscoverable):
 
     def is_discovered(self):
         """Return True if any device has been discovered."""
-        return len(self.services) > 0
+        return len(self.get_entries()) > 0
 
     # pylint: disable=unused-argument
     def remove_service(self, zconf, typ, name):
@@ -97,6 +97,11 @@ class MDNSDiscoverable(BaseDiscoverable):
     def info_from_entry(self, entry):
         """Return most important info from mDNS entries."""
         return (self.ip_from_host(entry.server), entry.port)
+
+    def find_by_device_name(self, name):
+        """Find entries based on the beginning of their entry names."""
+        return [entry for entry in self.services.values()
+                if entry.name.startswith(name)]
 
     def ip_from_host(self, host):
         """Attempt to return the ip address from an mDNS host.

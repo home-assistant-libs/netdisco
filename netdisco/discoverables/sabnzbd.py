@@ -15,7 +15,5 @@ class Discoverable(MDNSDiscoverable):
         return (self.ip_from_host(entry.server), entry.port,
                 entry.properties.get('path', '/sabnzbd/'))
 
-    def get_info(self):
-        """Get details of SABnzbd."""
-        return [self.info_from_entry(entry) for entry in self.get_entries()
-                if entry.name.startswith('SABnzbd on')]
+    def get_entries(self):
+        return self.find_by_device_name('SABnzbd on')
