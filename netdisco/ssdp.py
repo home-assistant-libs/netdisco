@@ -135,6 +135,10 @@ class UPNPEntry(object):
         if url not in UPNPEntry.DESCRIPTION_CACHE:
             try:
                 xml = requests.get(url).text
+                if not xml:
+                    # Samsung Smart TV sometimes returns an empty document the
+                    # first time. Retry once.
+                    xml = requests.get(url).text
 
                 tree = ElementTree.fromstring(xml)
 
