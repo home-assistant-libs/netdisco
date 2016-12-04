@@ -1,10 +1,17 @@
 """Discover Samsung Smart TV services."""
-from urllib.parse import urlparse
+
+try:
+    # python 3
+    from urllib.parse import urlparse
+except ImportError:
+    # python 2
+    from urlparse import urlparse
 
 from . import SSDPDiscoverable
 
 # For some models, Samsung forces a [TV] prefix to the user-specified name.
 FORCED_NAME_PREFIX = '[TV]'
+
 
 class Discoverable(SSDPDiscoverable):
     """Add support for discovering Samsung Smart TV services."""
