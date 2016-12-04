@@ -14,7 +14,5 @@ class Discoverable(MDNSDiscoverable):
         """Return most important info from mDNS entries."""
         return (self.ip_from_host(entry.server), entry.port)
 
-    def get_info(self):
-        """Get all the Kodi details."""
-        return [self.info_from_entry(entry) for entry in self.get_entries()
-                if entry.name.startswith('Kodi ')]
+    def get_entries(self):
+        return self.find_by_device_name('Kodi ')
