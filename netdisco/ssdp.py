@@ -79,10 +79,8 @@ class SSDP(object):
 
                 self.remove_expired()
 
-                # Wemo does not respond to a query for all devices+services
-                # but only to a query for just root devices.
                 self.entries.extend(
-                    entry for entry in scan() + scan(ST_ROOTDEVICE)
+                    entry for entry in scan()
                     if entry not in self.entries)
 
                 self.last_scan = datetime.now()
@@ -206,6 +204,18 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
         'ST: {}'.format(ssdp_st),
         '', '']).encode('utf-8')
 
+    if st is None:
+        # Wemo does not respond to a query for all devices+services
+        # but only to a query for just root devices (ST_ROOTDEVICE). Use that
+        # as well for the default case.
+        alt_ssdp_request = "\r\n".join([
+            'M-SEARCH * HTTP/1.1',
+            'HOST: 239.255.255.250:1900',
+            'MAN: "ssdp:discover"',
+            'MX: {:d}'.format(SSDP_MX),
+            'ST: {}'.format(ST_ROOTDEVICE),
+            '', '']).encode('utf-8')
+
     stop_wait = datetime.now() + timedelta(0, timeout)
 
     sockets = []
@@ -225,6 +235,8 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     for sock in [s for s in sockets]:
         try:
             sock.sendto(ssdp_request, SSDP_TARGET)
+            if alt_ssdp_request:
+                sock.sendto(alt_ssdp_request, SSDP_TARGET)
             sock.setblocking(False)
         except socket.error:
             sockets.remove(sock)
