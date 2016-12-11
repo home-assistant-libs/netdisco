@@ -21,11 +21,9 @@ class Discoverable(SSDPDiscoverable):
         })
 
     def info_from_entry(self, entry):
-        """Get most important info, which is model and host."""
+        """Get most important info, which is name, model and host."""
         name = entry.description['device']['friendlyName']
-
         model = entry.description['device']['modelName']
-
         host = urlparse(
             entry.description['device']['presentationURL']).hostname
 
