@@ -13,7 +13,7 @@ class Discoverable(SSDPDiscoverable):
         model = entry.description['device']['modelName']
         host = urlparse(entry.values['location']).hostname
 
-        return name, model, host
+        return (name, model, host)
 
     def get_entries(self):
         """Get all the LG WebOS TV device uPnP entries."""
