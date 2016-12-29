@@ -11,4 +11,4 @@ class Discoverable(BaseDiscoverable):
 
     def get_entries(self):
         """Get all the Logitech Media Server details."""
-        return [entry['from'] for entry in self.netdis.lms.entries]
+        return [(entry['from'], entry['port']) for entry in self.netdis.lms.entries]

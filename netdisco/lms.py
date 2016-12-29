@@ -29,7 +29,7 @@ class LMS(object):
         """Scan network for Logitech Media Servers."""
         lms_ip = '<broadcast>'
         lms_port = DISCOVERY_PORT
-        lms_msg = b"d................."
+        lms_msg = b"eJSON\0"
         lms_timeout = DEFAULT_DISCOVERY_TIMEOUT
 
         entries = []
@@ -45,9 +45,17 @@ class LMS(object):
             while True:
                 try:
                     data, server = sock.recvfrom(1024)
-                    if data.startswith(b'D'):
+                    if data.startswith(b'E'):
+                        # Full response is EJSON\xYYXXXX
+                        # Where YY is length of port string (ie 4)
+                        # And XXXX is the web interface port
+                        port = None
+                        if data.startswith(b'JSON', 1):
+                            length = data[5:6][0]
+                            port = int(data[0-length:])
                         entries.append({'data': data,
-                                        'from': server})
+                                        'port': port,
+                                        'from': server[0]})
                 except socket.timeout:
                     break
         finally:
