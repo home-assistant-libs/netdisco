@@ -1,6 +1,6 @@
 """Discover Yeelight bulbs, based on Kodi discoverable."""
-from . import MDNSDiscoverable
 import logging
+from . import MDNSDiscoverable
 
 
 # pylint: disable=too-few-public-methods
