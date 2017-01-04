@@ -48,14 +48,13 @@ class LMS(object):
                     if data.startswith(b'E'):
                         # Full response is EJSON\xYYXXXX
                         # Where YY is length of port string (ie 4)
-                        # And XXXX is the web interface port
+                        # And XXXX is the web interface port (ie 9000)
                         port = None
                         if data.startswith(b'JSON', 1):
                             length = data[5:6][0]
                             port = int(data[0-length:])
-                        entries.append({'data': data,
-                                        'port': port,
-                                        'from': server[0]})
+                        entries.append({'port': port,
+                                        'server': server[0]})
                 except socket.timeout:
                     break
         finally:
