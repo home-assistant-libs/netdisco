@@ -16,3 +16,9 @@ MYSTROM = 'mystrom'
 HASS_IOS = "hass_ios"
 BOSE_SOUNDTOUCH = 'bose_soundtouch'
 SAMSUNG_TV = "samsung_tv"
+
+ATTR_HOST = 'host'
+ATTR_PORT = 'port'
+ATTR_HOSTNAME = 'hostname'
+ATTR_DEVICE_TYPE = 'device_type'
+ATTR_PROPERTIES = 'properties'

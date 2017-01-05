@@ -1,5 +1,6 @@
 """Discover myStrom devices."""
 from . import MDNSDiscoverable
+from ..const import ATTR_HOST
 
 
 # pylint: disable=too-few-public-methods
@@ -13,7 +14,7 @@ class Discoverable(MDNSDiscoverable):
         """Return the most important info from mDNS entries."""
         info = {key.decode('utf-8'): value.decode('utf-8')
                 for key, value in entry.properties.items()}
-        info['host'] = 'http://{}'.format(self.ip_from_host(entry.server))
+        info[ATTR_HOST] = 'http://{}'.format(self.ip_from_host(entry.server))
         return info
 
     def get_info(self):
