@@ -1,6 +1,8 @@
 """Discover Yeelight bulbs, based on Kodi discoverable."""
 import logging
 from . import MDNSDiscoverable
+from ..const import (
+    ATTR_HOST, ATTR_PORT, ATTR_HOSTNAME, ATTR_DEVICE_TYPE, ATTR_PROPERTIES)
 
 
 # pylint: disable=too-few-public-methods
@@ -22,11 +24,13 @@ class Discoverable(MDNSDiscoverable):
         else:
             logging.warning("Unknown miio device found: %s", entry)
 
-        return {"host": self.ip_from_host(entry.server),
-                "port": entry.port,
-                "hostname": entry.server,
-                "device_type": device_type,
-                "properties": entry.properties}
+        return {
+            ATTR_HOST: self.ip_from_host(entry.server),
+            ATTR_PORT: entry.port,
+            ATTR_HOSTNAME: entry.server,
+            ATTR_DEVICE_TYPE: device_type,
+            ATTR_PROPERTIES: entry.properties,
+        }
 
     def get_entries(self):
         return self.find_by_device_name('yeelink-light-')

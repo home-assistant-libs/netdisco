@@ -2,6 +2,8 @@
 import socket
 import threading
 
+from .const import ATTR_HOST, ATTR_PORT
+
 DISCOVERY_PORT = 3483
 DEFAULT_DISCOVERY_TIMEOUT = 5
 
@@ -53,8 +55,10 @@ class LMS(object):
                         if data.startswith(b'JSON', 1):
                             length = data[5:6][0]
                             port = int(data[0-length:])
-                        entries.append({'port': port,
-                                        'server': server[0]})
+                        entries.append({
+                            ATTR_HOST: server[0],
+                            ATTR_PORT: port,
+                        })
                 except socket.timeout:
                     break
         finally:
