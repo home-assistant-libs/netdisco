@@ -24,13 +24,18 @@ class Discoverable(MDNSDiscoverable):
         else:
             logging.warning("Unknown miio device found: %s", entry)
 
+        def _decode_properties(props):
+            return {x.decode("utf-8"): props[x].decode("utf-8")
+                    for x in props}
+
         return {
             ATTR_HOST: self.ip_from_host(entry.server),
             ATTR_PORT: entry.port,
             ATTR_HOSTNAME: entry.server,
             ATTR_DEVICE_TYPE: device_type,
-            ATTR_PROPERTIES: entry.properties,
+            ATTR_PROPERTIES: _decode_properties(entry.properties)
         }
 
     def get_entries(self):
+        """ Return yeelight devices. """
         return self.find_by_device_name('yeelink-light-')
