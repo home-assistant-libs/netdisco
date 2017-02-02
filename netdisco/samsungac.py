@@ -69,6 +69,7 @@ class SamsungAC(object):
         servers = []
         # setup socket for broadcast
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         sock.settimeout(DISCOVERY_TIMEOUT)
         sock.bind(('', DISCOVERY_PORT))
