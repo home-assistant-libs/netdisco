@@ -91,7 +91,7 @@ class FluxLed(object):
 
 
 def main():
-    """Test Tellstick discovery."""
+    """Test Fluxled discovery."""
     from pprint import pprint
 
     if len(sys.argv) >= 2:
