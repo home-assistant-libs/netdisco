@@ -17,6 +17,7 @@ HASS_IOS = "hass_ios"
 BOSE_SOUNDTOUCH = 'bose_soundtouch'
 SAMSUNG_TV = "samsung_tv"
 FRONTIER_SILICON = "frontier_silicon"
+APPLE_TV = "apple_tv"
 
 ATTR_HOST = 'host'
 ATTR_PORT = 'port'
