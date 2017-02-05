@@ -8,6 +8,7 @@ setup(name='netdisco',
       author_email='Paulus@PaulusSchoutsen.nl',
       license='Apache License 2.0',
       install_requires=['netifaces>=0.10.0', 'requests>=2.0',
-                        'zeroconf==0.17.6'],
+                        'zeroconf==0.17.6',
+                        'ipaddress==1.0.18; python_version < "3"'],
       packages=find_packages(),
       zip_safe=False)

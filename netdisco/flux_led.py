@@ -6,6 +6,8 @@ a packet to every device in the network. This is the way the
 offical app 'Magic Home' does it as well.
 
 """
+
+# pylint:disable=wrong-import-order
 import ipaddress
 import logging
 import socket
