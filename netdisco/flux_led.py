@@ -6,20 +6,20 @@ a packet to every device in the network. This is the way the
 offical app 'Magic Home' does it as well.
 
 """
+import ipaddress
+import logging
 import socket
 import sys
 import threading
 from datetime import timedelta
-import ipaddress
-from netdisco.util import interface_networks
-import logging
 
+from netdisco.util import interface_networks
 
 DISCOVERY_PORT = 48899
 DISCOVERY_PAYLOAD = "HF-A11ASSISTHREAD".encode('ascii')
 DISCOVERY_TIMEOUT = timedelta(seconds=5)
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 class FluxLed(object):
@@ -55,18 +55,20 @@ class FluxLed(object):
         sock.settimeout(DISCOVERY_TIMEOUT.seconds)
 
         # send query to every device in every network connected to
+        LOG.debug('querying hosts on networks: %s', self.networks)
         for network in self.networks:
-            for ip in network.hosts():
+            for address in network.hosts():
                 try:
-                    sock.sendto(DISCOVERY_PAYLOAD, (str(ip), DISCOVERY_PORT))
+                    sock.sendto(DISCOVERY_PAYLOAD,
+                                (str(address), DISCOVERY_PORT))
                 except OSError as exc:
-                    log.debug('failed to send request', exc_info=exc)
+                    LOG.debug('failed to send request', exc_info=exc)
                     continue
 
         # wait for responses
         while True:
             try:
-                data, addr = sock.recvfrom(64)
+                data, _ = sock.recvfrom(64)
             except socket.timeout:
                 # no (more) responses received
                 break
@@ -96,6 +98,8 @@ def main():
         networks = [ipaddress.IPv4Network(n) for n in sys.argv[1:]]
     else:
         networks = None
+
+    logging.basicConfig(level=logging.DEBUG)
 
     flux_led = FluxLed(networks=networks)
     pprint("Scanning for FluxLed devices..")
