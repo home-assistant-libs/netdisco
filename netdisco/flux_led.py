@@ -34,9 +34,9 @@ class FluxLed(object):
 
         # if not explicitly specified determine network from interfaces
         if networks:
-            self.networks = networks
+            self.networks = set(networks)
         else:
-            self.networks = interface_networks()
+            self.networks = set(interface_networks())
 
     def scan(self):
         """Scan the network."""
