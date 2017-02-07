@@ -1,4 +1,5 @@
 """Discover Apple TV media players."""
+import ipaddress
 from . import MDNSDiscoverable
 
 
@@ -13,6 +14,7 @@ class Discoverable(MDNSDiscoverable):
         """Returns most important info from mDNS entries."""
         props = entry.properties
         info = {
+            'host': str(ipaddress.ip_address(entry.address)),
             'name': props.get(b'Name').decode('utf-8').replace('\xa0', ' '),
             'hsgid': props.get(b'hG').decode('utf-8')
             }
