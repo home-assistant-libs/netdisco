@@ -8,5 +8,5 @@ class Discoverable(SSDPDiscoverable):
     def get_entries(self):
         """Get all the frontier silicon uPnP entries."""
         return [entry for entry in self.netdis.ssdp.all()
-                if 'fsapi' in entry.st and
+                if entry.st and 'fsapi' in entry.st and
                 'urn:schemas-frontier-silicon-com' in entry.st]
