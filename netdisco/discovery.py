@@ -10,6 +10,7 @@ from .mdns import MDNS
 from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
+from .flux_led import FluxLed
 from .daikin import Daikin
 # from .samsungac import SamsungAC
 
@@ -41,6 +42,7 @@ class NetworkDiscovery(object):
         self.gdm = GDM()
         self.lms = LMS()
         self.tellstick = Tellstick()
+        self.fluxled = FluxLed()
         self.daikin = Daikin()
         # self.samsungac = SamsungAC()
         self.discoverables = {}
@@ -68,6 +70,9 @@ class NetworkDiscovery(object):
         tellstick_thread = threading.Thread(target=self.tellstick.scan)
         tellstick_thread.start()
 
+        fluxled_thread = threading.Thread(target=self.fluxled.scan)
+        fluxled_thread.start()
+
         daikin_thread = threading.Thread(target=self.daikin.scan)
         daikin_thread.start()
 
@@ -78,6 +83,7 @@ class NetworkDiscovery(object):
         gdm_thread.join()
         lms_thread.join()
         tellstick_thread.join()
+        fluxled_thread.join()
         daikin_thread.join()
 
     def stop(self):
@@ -149,3 +155,6 @@ class NetworkDiscovery(object):
         print("")
         print("Tellstick")
         pprint(self.tellstick.entries)
+        print("")
+        print("Fluxled")
+        pprint(self.fluxled.entries)
