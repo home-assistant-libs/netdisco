@@ -13,6 +13,7 @@ from .tellstick import Tellstick
 from .flux_led import FluxLed
 from .daikin import Daikin
 # from .samsungac import SamsungAC
+from .philips_hue_nupnp import PHueNUPnPDiscovery
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -45,6 +46,7 @@ class NetworkDiscovery(object):
         self.fluxled = FluxLed()
         self.daikin = Daikin()
         # self.samsungac = SamsungAC()
+        self.phue = PHueNUPnPDiscovery()
         self.discoverables = {}
 
         self._load_device_support()
@@ -78,6 +80,9 @@ class NetworkDiscovery(object):
 
         # self.samsungac.scan()
 
+        phue_thread = threading.Thread(target=self.phue.scan)
+        phue_thread.start()
+
         # Wait for all discovery processes to complete
         ssdp_thread.join()
         gdm_thread.join()
@@ -85,6 +90,7 @@ class NetworkDiscovery(object):
         tellstick_thread.join()
         fluxled_thread.join()
         daikin_thread.join()
+        phue_thread.join()
 
     def stop(self):
         """Turn discovery off."""
@@ -158,3 +164,5 @@ class NetworkDiscovery(object):
         print("")
         print("Fluxled")
         pprint(self.fluxled.entries)
+        print("Philips Hue N-UPnP")
+        pprint(self.phue.entries)
