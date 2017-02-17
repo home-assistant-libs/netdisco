@@ -9,5 +9,5 @@ setup(name='netdisco',
       license='Apache License 2.0',
       install_requires=['netifaces>=0.10.0', 'requests>=2.0',
                         'zeroconf==0.17.6'],
-      packages=find_packages(),
+      packages=find_packages(exclude=['tests', 'tests.*']),
       zip_safe=False)

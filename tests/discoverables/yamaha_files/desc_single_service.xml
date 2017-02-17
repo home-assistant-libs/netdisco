@@ -1,0 +1,22 @@
+<root xmlns="urn:schemas-upnp-org:device-1-0" xmlns:yamaha="urn:schemas-yamaha-com:device-1-0">
+<specVersion>
+<major>1</major>
+<minor>0</minor>
+</specVersion>
+<device>
+<friendlyName>single service friendly name</friendlyName>
+<modelName>single service model name</modelName>
+</device>
+<yamaha:X_device>
+<yamaha:X_URLBase>http://192.168.1.2:80/</yamaha:X_URLBase>
+<yamaha:X_serviceList>
+<yamaha:X_service>
+<yamaha:X_specType>
+urn:schemas-yamaha-com:service:X_YamahaRemoteControl:1
+</yamaha:X_specType>
+<yamaha:X_controlURL>/YamahaRemoteControl/single_ctrl</yamaha:X_controlURL>
+<yamaha:X_unitDescURL>/YamahaRemoteControl/single_desc.xml</yamaha:X_unitDescURL>
+</yamaha:X_service>
+</yamaha:X_serviceList>
+</yamaha:X_device>
+</root>

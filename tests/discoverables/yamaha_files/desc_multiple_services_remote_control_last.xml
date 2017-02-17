@@ -1,0 +1,25 @@
+<root xmlns="urn:schemas-upnp-org:device-1-0" xmlns:yamaha="urn:schemas-yamaha-com:device-1-0">
+<device>
+<friendlyName>multi service friendly name</friendlyName>
+<modelName>multi service model name</modelName>
+</device>
+<yamaha:X_device>
+<yamaha:X_URLBase>http://192.168.1.2:80/</yamaha:X_URLBase>
+<yamaha:X_serviceList>
+<yamaha:X_service>
+<yamaha:X_specType>
+urn:schemas-yamaha-com:service:X_YamahaExtendedControl:1
+</yamaha:X_specType>
+<yamaha:X_yxcControlURL>/YamahaExtendedControl/v1/</yamaha:X_yxcControlURL>
+<yamaha:X_yxcVersion>1131</yamaha:X_yxcVersion>
+</yamaha:X_service>
+<yamaha:X_service>
+<yamaha:X_specType>
+urn:schemas-yamaha-com:service:X_YamahaRemoteControl:1
+</yamaha:X_specType>
+<yamaha:X_controlURL>/YamahaRemoteControl/multi_ctrl</yamaha:X_controlURL>
+<yamaha:X_unitDescURL>/YamahaRemoteControl/multi_desc.xml</yamaha:X_unitDescURL>
+</yamaha:X_service>
+</yamaha:X_serviceList>
+</yamaha:X_device>
+</root>
