@@ -9,10 +9,5 @@ setup(name='netdisco',
       license='Apache License 2.0',
       install_requires=['netifaces>=0.10.0', 'requests>=2.0',
                         'zeroconf==0.17.6'],
-      extras_require={
-          ':python_version == "2.7"': [
-              'ipaddress',
-          ],
-      },
       packages=find_packages(),
       zip_safe=False)

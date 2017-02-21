@@ -1,6 +1,5 @@
 """Util functions used by Netdisco."""
 from collections import defaultdict
-from ipaddress import IPv4Network
 
 # pylint: disable=unused-import, import-error, no-name-in-module
 try:
@@ -50,16 +49,3 @@ def interface_addresses(family=netifaces.AF_INET):
             for i in netifaces.interfaces()
             for addr in netifaces.ifaddresses(i).get(family) or []
             if 'broadcast' in addr]
-
-
-def interface_networks(family=netifaces.AF_INET):
-    """Return a IPv4Network for any associated network.
-
-    Gathering of networks reachable via local interface that has
-    broadcast (and probably multicast) capability.
-    """
-    # pylint: disable=no-member
-    return [IPv4Network('{}/{}'.format(addr['addr'], addr['netmask']), False)
-            for i in netifaces.interfaces()
-            for addr in netifaces.ifaddresses(i).get(family) or []
-            if 'broadcast' in addr and 'netmask' in addr]
