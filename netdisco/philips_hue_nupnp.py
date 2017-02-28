@@ -44,6 +44,7 @@ class PHueNUPnPDiscovery(object):
         """Scan the network."""
         response = requests.get(self.PHUE_NUPNP_URL)
         if response.status_code == 200:
+            self.entries = []
             bridges = response.json()
             for bridge in bridges:
                 entry = self.fetch_description(bridge)
