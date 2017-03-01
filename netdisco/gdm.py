@@ -6,7 +6,6 @@ Inspired by
   https://github.com/hippojay/script.plexbmc.helper/resources/lib/plexgdm.py
   iBaa's PlexConnect: https://github.com/iBaa/PlexConnect/PlexAPI.py
 """
-import threading
 import socket
 
 
@@ -16,12 +15,10 @@ class GDM(object):
     def __init__(self):
         self.entries = []
         self.last_scan = None
-        self._lock = threading.RLock()
 
     def scan(self):
         """Scan the network."""
-        with self._lock:
-            self.update()
+        self.update()
 
     def all(self):
         """Return all found entries.

@@ -1,6 +1,5 @@
 """Daikin device discovery."""
 import socket
-import threading
 
 # pylint: disable=unused-import, import-error, no-name-in-module
 try:
@@ -27,12 +26,10 @@ class Daikin(object):
     def __init__(self):
         """Initialize the Daikin discovery."""
         self.entries = []
-        self._lock = threading.RLock()
 
     def scan(self):
         """Scan the network."""
-        with self._lock:
-            self.update()
+        self.update()
 
     def all(self):
         """Scan and return all found entries."""

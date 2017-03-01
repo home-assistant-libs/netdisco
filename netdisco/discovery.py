@@ -3,7 +3,6 @@ from __future__ import print_function
 import logging
 import os
 import importlib
-import threading
 
 from .ssdp import SSDP
 from .mdns import MDNS
