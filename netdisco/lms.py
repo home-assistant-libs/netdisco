@@ -1,6 +1,5 @@
 """Squeezebox/Logitech Media server discovery."""
 import socket
-import threading
 
 from .const import ATTR_HOST, ATTR_PORT
 
@@ -15,12 +14,10 @@ class LMS(object):
         """Initialize the Logitech discovery."""
         self.entries = []
         self.last_scan = None
-        self._lock = threading.RLock()
 
     def scan(self):
         """Scan the network."""
-        with self._lock:
-            self.update()
+        self.update()
 
     def all(self):
         """Scan and return all found entries."""

@@ -1,9 +1,7 @@
 """Combine all the different protocols into a simple interface."""
-from __future__ import print_function
 import logging
 import os
 import importlib
-import threading
 
 from .ssdp import SSDP
 from .mdns import MDNS
@@ -36,54 +34,44 @@ class NetworkDiscovery(object):
     def __init__(self):
         """Initialize the discovery."""
 
-        self.mdns = MDNS()
-        self.ssdp = SSDP()
-        self.gdm = GDM()
-        self.lms = LMS()
-        self.tellstick = Tellstick()
-        self.daikin = Daikin()
-        # self.samsungac = SamsungAC()
-        self.phue = PHueNUPnPDiscovery()
-        self.discoverables = {}
-
-        self._load_device_support()
+        self.mdns = None
+        self.ssdp = None
+        self.gdm = None
+        self.lms = None
+        self.tellstick = None
+        self.daikin = None
+        self.phue = None
 
         self.is_discovering = False
+        self.discoverables = None
 
     def scan(self):
         """Start and tells scanners to scan."""
-        if not self.is_discovering:
-            self.mdns.start()
-            self.is_discovering = True
+        self.is_discovering = True
 
-        # Start all discovery processes in parallel
-        ssdp_thread = threading.Thread(target=self.ssdp.scan)
-        ssdp_thread.start()
+        self.mdns = MDNS()
+        self.mdns.start()
 
-        gdm_thread = threading.Thread(target=self.gdm.scan)
-        gdm_thread.start()
+        # Needs to be after MDNS
+        self._load_device_support()
 
-        lms_thread = threading.Thread(target=self.lms.scan)
-        lms_thread.start()
+        self.ssdp = SSDP()
+        self.ssdp.scan()
 
-        tellstick_thread = threading.Thread(target=self.tellstick.scan)
-        tellstick_thread.start()
+        self.gdm = GDM()
+        self.gdm.scan()
 
-        daikin_thread = threading.Thread(target=self.daikin.scan)
-        daikin_thread.start()
+        self.lms = LMS()
+        self.lms.scan()
 
-        # self.samsungac.scan()
+        self.tellstick = Tellstick()
+        self.tellstick.scan()
 
-        phue_thread = threading.Thread(target=self.phue.scan)
-        phue_thread.start()
+        self.daikin = Daikin()
+        self.daikin.scan()
 
-        # Wait for all discovery processes to complete
-        ssdp_thread.join()
-        gdm_thread.join()
-        lms_thread.join()
-        tellstick_thread.join()
-        daikin_thread.join()
-        phue_thread.join()
+        self.phue = PHueNUPnPDiscovery()
+        self.phue.scan()
 
     def stop(self):
         """Turn discovery off."""
@@ -92,11 +80,20 @@ class NetworkDiscovery(object):
 
         self.mdns.stop()
 
+        # Not removing SSDP because it tracks state
+        self.mdns = None
+        self.gdm = None
+        self.lms = None
+        self.tellstick = None
+        self.daikin = None
+        self.phue = None
+        self.discoverables = None
         self.is_discovering = False
 
     def discover(self):
         """Return a list of discovered devices and services."""
-        self._check_enabled()
+        if not self.is_discovering:
+            raise RuntimeError("Needs to be called after start, before stop")
 
         return [dis for dis, checker in self.discoverables.items()
                 if checker.is_discovered()]
@@ -108,11 +105,6 @@ class NetworkDiscovery(object):
     def get_entries(self, dis):
         """Get a list with all info about a discovered type."""
         return self.discoverables[dis].get_entries()
-
-    def _check_enabled(self):
-        """Raise RuntimeError if discovery is disabled."""
-        if not self.is_discovering:
-            raise RuntimeError("NetworkDiscovery is disabled")
 
     def _load_device_support(self):
         """Load the devices and services that can be discovered."""

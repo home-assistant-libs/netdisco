@@ -1,5 +1,4 @@
 """Command line tool to print discocvered devices or dump raw data."""
-from __future__ import print_function
 import sys
 
 from netdisco.discovery import NetworkDiscovery

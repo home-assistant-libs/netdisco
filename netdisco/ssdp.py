@@ -4,7 +4,6 @@ import select
 import socket
 import logging
 from datetime import datetime, timedelta
-import threading
 import xml.etree.ElementTree as ElementTree
 
 import requests
@@ -33,31 +32,27 @@ class SSDP(object):
         """Initialize the discovery."""
         self.entries = []
         self.last_scan = None
-        self._lock = threading.RLock()
 
     def scan(self):
         """Scan the network."""
-        with self._lock:
-            self.update()
+        self.update()
 
     def all(self):
         """Return all found entries.
 
         Will scan for entries if not scanned recently.
         """
-        with self._lock:
-            self.update()
+        self.update()
 
-            return list(self.entries)
+        return list(self.entries)
 
     # pylint: disable=invalid-name
     def find_by_st(self, st):
         """Return a list of entries that match the ST."""
-        with self._lock:
-            self.update()
+        self.update()
 
-            return [entry for entry in self.entries
-                    if entry.st == st]
+        return [entry for entry in self.entries
+                if entry.st == st]
 
     def find_by_device_description(self, values):
         """Return a list of entries that match the description.
@@ -65,31 +60,28 @@ class SSDP(object):
         Pass in a dict with values to match against the device tag in the
         description.
         """
-        with self._lock:
-            self.update()
+        self.update()
 
-            return [entry for entry in self.entries
-                    if entry.match_device_description(values)]
+        return [entry for entry in self.entries
+                if entry.match_device_description(values)]
 
     def update(self, force_update=False):
         """Scan for new uPnP devices and services."""
-        with self._lock:
-            if self.last_scan is None or force_update or \
-               datetime.now()-self.last_scan > MIN_TIME_BETWEEN_SCANS:
+        if self.last_scan is None or force_update or \
+           datetime.now()-self.last_scan > MIN_TIME_BETWEEN_SCANS:
 
-                self.remove_expired()
+            self.remove_expired()
 
-                self.entries.extend(
-                    entry for entry in scan()
-                    if entry not in self.entries)
+            self.entries.extend(
+                entry for entry in scan()
+                if entry not in self.entries)
 
-                self.last_scan = datetime.now()
+            self.last_scan = datetime.now()
 
     def remove_expired(self):
         """Filter out expired entries."""
-        with self._lock:
-            self.entries = [entry for entry in self.entries
-                            if not entry.is_expired]
+        self.entries = [entry for entry in self.entries
+                        if not entry.is_expired]
 
 
 class UPNPEntry(object):

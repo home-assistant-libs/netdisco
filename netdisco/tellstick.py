@@ -1,6 +1,5 @@
 """Tellstick device discovery."""
 import socket
-import threading
 from datetime import timedelta
 
 
@@ -16,12 +15,10 @@ class Tellstick(object):
     def __init__(self):
         """Initialize the TEllstick discovery."""
         self.entries = []
-        self._lock = threading.RLock()
 
     def scan(self):
         """Scan the network."""
-        with self._lock:
-            self.update()
+        self.update()
 
     def all(self):
         """Scan and return all found entries."""

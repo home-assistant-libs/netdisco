@@ -1,11 +1,5 @@
 """Discover Samsung Smart TV services."""
-
-try:
-    # python 3
-    from urllib.parse import urlparse
-except ImportError:
-    # python 2
-    from urlparse import urlparse
+from urllib.parse import urlparse
 
 from . import SSDPDiscoverable
 
