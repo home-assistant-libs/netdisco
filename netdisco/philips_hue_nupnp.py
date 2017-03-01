@@ -48,6 +48,7 @@ class PHueNUPnPDiscovery(object):
         try:
             response = requests.get(self.PHUE_NUPNP_URL)
             response.raise_for_status()
+            self.entries = []
             bridges = response.json()
             for bridge in bridges:
                 entry = self.fetch_description(bridge)
