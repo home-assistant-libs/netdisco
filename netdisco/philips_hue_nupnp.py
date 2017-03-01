@@ -8,9 +8,12 @@ SSDP lookup: https://developers.meethue.com/documentation/hue-bridge-discovery
 
 import xml.etree.ElementTree as ElementTree
 
+import logging
 import requests
 
 from netdisco.util import etree_to_dict
+
+_LOGGER = logging.getLogger(__name__)
 
 
 # pylint: disable=too-few-public-methods
@@ -42,21 +45,30 @@ class PHueNUPnPDiscovery(object):
 
     def scan(self):
         """Scan the network."""
-        response = requests.get(self.PHUE_NUPNP_URL)
-        if response.status_code == 200:
+        try:
+            response = requests.get(self.PHUE_NUPNP_URL)
+            response.raise_for_status()
             self.entries = []
             bridges = response.json()
             for bridge in bridges:
                 entry = self.fetch_description(bridge)
                 if entry:
                     self.entries.append(entry)
+        except requests.exceptions.RequestException as err:
+            _LOGGER.warning('Could not query server %s: %s',
+                            self.PHUE_NUPNP_URL,
+                            err)
 
     def fetch_description(self, bridge):
         """Fetches description XML of a Philips Hue bridge."""
         url = self.bridge_description_url(bridge)
-        response = requests.get(url)
-        if response.status_code == 200:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
             return PHueBridge(response.text)
+        except requests.exceptions.RequestException as err:
+            _LOGGER.warning('Could not query server %s: %s',
+                            url, err)
 
     def bridge_description_url(self, bridge):
         """Returns URL for fetching description XML"""
