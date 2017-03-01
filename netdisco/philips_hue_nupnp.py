@@ -46,7 +46,7 @@ class PHueNUPnPDiscovery(object):
     def scan(self):
         """Scan the network."""
         try:
-            response = requests.get(self.PHUE_NUPNP_URL)
+            response = requests.get(self.PHUE_NUPNP_URL, timeout=5)
             response.raise_for_status()
             self.entries = []
             bridges = response.json()
@@ -63,7 +63,7 @@ class PHueNUPnPDiscovery(object):
         """Fetches description XML of a Philips Hue bridge."""
         url = self.bridge_description_url(bridge)
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=5)
             response.raise_for_status()
             return PHueBridge(response.text)
         except requests.exceptions.RequestException as err:

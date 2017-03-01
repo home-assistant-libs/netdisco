@@ -128,24 +128,24 @@ class UPNPEntry(object):
 
         if url not in UPNPEntry.DESCRIPTION_CACHE:
             try:
-                xml = requests.get(url).text
+                xml = requests.get(url, timeout=5).text
                 if not xml:
                     # Samsung Smart TV sometimes returns an empty document the
                     # first time. Retry once.
-                    xml = requests.get(url).text
+                    xml = requests.get(url, timeout=5).text
 
                 tree = ElementTree.fromstring(xml)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = \
                     etree_to_dict(tree).get('root', {})
             except requests.RequestException:
-                logging.getLogger(__name__).error(
+                logging.getLogger(__name__).warning(
                     "Error fetching description at %s", url)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = {}
 
             except ElementTree.ParseError:
-                logging.getLogger(__name__).error(
+                logging.getLogger(__name__).warning(
                     "Found malformed XML at %s: %s", url, xml)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = {}
