@@ -33,9 +33,8 @@ class NetworkDiscovery(object):
     """
 
     # pylint: disable=too-many-instance-attributes
-    def __init__(self, limit_discovery=None):
+    def __init__(self):
         """Initialize the discovery."""
-        self.limit_discovery = limit_discovery
 
         self.mdns = MDNS()
         self.ssdp = SSDP()
@@ -127,10 +126,6 @@ class NetworkDiscovery(object):
                 continue
 
             module_name = module_name[:-3]
-
-            if self.limit_discovery is not None and \
-               module_name not in self.limit_discovery:
-                continue
 
             module = importlib.import_module(
                 discoverables_format.format(module_name))

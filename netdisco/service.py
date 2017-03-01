@@ -17,15 +17,12 @@ class DiscoveryService(threading.Thread):
     Add listeners to the service to be notified of new services found.
     """
 
-    def __init__(self, interval=DEFAULT_INTERVAL, limit_discovery=None):
+    def __init__(self, interval=DEFAULT_INTERVAL):
         """Initialize the discovery."""
         super(DiscoveryService, self).__init__()
 
         # Scanning interval
         self.interval = interval
-
-        # Limit discovery to the following types
-        self.limit_discovery = limit_discovery
 
         # Listeners for new services
         self.listeners = []
@@ -53,7 +50,7 @@ class DiscoveryService(threading.Thread):
 
     def run(self):
         """Start the discovery service."""
-        self.discovery = NetworkDiscovery(self.limit_discovery)
+        self.discovery = NetworkDiscovery()
 
         while True:
             self._scan()
