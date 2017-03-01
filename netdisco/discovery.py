@@ -36,47 +36,43 @@ class NetworkDiscovery(object):
     def __init__(self):
         """Initialize the discovery."""
 
-        self.mdns = MDNS()
+        self.mdns = None
         self.ssdp = None
         self.gdm = None
         self.lms = None
         self.tellstick = None
         self.daikin = None
         self.phue = None
-        self.discoverables = {}
-
-        self._load_device_support()
 
         self.is_discovering = False
+        self.discoverables = None
 
     def scan(self):
         """Start and tells scanners to scan."""
-        if not self.is_discovering:
-            self.mdns.start()
-            self.is_discovering = True
+        self.is_discovering = True
 
-        if self.ssdp is None:
-            self.ssdp = SSDP()
+        self.mdns = MDNS()
+        self.mdns.start()
+
+        # Needs to be after MDNS
+        self._load_device_support()
+
+        self.ssdp = SSDP()
         self.ssdp.scan()
 
-        if self.gdm is None:
-            self.gdm = GDM()
+        self.gdm = GDM()
         self.gdm.scan()
 
-        if self.lms is None:
-            self.lms = LMS()
+        self.lms = LMS()
         self.lms.scan()
 
-        if self.tellstick is None:
-            self.tellstick = Tellstick()
+        self.tellstick = Tellstick()
         self.tellstick.scan()
 
-        if self.daikin is None:
-            self.daikin = Daikin()
+        self.daikin = Daikin()
         self.daikin.scan()
 
-        if self.phue is None:
-            self.phue = PHueNUPnPDiscovery()
+        self.phue = PHueNUPnPDiscovery()
         self.phue.scan()
 
     def stop(self):
@@ -86,13 +82,14 @@ class NetworkDiscovery(object):
 
         self.mdns.stop()
 
-        # Not removing MDNS & SSDP because they track state
+        # Not removing SSDP because it tracks state
+        self.mdns = None
         self.gdm = None
         self.lms = None
         self.tellstick = None
         self.daikin = None
         self.phue = None
-
+        self.discoverables = None
         self.is_discovering = False
 
     def discover(self):
