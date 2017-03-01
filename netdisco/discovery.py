@@ -37,12 +37,12 @@ class NetworkDiscovery(object):
         """Initialize the discovery."""
 
         self.mdns = MDNS()
-        self.ssdp = SSDP()
-        self.gdm = GDM()
-        self.lms = LMS()
-        self.tellstick = Tellstick()
-        self.daikin = Daikin()
-        self.phue = PHueNUPnPDiscovery()
+        self.ssdp = None
+        self.gdm = None
+        self.lms = None
+        self.tellstick = None
+        self.daikin = None
+        self.phue = None
         self.discoverables = {}
 
         self._load_device_support()
@@ -55,33 +55,29 @@ class NetworkDiscovery(object):
             self.mdns.start()
             self.is_discovering = True
 
-        # Start all discovery processes in parallel
-        ssdp_thread = threading.Thread(target=self.ssdp.scan)
-        ssdp_thread.start()
+        if self.ssdp is None:
+            self.ssdp = SSDP()
+        self.ssdp.scan()
 
-        gdm_thread = threading.Thread(target=self.gdm.scan)
-        gdm_thread.start()
+        if self.gdm is None:
+            self.gdm = GDM()
+        self.gdm.scan()
 
-        lms_thread = threading.Thread(target=self.lms.scan)
-        lms_thread.start()
+        if self.lms is None:
+            self.lms = LMS()
+        self.lms.scan()
 
-        tellstick_thread = threading.Thread(target=self.tellstick.scan)
-        tellstick_thread.start()
+        if self.tellstick is None:
+            self.tellstick = Tellstick()
+        self.tellstick.scan()
 
-        daikin_thread = threading.Thread(target=self.daikin.scan)
-        daikin_thread.start()
+        if self.daikin is None:
+            self.daikin = Daikin()
+        self.daikin.scan()
 
-
-        phue_thread = threading.Thread(target=self.phue.scan)
-        phue_thread.start()
-
-        # Wait for all discovery processes to complete
-        ssdp_thread.join()
-        gdm_thread.join()
-        lms_thread.join()
-        tellstick_thread.join()
-        daikin_thread.join()
-        phue_thread.join()
+        if self.phue is None:
+            self.phue = PHueNUPnPDiscovery()
+        self.phue.scan()
 
     def stop(self):
         """Turn discovery off."""
@@ -89,6 +85,13 @@ class NetworkDiscovery(object):
             return
 
         self.mdns.stop()
+
+        # Not removing MDNS & SSDP because they track state
+        self.gdm = None
+        self.lms = None
+        self.tellstick = None
+        self.daikin = None
+        self.phue = None
 
         self.is_discovering = False
 
