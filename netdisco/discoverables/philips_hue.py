@@ -29,14 +29,14 @@ class Discoverable(SSDPDiscoverable):
         merges them making sure that same device is only discoverd once.
 
         """
-        entries = nupnp_entries
+        entries = {
+            nupn_entry.description['URLBase']: nupn_entry
+            for nupn_entry in nupnp_entries
+        }
 
-        for nupn_entry in entries:
-            for ssdp_entry in ssdp_entries:
-                url_base1 = nupn_entry.description['URLBase']
-                url_base2 = ssdp_entry.description['URLBase']
+        for ssdp_entry in ssdp_entries:
+            url_base = ssdp_entry.description['URLBase']
+            if url_base not in entries:
+                entries[url_base] = ssdp_entry
 
-                if url_base1 != url_base2:
-                    entries.append(ssdp_entry)
-
-        return entries
+        return list(entries.values())
