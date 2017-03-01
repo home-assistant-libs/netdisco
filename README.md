@@ -1,6 +1,6 @@
 # NetDisco
 
-NetDisco is a Python (2 and 3) library to discover local devices and services. It allows to scan on demand or offer a service that will scan the network in the background in a set interval.
+NetDisco is a Python 3 library to discover local devices and services. It allows to scan on demand or offer a service that will scan the network in the background in a set interval.
 
 Current methods of scanning:
 
@@ -15,7 +15,7 @@ It is the library that powers the device discovery within [Home Assistant](https
 
 ## Installation
 
-Netdisco is available on PyPi. Install using `pip3 install netdisco` (use `pip` if you're still on Python 2).
+Netdisco is available on PyPi. Install using `pip3 install netdisco`.
 
 ## Example
 
