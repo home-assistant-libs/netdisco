@@ -8,11 +8,14 @@ class Discoverable(SSDPDiscoverable):
     def info_from_entry(self, entry):
         """Return the most important info from a uPnP entry."""
         yam = entry.description['X_device']
+        services = yam['X_serviceList']['X_service']
+        if isinstance(services, list):
+            service = services[0]
+        else:
+            service = services
         # do a slice of the second element so we don't have double /
-        ctrlurl = (yam['X_URLBase'] +
-                   yam['X_serviceList']['X_service']['X_controlURL'][1:])
-        descurl = (yam['X_URLBase'] +
-                   yam['X_serviceList']['X_service']['X_unitDescURL'][1:])
+        ctrlurl = (yam['X_URLBase'] + service['X_controlURL'][1:])
+        descurl = (yam['X_URLBase'] + service['X_unitDescURL'][1:])
         device = entry.description['device']
 
         return (device['friendlyName'], device['modelName'], ctrlurl, descurl)
