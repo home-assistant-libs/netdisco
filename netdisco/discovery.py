@@ -42,7 +42,6 @@ class NetworkDiscovery(object):
         self.lms = LMS()
         self.tellstick = Tellstick()
         self.daikin = Daikin()
-        # self.samsungac = SamsungAC()
         self.phue = PHueNUPnPDiscovery()
         self.discoverables = {}
 
@@ -72,7 +71,6 @@ class NetworkDiscovery(object):
         daikin_thread = threading.Thread(target=self.daikin.scan)
         daikin_thread.start()
 
-        # self.samsungac.scan()
 
         phue_thread = threading.Thread(target=self.phue.scan)
         phue_thread.start()
