@@ -93,7 +93,8 @@ class NetworkDiscovery(object):
 
     def discover(self):
         """Return a list of discovered devices and services."""
-        self._check_enabled()
+        if not self.is_discovering:
+            raise RuntimeError("Needs to be called after start, before stop")
 
         return [dis for dis, checker in self.discoverables.items()
                 if checker.is_discovered()]
@@ -105,11 +106,6 @@ class NetworkDiscovery(object):
     def get_entries(self, dis):
         """Get a list with all info about a discovered type."""
         return self.discoverables[dis].get_entries()
-
-    def _check_enabled(self):
-        """Raise RuntimeError if discovery is disabled."""
-        if not self.is_discovering:
-            raise RuntimeError("NetworkDiscovery is disabled")
 
     def _load_device_support(self):
         """Load the devices and services that can be discovered."""
