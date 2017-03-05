@@ -31,8 +31,9 @@ class MDNS(object):
         for service in self.services:
             service.reset()
 
-        self.zeroconf.close()
-        self.zeroconf = None
+        if self.zeroconf:
+            self.zeroconf.close()
+            self.zeroconf = None
 
     @property
     def entries(self):
