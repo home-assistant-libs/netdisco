@@ -50,10 +50,11 @@ class NetworkDiscovery(object):
         self.is_discovering = True
 
         self.mdns = MDNS()
-        self.mdns.start()
 
-        # Needs to be after MDNS
+        # Needs to be after MDNS init
         self._load_device_support()
+
+        self.mdns.start()
 
         self.ssdp = SSDP()
         self.ssdp.scan()
