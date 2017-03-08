@@ -17,11 +17,15 @@ class MDNS(object):
 
     def start(self):
         """Start discovery."""
-        self.zeroconf = zeroconf.Zeroconf()
+        try:
+            self.zeroconf = zeroconf.Zeroconf()
 
-        for service in self.services:
-            self._browsers.append(
-                zeroconf.ServiceBrowser(self.zeroconf, service.typ, service))
+            for service in self.services:
+                self._browsers.append(zeroconf.ServiceBrowser(
+                    self.zeroconf, service.typ, service))
+        except:  # pylint: disable=broad-except
+            self.stop()
+            raise
 
     def stop(self):
         """Stop discovering."""
