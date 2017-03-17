@@ -18,6 +18,7 @@ BOSE_SOUNDTOUCH = 'bose_soundtouch'
 SAMSUNG_TV = "samsung_tv"
 FRONTIER_SILICON = "frontier_silicon"
 APPLE_TV = "apple_tv"
+HARMONY = "harmony"
 
 ATTR_HOST = 'host'
 ATTR_PORT = 'port'
