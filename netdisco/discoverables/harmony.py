@@ -9,7 +9,10 @@ class Discoverable(SSDPDiscoverable):
     def info_from_entry(self, entry):
         """Return the most important info from a uPnP entry."""
         url = urlparse(entry.values['location'])
-        return (entry.description['device']['friendlyName'], url.hostname)
+        return {
+            'name': entry.description['device']['friendlyName'],
+            'host': url.hostname,
+            }
 
     def get_entries(self):
         """Get all the Harmony uPnP entries."""
