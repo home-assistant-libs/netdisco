@@ -36,15 +36,9 @@ class SSDPDiscoverable(BaseDiscoverable):
 
     def get_info(self):
         """Get most important info, by default the description location."""
-        entries = self.get_entries()
-
-        # return list allowing for entries with both legacy tuples as well as
-        # later dictionaries
         return list(
-            set(self.info_from_entry(entry)) if isinstance(entry, tuple)
-            else self.info_from_entry(entry)
-            for entry in entries
-            )
+            self.info_from_entry(entry) for entry in self.get_entries())
+
 
     def info_from_entry(self, entry):
         """Get most important info, by default the description location."""
