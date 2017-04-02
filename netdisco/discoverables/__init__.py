@@ -39,7 +39,6 @@ class SSDPDiscoverable(BaseDiscoverable):
         return list(
             self.info_from_entry(entry) for entry in self.get_entries())
 
-
     def info_from_entry(self, entry):
         """Get most important info, by default the description location."""
         return entry.values['location']
