@@ -1,4 +1,4 @@
-"""Discover devices that implement the Google Cast platform."""
+"""Discover devices that implement the Ikea Tradfri platform."""
 from . import MDNSDiscoverable
 
 
