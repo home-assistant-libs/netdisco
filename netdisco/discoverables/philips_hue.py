@@ -5,12 +5,6 @@ from . import SSDPDiscoverable
 class Discoverable(SSDPDiscoverable):
     """Add support for discovering Philips Hue bridges."""
 
-    def info_from_entry(self, entry):
-        """Return the most important info from a uPnP entry."""
-        desc = entry.description
-
-        return desc['device']['friendlyName'], desc['URLBase']
-
     def get_entries(self):
         """Get all the Hue bridge uPnP entries."""
         nupnp_entries = self.netdis.phue.entries
