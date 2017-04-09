@@ -12,9 +12,7 @@ class Discoverable(SSDPDiscoverable):
 
     def get_entries(self):
         """Get all the Samsung RemoteControlReceiver entries."""
-        return self.find_by_device_description({
-            "deviceType": "urn:samsung.com:device:RemoteControlReceiver:1"
-        })
+        return self.find_by_st("urn:samsung.com:device:RemoteControlReceiver:1")
 
     def info_from_entry(self, entry):
         """Get most important info, by default the description location."""
