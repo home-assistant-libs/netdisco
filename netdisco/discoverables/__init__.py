@@ -1,5 +1,10 @@
 """Provides helpful stuff for discoverables."""
 # pylint: disable=abstract-method
+from urllib.parse import urlparse
+
+from ..const import (
+    ATTR_NAME, ATTR_MODEL_NAME, ATTR_HOST, ATTR_PORT, ATTR_SSDP_DESCRIPTION,
+    ATTR_SERIAL, ATTR_MODEL_NUMBER, ATTR_HOSTNAME, ATTR_PROPERTIES)
 
 
 class BaseDiscoverable(object):
@@ -34,14 +39,23 @@ class SSDPDiscoverable(BaseDiscoverable):
         """Initialize SSDPDiscoverable."""
         self.netdis = netdis
 
-    def get_info(self):
-        """Get most important info, by default the description location."""
-        return list(
-            self.info_from_entry(entry) for entry in self.get_entries())
-
     def info_from_entry(self, entry):
         """Get most important info, by default the description location."""
-        return entry.values['location']
+        url = urlparse(entry.location)
+        info = {
+            ATTR_HOST: url.hostname,
+            ATTR_PORT: url.port,
+            ATTR_SSDP_DESCRIPTION: entry.location
+        }
+        device = entry.description.get('device')
+
+        if device:
+            info[ATTR_NAME] = device.get('friendlyName')
+            info[ATTR_MODEL_NAME] = device.get('modelName')
+            info[ATTR_MODEL_NUMBER] = device.get('modelNumber')
+            info[ATTR_SERIAL] = device.get('serialNumber')
+
+        return info
 
     # Helper functions
 
@@ -96,7 +110,19 @@ class MDNSDiscoverable(BaseDiscoverable):
 
     def info_from_entry(self, entry):
         """Return most important info from mDNS entries."""
-        return (self.ip_from_host(entry.server), entry.port)
+        properties = {}
+
+        for key, value in entry.properties.items():
+            if isinstance(value, bytes):
+                value = value.decode('utf-8')
+            properties[key.decode('utf-8')] = value
+
+        return {
+            ATTR_HOST: self.ip_from_host(entry.server),
+            ATTR_PORT: entry.port,
+            ATTR_HOSTNAME: entry.server,
+            ATTR_PROPERTIES: properties,
+        }
 
     def find_by_device_name(self, name):
         """Find entries based on the beginning of their entry names."""
@@ -123,14 +149,12 @@ class GDMDiscoverable(BaseDiscoverable):
         """Initialize GDMDiscoverable."""
         self.netdis = netdis
 
-    def get_info(self):
-        """Get most important info, by default the description location."""
-        return [self.info_from_entry(entry) for entry in self.get_entries()]
-
     def info_from_entry(self, entry):
         """Get most important info, by default the description location."""
-        return 'https://%s:%s/' % (entry.values['location'],
-                                   entry.values['port'])
+        return {
+            ATTR_HOST: entry.values['location'],
+            ATTR_PORT: entry.values['port'],
+        }
 
     def find_by_content_type(self, value):
         """Find entries based on values from their content_type."""

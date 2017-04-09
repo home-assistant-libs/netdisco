@@ -20,8 +20,15 @@ FRONTIER_SILICON = "frontier_silicon"
 APPLE_TV = "apple_tv"
 HARMONY = "harmony"
 
+ATTR_NAME = 'name'
 ATTR_HOST = 'host'
 ATTR_PORT = 'port'
 ATTR_HOSTNAME = 'hostname'
+ATTR_URLBASE = 'urlbase'
 ATTR_DEVICE_TYPE = 'device_type'
+ATTR_MODEL_NAME = 'model_name'
+ATTR_MODEL_NUMBER = 'model_number'
 ATTR_PROPERTIES = 'properties'
+ATTR_SSDP_DESCRIPTION = 'ssdp_description'
+ATTR_SERIAL = 'serial'
+ATTR_MAC_ADDRESS = 'mac_address'

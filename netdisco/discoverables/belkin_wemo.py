@@ -1,5 +1,6 @@
 """Discover Belkin Wemo devices."""
 from . import SSDPDiscoverable
+from ..const import ATTR_MAC_ADDRESS
 
 
 class Discoverable(SSDPDiscoverable):
@@ -7,11 +8,10 @@ class Discoverable(SSDPDiscoverable):
 
     def info_from_entry(self, entry):
         """Return most important info from a uPnP entry."""
+        info = super().info_from_entry(entry)
         device = entry.description['device']
-
-        return (device['friendlyName'], device['modelName'],
-                entry.values['location'], device.get('macAddress', ''),
-                device['serialNumber'])
+        info[ATTR_MAC_ADDRESS] = device.get('macAddress', '')
+        return info
 
     def get_entries(self):
         """Return all Belkin Wemo entries."""

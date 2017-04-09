@@ -1,5 +1,6 @@
 """Discover PlexMediaServer."""
 from . import GDMDiscoverable
+from ..const import ATTR_NAME, ATTR_HOST, ATTR_PORT, ATTR_URLBASE
 
 
 class Discoverable(GDMDiscoverable):
@@ -7,8 +8,13 @@ class Discoverable(GDMDiscoverable):
 
     def info_from_entry(self, entry):
         """Return most important info from a GDM entry."""
-        return (entry['data']['Name'],
-                'https://%s:%s' % (entry['from'][0], entry['data']['Port']))
+        return {
+            ATTR_NAME: entry['data']['Name'],
+            ATTR_HOST: entry['from'][0],
+            ATTR_PORT: entry['data']['Port'],
+            ATTR_URLBASE: 'https://%s:%s' % (entry['from'][0],
+                                             entry['data']['Port'])
+        }
 
     def get_entries(self):
         """Return all PMS entries."""

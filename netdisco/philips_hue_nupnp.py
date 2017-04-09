@@ -23,7 +23,8 @@ class PHueBridge(object):
 
     """
 
-    def __init__(self, description_xml):
+    def __init__(self, location, description_xml):
+        self.location = location
         tree = ElementTree.fromstring(description_xml)
         self.description = etree_to_dict(tree).get("root", {})
 
@@ -65,7 +66,7 @@ class PHueNUPnPDiscovery(object):
         try:
             response = requests.get(url, timeout=5)
             response.raise_for_status()
-            return PHueBridge(response.text)
+            return PHueBridge(url, response.text)
         except requests.exceptions.RequestException as err:
             _LOGGER.warning('Could not query server %s: %s',
                             url, err)

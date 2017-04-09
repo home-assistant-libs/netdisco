@@ -10,6 +10,8 @@ class Discoverable(SSDPDiscoverable):
 
     def info_from_entry(self, entry):
         """Return the most important info from a uPnP entry."""
+        info = super().info_from_entry(entry)
+
         yam = entry.description['X_device']
         services = yam['X_serviceList']['X_service']
         if isinstance(services, list):
@@ -20,11 +22,11 @@ class Discoverable(SSDPDiscoverable):
         else:
             service = services
         # do a slice of the second element so we don't have double /
-        ctrlurl = (yam['X_URLBase'] + service['X_controlURL'][1:])
-        descurl = (yam['X_URLBase'] + service['X_unitDescURL'][1:])
-        device = entry.description['device']
+        info['control_url'] = yam['X_URLBase'] + service['X_controlURL'][1:]
+        info['description_url'] = (yam['X_URLBase'] +
+                                   service['X_unitDescURL'][1:])
 
-        return (device['friendlyName'], device['modelName'], ctrlurl, descurl)
+        return info
 
     def get_entries(self):
         """Get all the Yamaha uPnP entries."""

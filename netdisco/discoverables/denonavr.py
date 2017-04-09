@@ -2,6 +2,7 @@
 from urllib.parse import urlparse
 
 from . import SSDPDiscoverable
+from ..const import ATTR_HOST
 
 
 class Discoverable(SSDPDiscoverable):
@@ -16,9 +17,7 @@ class Discoverable(SSDPDiscoverable):
 
     def info_from_entry(self, entry):
         """Get most important info, which is name, model and host."""
-        name = entry.description['device']['friendlyName']
-        model = entry.description['device']['modelName']
-        host = urlparse(
+        info = super().info_from_entry(entry)
+        info[ATTR_HOST] = urlparse(
             entry.description['device']['presentationURL']).hostname
-
-        return (host, name, model)
+        return info

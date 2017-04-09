@@ -5,9 +5,13 @@ import xml.etree.ElementTree as ElementTree
 from netdisco.discoverables.yamaha import Discoverable
 from netdisco.util import etree_to_dict
 
+LOCATION = 'http://192.168.XXX.XXX:80/desc.xml'
+
 
 class MockUPNPEntry(object):
     """UPNPEntry backed by a description file."""
+
+    location = LOCATION
 
     def __init__(self, name):
         """Read and parse a MockUPNPEntry from a file."""
@@ -16,37 +20,78 @@ class MockUPNPEntry(object):
             self.description = etree_to_dict(
                 ElementTree.fromstring(content.read())).get('root', {})
 
+
 class TestYamaha(unittest.TestCase):
     """Test the Yamaha Discoverable."""
 
     def test_info_from_entry_rx_v481(self):
         self.assertEqual(
-            ("RX-V481 XXXXXX", "RX-V481",
-             "http://192.168.XXX.XXX:80/YamahaRemoteControl/ctrl",
-             "http://192.168.XXX.XXX:80/YamahaRemoteControl/desc.xml"),
             Discoverable(None).info_from_entry(
-                MockUPNPEntry("desc_RX-V481.xml")))
+                MockUPNPEntry("desc_RX-V481.xml")),
+            {
+                'control_url':
+                'http://192.168.XXX.XXX:80/YamahaRemoteControl/ctrl',
+                'description_url':
+                'http://192.168.XXX.XXX:80/YamahaRemoteControl/desc.xml',
+                'host': '192.168.xxx.xxx',
+                'model_name': 'RX-V481',
+                'model_number': 'V481',
+                'name': 'RX-V481 XXXXXX',
+                'port': 80,
+                'serial': 'XXXXXXXX',
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+            })
 
     def test_info_from_entry_single_service(self):
         self.assertEqual(
-            ("single service friendly name", "single service model name",
-             "http://192.168.1.2:80/YamahaRemoteControl/single_ctrl",
-             "http://192.168.1.2:80/YamahaRemoteControl/single_desc.xml"),
             Discoverable(None).info_from_entry(
-                MockUPNPEntry("desc_single_service.xml")))
+                MockUPNPEntry("desc_single_service.xml")),
+            {
+                'control_url':
+                'http://192.168.1.2:80/YamahaRemoteControl/single_ctrl',
+                'description_url':
+                'http://192.168.1.2:80/YamahaRemoteControl/single_desc.xml',
+                'host': '192.168.xxx.xxx',
+                'model_name': 'single service model name',
+                'model_number': None,
+                'name': 'single service friendly name',
+                'port': 80,
+                'serial': None,
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+            })
 
     def test_info_from_entry_multiple_services_remote_control_last(self):
         self.assertEqual(
-            ("multi service friendly name", "multi service model name",
-             "http://192.168.1.2:80/YamahaRemoteControl/multi_ctrl",
-             "http://192.168.1.2:80/YamahaRemoteControl/multi_desc.xml"),
             Discoverable(None).info_from_entry(MockUPNPEntry(
-                "desc_multiple_services_remote_control_last.xml")))
+                "desc_multiple_services_remote_control_last.xml")),
+            {
+                'control_url':
+                'http://192.168.1.2:80/YamahaRemoteControl/multi_ctrl',
+                'description_url':
+                'http://192.168.1.2:80/YamahaRemoteControl/multi_desc.xml',
+                'host': '192.168.xxx.xxx',
+                'model_name': 'multi service model name',
+                'model_number': None,
+                'name': 'multi service friendly name',
+                'port': 80,
+                'serial': None,
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+            })
 
     def test_info_from_entry_multiple_services_no_remote_control(self):
         self.assertEqual(
-            ("multi service friendly name", "multi service model name",
-             "http://192.168.1.2:80/YamahaNewControl/ctrl",
-             "http://192.168.1.2:80/YamahaNewControl/desc.xml"),
             Discoverable(None).info_from_entry(MockUPNPEntry(
-                "desc_multiple_services_no_remote_control.xml")))
+                "desc_multiple_services_no_remote_control.xml")),
+            {
+                'control_url':
+                'http://192.168.1.2:80/YamahaNewControl/ctrl',
+                'description_url':
+                'http://192.168.1.2:80/YamahaNewControl/desc.xml',
+                'host': '192.168.xxx.xxx',
+                'model_name': 'multi service model name',
+                'model_number': None,
+                'name': 'multi service friendly name',
+                'port': 80,
+                'serial': None,
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+            })
