@@ -1,7 +1,6 @@
 """Discover Apple TV media players."""
-import ipaddress
 from . import MDNSDiscoverable
-from ..const import ATTR_HOST, ATTR_NAME
+from ..const import ATTR_NAME, ATTR_PROPERTIES
 
 
 # pylint: disable=too-few-public-methods
@@ -13,9 +12,6 @@ class Discoverable(MDNSDiscoverable):
 
     def info_from_entry(self, entry):
         """Returns most important info from mDNS entries."""
-        props = entry.properties
-        return {
-            ATTR_HOST: str(ipaddress.ip_address(entry.address)),
-            ATTR_NAME: props.get(b'Name').decode('utf-8').replace('\xa0', ' '),
-            'hsgid': props.get(b'hG').decode('utf-8')
-            }
+        info = super().info_from_entry(entry)
+        info[ATTR_NAME] = info[ATTR_PROPERTIES]['name'].replace('\xa0', ' ')
+        return info
