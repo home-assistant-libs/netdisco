@@ -97,7 +97,7 @@ class UPNPEntry(object):
         if 'cache-control' in self.values:
             cache_directive = self.values['cache-control']
             max_age = re.findall(r'max-age *= *\d+', cache_directive)
-            if len(max_age) > 0:
+            if len(max_age):
                 cache_seconds = int(max_age[0].split('=')[1])
                 self.expires = self.created + timedelta(seconds=cache_seconds)
             else:
