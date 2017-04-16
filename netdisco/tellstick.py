@@ -13,7 +13,7 @@ class Tellstick(object):
     """Base class to discover Tellstick devices."""
 
     def __init__(self):
-        """Initialize the TEllstick discovery."""
+        """Initialize the Tellstick discovery."""
         self.entries = []
 
     def scan(self):
