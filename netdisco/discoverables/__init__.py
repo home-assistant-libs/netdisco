@@ -1,5 +1,6 @@
 """Provides helpful stuff for discoverables."""
 # pylint: disable=abstract-method
+import ipaddress
 from urllib.parse import urlparse
 
 from ..const import (
@@ -118,7 +119,7 @@ class MDNSDiscoverable(BaseDiscoverable):
             properties[key.decode('utf-8')] = value
 
         return {
-            ATTR_HOST: self.ip_from_host(entry.server),
+            ATTR_HOST: str(ipaddress.ip_address(entry.address)),
             ATTR_PORT: entry.port,
             ATTR_HOSTNAME: entry.server,
             ATTR_PROPERTIES: properties,
@@ -128,18 +129,6 @@ class MDNSDiscoverable(BaseDiscoverable):
         """Find entries based on the beginning of their entry names."""
         return [entry for entry in self.services.values()
                 if entry.name.startswith(name)]
-
-    def ip_from_host(self, host):
-        """Attempt to return the ip address from an mDNS host.
-
-        Return host if failed.
-        """
-        ips = self.netdis.mdns.zeroconf.cache.entries_with_name(host.lower())
-
-        try:
-            return repr(ips[0]) if ips else host
-        except TypeError:
-            return host
 
 
 class GDMDiscoverable(BaseDiscoverable):
