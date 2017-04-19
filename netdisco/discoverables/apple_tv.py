@@ -13,5 +13,5 @@ class Discoverable(MDNSDiscoverable):
     def info_from_entry(self, entry):
         """Returns most important info from mDNS entries."""
         info = super().info_from_entry(entry)
-        info[ATTR_NAME] = info[ATTR_PROPERTIES]['name'].replace('\xa0', ' ')
+        info[ATTR_NAME] = info[ATTR_PROPERTIES]['Name'].replace('\xa0', ' ')
         return info
