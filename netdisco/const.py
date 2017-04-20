@@ -19,6 +19,7 @@ SAMSUNG_TV = "samsung_tv"
 FRONTIER_SILICON = "frontier_silicon"
 APPLE_TV = "apple_tv"
 HARMONY = "harmony"
+BLUESOUND = "bluesound"
 
 ATTR_NAME = 'name'
 ATTR_HOST = 'host'
