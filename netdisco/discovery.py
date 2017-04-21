@@ -9,8 +9,6 @@ from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
 from .daikin import Daikin
-# from .samsungac import SamsungAC
-from .philips_hue_nupnp import PHueNUPnPDiscovery
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -40,7 +38,6 @@ class NetworkDiscovery(object):
         self.lms = None
         self.tellstick = None
         self.daikin = None
-        self.phue = None
 
         self.is_discovering = False
         self.discoverables = None
@@ -71,9 +68,6 @@ class NetworkDiscovery(object):
         self.daikin = Daikin()
         self.daikin.scan()
 
-        self.phue = PHueNUPnPDiscovery()
-        self.phue.scan()
-
     def stop(self):
         """Turn discovery off."""
         if not self.is_discovering:
@@ -87,7 +81,6 @@ class NetworkDiscovery(object):
         self.lms = None
         self.tellstick = None
         self.daikin = None
-        self.phue = None
         self.discoverables = None
         self.is_discovering = False
 
@@ -143,6 +136,3 @@ class NetworkDiscovery(object):
         print("")
         print("Tellstick")
         pprint(self.tellstick.entries)
-        print("")
-        print("Philips Hue N-UPnP")
-        pprint(self.phue.entries)
