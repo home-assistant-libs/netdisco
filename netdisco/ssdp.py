@@ -11,7 +11,7 @@ import requests
 from netdisco.util import etree_to_dict, interface_addresses
 
 DISCOVER_TIMEOUT = 5
-SSDP_MX = 1
+SSDP_MX = 3
 SSDP_TARGET = ("239.255.255.250", 1900)
 
 RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
@@ -180,12 +180,22 @@ class UPNPEntry(object):
 
     def __repr__(self):
         """Return the entry."""
-        return "<UPNPEntry {} - {}>".format(
-            self.values.get('st', ''), self.values.get('location', ''))
+        return "<UPNPEntry {} - {}>".format(self.location or '', self.st or '')
+
+
+def ssdp_request(ssdp_st, ssdp_mx=SSDP_MX):
+    """Return request bytes for given st and mx."""
+    return "\r\n".join([
+        'M-SEARCH * HTTP/1.1',
+        'ST: "{}"'.format(ssdp_st),
+        'MX: {:d}'.format(ssdp_mx),
+        'MAN: "ssdp:discover"',
+        'HOST: {}:{}'.format(*SSDP_TARGET),
+        '', '']).encode('utf-8')
 
 
 # pylint: disable=invalid-name,too-many-locals
-def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
+def scan(timeout=DISCOVER_TIMEOUT):
     """Send a message over the network to discover uPnP devices.
 
     Inspired by Crimsdings
@@ -194,29 +204,9 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
     Protocol explanation:
     https://embeddedinn.wordpress.com/tutorials/upnp-device-architecture/
     """
-    # pylint: disable=too-many-nested-blocks,too-many-branches
-    ssdp_st = st or ST_ALL
-    ssdp_request = "\r\n".join([
-        'M-SEARCH * HTTP/1.1',
-        'HOST: 239.255.255.250:1900',
-        'MAN: "ssdp:discover"',
-        'MX: {:d}'.format(SSDP_MX),
-        'ST: {}'.format(ssdp_st),
-        '', '']).encode('utf-8')
+    ssdp_requests = ssdp_request(ST_ALL), ssdp_request(ST_ROOTDEVICE)
 
-    if st is None:
-        # Wemo does not respond to a query for all devices+services
-        # but only to a query for just root devices (ST_ROOTDEVICE). Use that
-        # as well for the default case.
-        alt_ssdp_request = "\r\n".join([
-            'M-SEARCH * HTTP/1.1',
-            'HOST: 239.255.255.250:1900',
-            'MAN: "ssdp:discover"',
-            'MX: {:d}'.format(SSDP_MX),
-            'ST: {}'.format(ST_ROOTDEVICE),
-            '', '']).encode('utf-8')
-
-    stop_wait = datetime.now() + timedelta(0, timeout)
+    stop_wait = datetime.now() + timedelta(seconds=timeout)
 
     sockets = []
     for addr in interface_addresses():
@@ -224,19 +214,18 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
             # Set the time-to-live for messages for local network
-            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 1)
+            sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL,
+                            SSDP_MX)
             sock.bind((addr, 0))
-
             sockets.append(sock)
         except socket.error:
             pass
 
-    entries = []
+    entries = {}
     for sock in [s for s in sockets]:
         try:
-            sock.sendto(ssdp_request, SSDP_TARGET)
-            if alt_ssdp_request:
-                sock.sendto(alt_ssdp_request, SSDP_TARGET)
+            for req in ssdp_requests:
+                sock.sendto(req, SSDP_TARGET)
             sock.setblocking(False)
         except socket.error:
             sockets.remove(sock)
@@ -262,28 +251,20 @@ def scan(st=None, timeout=DISCOVER_TIMEOUT, max_entries=None):
                     continue
 
                 entry = UPNPEntry.from_response(response)
-
-                if (st is None or entry.st == st) and entry not in entries:
-                    entries.append(entry)
-
-                    if max_entries and len(entries) == max_entries:
-                        raise StopIteration
-
-    except StopIteration:
-        pass
+                entries[(entry.st, entry.location)] = entry
 
     finally:
         for s in sockets:
             s.close()
 
-    return entries
+    return sorted(entries.values(), key=lambda entry: entry.location)
 
 
 def main():
     """Test SSDP discovery."""
     from pprint import pprint
 
-    pprint("Scanning SSDP..")
+    print("Scanning SSDP..")
     pprint(scan())
 
 
