@@ -62,8 +62,18 @@ class SSDP(object):
         """
         self.update()
 
-        return [entry for entry in self.entries
-                if entry.match_device_description(values)]
+        seen = set()
+        results = []
+
+        # Make unique based on the location since we don't care about ST here
+        for entry in self.entries:
+            location = entry.location
+
+            if location not in seen and entry.match_device_description(values):
+                results.append(entry)
+                seen.add(location)
+
+        return results
 
     def update(self, force_update=False):
         """Scan for new uPnP devices and services."""
