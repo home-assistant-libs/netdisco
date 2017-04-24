@@ -187,7 +187,7 @@ def ssdp_request(ssdp_st, ssdp_mx=SSDP_MX):
     """Return request bytes for given st and mx."""
     return "\r\n".join([
         'M-SEARCH * HTTP/1.1',
-        'ST: "{}"'.format(ssdp_st),
+        'ST: {}'.format(ssdp_st),
         'MX: {:d}'.format(ssdp_mx),
         'MAN: "ssdp:discover"',
         'HOST: {}:{}'.format(*SSDP_TARGET),
