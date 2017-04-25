@@ -89,7 +89,8 @@ class Daikin(object):
                 except socket.timeout:
                     break
                 except socket.error as err:
-                    _LOGGER.error("daikin: Error in receiving msg: %s", str(err))
+                    _LOGGER.error("daikin: Error in receiving msg: %s",
+                                  str(err))
 
         self.entries = entries
 
