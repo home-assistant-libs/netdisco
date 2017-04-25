@@ -220,7 +220,6 @@ def scan(timeout=DISCOVER_TIMEOUT):
             sockets.append(sock)
         except socket.error as e:
             _LOGGER.exception("Error binding to %s: %s", str(addr), str(e))
-            pass
 
     entries = {}
     for sock in [s for s in sockets]:

@@ -50,9 +50,8 @@ class Daikin(object):
                 sock.bind(("", UDP_SRC_PORT))
 
                 sock.sendto(DISCOVERY_MSG, (DISCOVERY_ADDRESS, UDP_DST_PORT))
-            except Exception as e:
-                _LOGGER.exception("daikin: Exception sending msg: %s",
-                                  str(e))
+            except socket.error as err:
+                _LOGGER.error("daikin: Error sending: %s", str(err))
                 self.entries = []
                 return
 
@@ -89,9 +88,8 @@ class Daikin(object):
 
                 except socket.timeout:
                     break
-                except Exception as e:
-                    _LOGGER.exception("daikin: Exception in receiving msg: %s",
-                                      str(e))
+                except socket.error as err:
+                    _LOGGER.error("daikin: Error in receiving msg: %s", str(err))
 
         self.entries = entries
 

@@ -37,9 +37,8 @@ class Tellstick(object):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             sock.settimeout(DISCOVERY_TIMEOUT.seconds)
             sock.sendto(DISCOVERY_PAYLOAD, (DISCOVERY_ADDRESS, DISCOVERY_PORT))
-        except Exception as e:
-            _LOGGER.exception("tellstick: Exception in sending: %s",
-                              str(e))
+        except socket.error as err:
+            _LOGGER.error("tellstick: Error in sending: %s", str(err))
             self.entries = []
             return
 
@@ -55,9 +54,9 @@ class Tellstick(object):
 
             except socket.timeout:
                 break
-            except Exception as e:
-                _LOGGER.exception("tellstick: Exception in receiving: %s",
-                                  str(e))
+            except socket.error as err:
+                _LOGGER.error("tellstick: Error in receiving: %s",
+                              str(err))
                 break
 
             self.entries = entries
