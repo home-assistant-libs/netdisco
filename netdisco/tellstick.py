@@ -29,12 +29,18 @@ class Tellstick(object):
         """Scan network for Tellstick devices."""
         entries = []
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        sock.settimeout(DISCOVERY_TIMEOUT.seconds)
-        sock.sendto(DISCOVERY_PAYLOAD, (DISCOVERY_ADDRESS, DISCOVERY_PORT))
-
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            sock.settimeout(DISCOVERY_TIMEOUT.seconds)
+            sock.sendto(DISCOVERY_PAYLOAD, (DISCOVERY_ADDRESS, DISCOVERY_PORT))
+        except Exception as e:
+            _LOGGER.exception("tellstick: Exception in sending: %s",
+                              str(e))
+            self.entries = []
+            return
+        
         while True:
             try:
                 data, (address, _) = sock.recvfrom(1024)
@@ -46,6 +52,10 @@ class Tellstick(object):
                 entries.append(entry)
 
             except socket.timeout:
+                break
+            except Exception as e:
+                _LOGGER.exception("tellstick: Exception in receiving: %s",
+                                  str(e))
                 break
 
             self.entries = entries

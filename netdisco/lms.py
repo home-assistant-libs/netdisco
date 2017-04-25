@@ -33,10 +33,16 @@ class LMS(object):
 
         entries = []
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.settimeout(lms_timeout)
-        sock.bind(('', 0))
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            sock.settimeout(lms_timeout)
+            sock.bind(('', 0))
+        except Exception as e:
+            _LOGGER.exception("lms: Exception in binding socketg: %s",
+                              str(e))
+            self.entries = []  
+            return
 
         try:
             sock.sendto(lms_msg, (lms_ip, lms_port))
@@ -57,6 +63,10 @@ class LMS(object):
                             ATTR_PORT: port,
                         })
                 except socket.timeout:
+                    break
+                except Exception as e:
+                    _LOGGER.exception("lms: Exception in receiving: %s",
+                                      str(e))
                     break
         finally:
             sock.close()
