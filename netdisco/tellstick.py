@@ -1,13 +1,14 @@
 """Tellstick device discovery."""
 import socket
 from datetime import timedelta
-
+import logger
 
 DISCOVERY_PORT = 30303
 DISCOVERY_ADDRESS = '<broadcast>'
 DISCOVERY_PAYLOAD = b"D"
 DISCOVERY_TIMEOUT = timedelta(seconds=5)
 
+_LOGGER =  logging.getLogger(__name__)
 
 class Tellstick(object):
     """Base class to discover Tellstick devices."""

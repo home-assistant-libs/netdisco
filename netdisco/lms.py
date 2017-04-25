@@ -1,11 +1,13 @@
 """Squeezebox/Logitech Media server discovery."""
 import socket
+import logger
 
 from .const import ATTR_HOST, ATTR_PORT
 
 DISCOVERY_PORT = 3483
 DEFAULT_DISCOVERY_TIMEOUT = 5
 
+_LOGGER =  logging.getLogger(__name__)
 
 class LMS(object):
     """Base class to discover Logitech Media servers."""
