@@ -24,7 +24,8 @@ ST_ALL = "ssdp:all"
 # Devices only, some devices will only respond to this query
 ST_ROOTDEVICE = "upnp:rootdevice"
 
-_LOGGER =  logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
+
 
 class SSDP(object):
     """Control the scanning of uPnP devices and services and caches output."""
@@ -217,7 +218,7 @@ def scan(timeout=DISCOVER_TIMEOUT):
                             SSDP_MX)
             sock.bind((addr, 0))
             sockets.append(sock)
-        except socket.error:
+        except socket.error as e:
             _LOGGER.exception("Error binding to %s: %s", str(addr), str(e))
             pass
 
@@ -244,7 +245,8 @@ def scan(timeout=DISCOVER_TIMEOUT):
                 try:
                     response = sock.recv(1024).decode("utf-8")
                 except socket.error:
-                    _LOGGER.exception("Socket error while discovering SSDP devices")
+                    _LOGGER.exception("Socket error while discovering SSDP "
+                                      "devices")
                     sockets.remove(sock)
                     sock.close()
                     continue

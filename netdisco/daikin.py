@@ -22,6 +22,7 @@ DISCOVERY_TIMEOUT = timedelta(seconds=5)
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class Daikin(object):
     """Base class to discover Daikin devices."""
 
@@ -47,11 +48,11 @@ class Daikin(object):
                 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                 sock.settimeout(DISCOVERY_TIMEOUT.seconds)
                 sock.bind(("", UDP_SRC_PORT))
-                
+
                 sock.sendto(DISCOVERY_MSG, (DISCOVERY_ADDRESS, UDP_DST_PORT))
             except Exception as e:
                 _LOGGER.exception("daikin: Exception sending msg: %s",
-                                str(e))
+                                  str(e))
                 self.entries = []
                 return
 

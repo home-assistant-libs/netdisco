@@ -1,13 +1,14 @@
 """Squeezebox/Logitech Media server discovery."""
 import socket
-import logger
+import logging
 
 from .const import ATTR_HOST, ATTR_PORT
 
 DISCOVERY_PORT = 3483
 DEFAULT_DISCOVERY_TIMEOUT = 5
 
-_LOGGER =  logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
+
 
 class LMS(object):
     """Base class to discover Logitech Media servers."""
@@ -43,7 +44,7 @@ class LMS(object):
         except Exception as e:
             _LOGGER.exception("lms: Exception in binding socketg: %s",
                               str(e))
-            self.entries = []  
+            self.entries = []
             return
 
         try:
