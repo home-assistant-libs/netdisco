@@ -268,8 +268,8 @@ def scan(timeout=DISCOVER_TIMEOUT):
             s.close()
 
     return sorted(
-       entries.values(), key=lambda
-       entry: entry.location if isinstance(entry.location, str) else "")
+        entries.values(), key=lambda
+           entry: entry.location if isinstance(entry.location, str) else "")
 
 
 def main():
