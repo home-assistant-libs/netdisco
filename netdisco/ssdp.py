@@ -267,7 +267,8 @@ def scan(timeout=DISCOVER_TIMEOUT):
         for s in sockets:
             s.close()
 
-    return sorted(entries.values(), key=lambda \
+    return sorted(
+       entries.values(), key=lambda
        entry: entry.location if isinstance(entry.location, str) else "")
 
 
