@@ -269,7 +269,7 @@ def scan(timeout=DISCOVER_TIMEOUT):
 
     return sorted(
         entries.values(), key=lambda
-           entry: entry.location if isinstance(entry.location, str) else "")
+            entry: entry.location if isinstance(entry.location, str) else "")
 
 
 def main():
