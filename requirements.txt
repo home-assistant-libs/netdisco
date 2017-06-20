@@ -1,4 +1,5 @@
 zeroconf==0.19
 requests>=2.0
+bluefang==0.1.5
 # For now we depend on netifaces via zeroconf
 # netifaces

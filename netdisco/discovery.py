@@ -9,6 +9,7 @@ from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
 from .daikin import Daikin
+from .bluetoothdevices import Bluetooth
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class NetworkDiscovery(object):
     GDM scans in the foreground.
     LMS scans in the foreground.
     Tellstick scans in the foreground
+    Bluetooth scans in a background thread.
 
     start: is ready to scan
     scan: scan the network
@@ -38,6 +40,7 @@ class NetworkDiscovery(object):
         self.lms = None
         self.tellstick = None
         self.daikin = None
+        self.bluetooth = None
 
         self.is_discovering = False
         self.discoverables = None
@@ -67,6 +70,10 @@ class NetworkDiscovery(object):
 
         self.daikin = Daikin()
         self.daikin.scan()
+
+        print('Scanning bluetooth')
+        self.bluetooth = Bluetooth()
+        self.bluetooth.scan()
 
     def stop(self):
         """Turn discovery off."""
@@ -136,3 +143,6 @@ class NetworkDiscovery(object):
         print("")
         print("Tellstick")
         pprint(self.tellstick.entries)
+        print("")
+        print("Bluetooth")
+        pprint(self.bluetooth.entries)
