@@ -8,6 +8,7 @@ from .mdns import MDNS
 from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
+from .tplink import Tplink
 from .daikin import Daikin
 
 _LOGGER = logging.getLogger(__name__)
@@ -31,12 +32,13 @@ class NetworkDiscovery(object):
     # pylint: disable=too-many-instance-attributes
     def __init__(self):
         """Initialize the discovery."""
-
         self.mdns = None
         self.ssdp = None
         self.gdm = None
         self.lms = None
         self.tellstick = None
+        self.tplink_light = None
+        self.tplink_switch = None
         self.daikin = None
 
         self.is_discovering = False
@@ -64,6 +66,12 @@ class NetworkDiscovery(object):
 
         self.tellstick = Tellstick()
         self.tellstick.scan()
+
+        self.tplink_light = Tplink("smartbulb")
+        self.tplink_light.scan()
+
+        self.tplink_switch = Tplink("smartplug")
+        self.tplink_switch.scan()
 
         self.daikin = Daikin()
         self.daikin.scan()
@@ -136,3 +144,7 @@ class NetworkDiscovery(object):
         print("")
         print("Tellstick")
         pprint(self.tellstick.entries)
+        print("TPLink Lights")
+        pprint(self.tplink_light.entries)
+        print("TPLink Plugs")
+        pprint(self.tplink_switch.entries)
