@@ -1,10 +1,13 @@
 """Squeezebox/Logitech Media server discovery."""
 import socket
+import logging
 
 from .const import ATTR_HOST, ATTR_PORT
 
 DISCOVERY_PORT = 3483
 DEFAULT_DISCOVERY_TIMEOUT = 5
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class LMS(object):
@@ -33,10 +36,15 @@ class LMS(object):
 
         entries = []
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.settimeout(lms_timeout)
-        sock.bind(('', 0))
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            sock.settimeout(lms_timeout)
+            sock.bind(('', 0))
+        except socket.error as err:
+            _LOGGER.error("lms: Error in binding socketg: %s", str(err))
+            self.entries = []
+            return
 
         try:
             sock.sendto(lms_msg, (lms_ip, lms_port))
@@ -57,6 +65,9 @@ class LMS(object):
                             ATTR_PORT: port,
                         })
                 except socket.timeout:
+                    break
+                except socket.error as err:
+                    _LOGGER.error("lms: Error in receiving: %s", str(err))
                     break
         finally:
             sock.close()

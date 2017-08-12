@@ -24,6 +24,8 @@ ST_ALL = "ssdp:all"
 # Devices only, some devices will only respond to this query
 ST_ROOTDEVICE = "upnp:rootdevice"
 
+_LOGGER = logging.getLogger(__name__)
+
 
 class SSDP(object):
     """Control the scanning of uPnP devices and services and caches output."""
@@ -149,14 +151,12 @@ class UPNPEntry(object):
                 UPNPEntry.DESCRIPTION_CACHE[url] = \
                     etree_to_dict(tree).get('root', {})
             except requests.RequestException:
-                logging.getLogger(__name__).warning(
-                    "Error fetching description at %s", url)
+                _LOGGER.warning("Error fetching description at %s", url)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = {}
 
             except ElementTree.ParseError:
-                logging.getLogger(__name__).warning(
-                    "Found malformed XML at %s: %s", url, xml)
+                _LOGGER.warning("Found malformed XML at %s: %s", url, xml)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = {}
 
@@ -228,8 +228,8 @@ def scan(timeout=DISCOVER_TIMEOUT):
                             SSDP_MX)
             sock.bind((addr, 0))
             sockets.append(sock)
-        except socket.error:
-            pass
+        except socket.error as e:
+            _LOGGER.exception("Error binding to %s: %s", str(addr), str(e))
 
     entries = {}
     for sock in [s for s in sockets]:
@@ -254,15 +254,14 @@ def scan(timeout=DISCOVER_TIMEOUT):
                 try:
                     response = sock.recv(1024).decode("utf-8")
                 except socket.error:
-                    logging.getLogger(__name__).exception(
-                        "Socket error while discovering SSDP devices")
+                    _LOGGER.exception("Socket error while discovering SSDP "
+                                      "devices")
                     sockets.remove(sock)
                     sock.close()
                     continue
 
                 entry = UPNPEntry.from_response(response)
                 entries[(entry.st, entry.location)] = entry
-
     finally:
         for s in sockets:
             s.close()

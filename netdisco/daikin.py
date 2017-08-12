@@ -1,5 +1,6 @@
 """Daikin device discovery."""
 import socket
+import logging
 
 # pylint: disable=unused-import, import-error, no-name-in-module
 try:
@@ -18,6 +19,8 @@ UDP_DST_PORT = 30050
 
 DISCOVERY_ADDRESS = '<broadcast>'
 DISCOVERY_TIMEOUT = timedelta(seconds=5)
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class Daikin(object):
@@ -40,14 +43,17 @@ class Daikin(object):
         """Scan network for Daikin devices."""
         entries = []
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.settimeout(DISCOVERY_TIMEOUT.seconds)
-        sock.bind(("", UDP_SRC_PORT))
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            try:
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                sock.settimeout(DISCOVERY_TIMEOUT.seconds)
+                sock.bind(("", UDP_SRC_PORT))
 
-        try:
-
-            sock.sendto(DISCOVERY_MSG, (DISCOVERY_ADDRESS, UDP_DST_PORT))
+                sock.sendto(DISCOVERY_MSG, (DISCOVERY_ADDRESS, UDP_DST_PORT))
+            except socket.error as err:
+                _LOGGER.error("daikin: Error sending: %s", str(err))
+                self.entries = []
+                return
 
             while True:
                 try:
@@ -82,9 +88,9 @@ class Daikin(object):
 
                 except socket.timeout:
                     break
-
-        finally:
-            sock.close()
+                except socket.error as err:
+                    _LOGGER.error("daikin: Error in receiving msg: %s",
+                                  str(err))
 
         self.entries = entries
 

@@ -1,12 +1,14 @@
 """Tellstick device discovery."""
 import socket
 from datetime import timedelta
-
+import logging
 
 DISCOVERY_PORT = 30303
 DISCOVERY_ADDRESS = '<broadcast>'
 DISCOVERY_PAYLOAD = b"D"
 DISCOVERY_TIMEOUT = timedelta(seconds=5)
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class Tellstick(object):
@@ -29,11 +31,16 @@ class Tellstick(object):
         """Scan network for Tellstick devices."""
         entries = []
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        sock.settimeout(DISCOVERY_TIMEOUT.seconds)
-        sock.sendto(DISCOVERY_PAYLOAD, (DISCOVERY_ADDRESS, DISCOVERY_PORT))
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            sock.settimeout(DISCOVERY_TIMEOUT.seconds)
+            sock.sendto(DISCOVERY_PAYLOAD, (DISCOVERY_ADDRESS, DISCOVERY_PORT))
+        except socket.error as err:
+            _LOGGER.error("tellstick: Error in sending: %s", str(err))
+            self.entries = []
+            return
 
         while True:
             try:
@@ -46,6 +53,10 @@ class Tellstick(object):
                 entries.append(entry)
 
             except socket.timeout:
+                break
+            except socket.error as err:
+                _LOGGER.error("tellstick: Error in receiving: %s",
+                              str(err))
                 break
 
             self.entries = entries
