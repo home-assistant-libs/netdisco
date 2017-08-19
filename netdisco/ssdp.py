@@ -253,6 +253,8 @@ def scan(timeout=DISCOVER_TIMEOUT):
             for sock in ready:
                 try:
                     response = sock.recv(1024).decode("utf-8")
+                except UnicodeDecodeError:
+                    continue
                 except socket.error:
                     logging.getLogger(__name__).exception(
                         "Socket error while discovering SSDP devices")
