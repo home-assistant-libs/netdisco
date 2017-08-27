@@ -9,6 +9,7 @@ from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
 from .daikin import Daikin
+from .xiaomi_gw import XiaomiGw
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class NetworkDiscovery(object):
     GDM scans in the foreground.
     LMS scans in the foreground.
     Tellstick scans in the foreground
+    XiaomiGw scans in the foreground
 
     start: is ready to scan
     scan: scan the network
@@ -38,6 +40,7 @@ class NetworkDiscovery(object):
         self.lms = None
         self.tellstick = None
         self.daikin = None
+        self.xiaomi_gw = None
 
         self.is_discovering = False
         self.discoverables = None
@@ -68,6 +71,9 @@ class NetworkDiscovery(object):
         self.daikin = Daikin()
         self.daikin.scan()
 
+        self.xiaomi_gw = XiaomiGw()
+        self.xiaomi_gw.scan()
+
     def stop(self):
         """Turn discovery off."""
         if not self.is_discovering:
@@ -81,6 +87,7 @@ class NetworkDiscovery(object):
         self.lms = None
         self.tellstick = None
         self.daikin = None
+        self.xiaomi_gw = None
         self.discoverables = None
         self.is_discovering = False
 
