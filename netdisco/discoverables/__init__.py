@@ -5,7 +5,8 @@ from urllib.parse import urlparse
 
 from ..const import (
     ATTR_NAME, ATTR_MODEL_NAME, ATTR_HOST, ATTR_PORT, ATTR_SSDP_DESCRIPTION,
-    ATTR_SERIAL, ATTR_MODEL_NUMBER, ATTR_HOSTNAME, ATTR_PROPERTIES)
+    ATTR_SERIAL, ATTR_MODEL_NUMBER, ATTR_HOSTNAME, ATTR_MAC_ADDRESS,
+    ATTR_PROPERTIES)
 
 
 class BaseDiscoverable(object):
@@ -118,12 +119,17 @@ class MDNSDiscoverable(BaseDiscoverable):
                 value = value.decode('utf-8')
             properties[key.decode('utf-8')] = value
 
-        return {
+        info = {
             ATTR_HOST: str(ipaddress.ip_address(entry.address)),
             ATTR_PORT: entry.port,
             ATTR_HOSTNAME: entry.server,
             ATTR_PROPERTIES: properties,
         }
+
+        if "mac" in properties:
+            info[ATTR_MAC_ADDRESS] = properties["mac"]
+
+        return info
 
     def find_by_device_name(self, name):
         """Find entries based on the beginning of their entry names."""
