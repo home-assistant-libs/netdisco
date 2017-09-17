@@ -7,6 +7,7 @@ Inspired by
   iBaa's PlexConnect: https://github.com/iBaa/PlexConnect/PlexAPI.py
 """
 import socket
+import struct
 
 
 class GDM(object):
@@ -69,7 +70,7 @@ class GDM(object):
         # Set the time-to-live for messages for local network
         sock.setsockopt(socket.IPPROTO_IP,
                         socket.IP_MULTICAST_TTL,
-                        gdm_timeout)
+                        struct.pack("B", gdm_timeout))
 
         try:
             # Send data to the multicast group
