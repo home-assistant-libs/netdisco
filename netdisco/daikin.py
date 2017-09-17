@@ -17,7 +17,7 @@ UDP_SRC_PORT = 30000
 UDP_DST_PORT = 30050
 
 DISCOVERY_ADDRESS = '<broadcast>'
-DISCOVERY_TIMEOUT = timedelta(seconds=5)
+DISCOVERY_TIMEOUT = timedelta(seconds=2)
 
 
 class Daikin(object):

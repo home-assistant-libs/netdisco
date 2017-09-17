@@ -6,7 +6,7 @@ from datetime import timedelta
 DISCOVERY_PORT = 30303
 DISCOVERY_ADDRESS = '<broadcast>'
 DISCOVERY_PAYLOAD = b"D"
-DISCOVERY_TIMEOUT = timedelta(seconds=5)
+DISCOVERY_TIMEOUT = timedelta(seconds=2)
 
 
 class Tellstick(object):

@@ -10,8 +10,10 @@ import requests
 
 from netdisco.util import etree_to_dict, interface_addresses
 
-DISCOVER_TIMEOUT = 5
-SSDP_MX = 3
+DISCOVER_TIMEOUT = 2
+# MX is a suggested random wait time for a device to reply, so should be
+# bound by our discovery timeout.
+SSDP_MX = DISCOVER_TIMEOUT
 SSDP_TARGET = ("239.255.255.250", 1900)
 
 RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
