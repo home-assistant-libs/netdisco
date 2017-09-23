@@ -4,7 +4,7 @@ import socket
 from .const import ATTR_HOST, ATTR_PORT
 
 DISCOVERY_PORT = 3483
-DEFAULT_DISCOVERY_TIMEOUT = 5
+DEFAULT_DISCOVERY_TIMEOUT = 2
 
 
 class LMS(object):
