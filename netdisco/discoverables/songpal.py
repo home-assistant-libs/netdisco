@@ -1,5 +1,6 @@
 """Discover Songpal devices."""
 from . import SSDPDiscoverable
+from . import ATTR_PROPERTIES
 
 
 class Discoverable(SSDPDiscoverable):
@@ -23,7 +24,8 @@ class Discoverable(SSDPDiscoverable):
             if DEVICEINFO in cached_descs[DEVICE]:
                 scalarweb = cached_descs[DEVICE][DEVICEINFO]
 
-        info["scalarwebapi"] = scalarweb
-        info["endpoint"] = scalarweb["X_ScalarWebAPI_BaseURL"]
+        properties = {"scalarwebapi": scalarweb,
+                      "endpoint": scalarweb["X_ScalarWebAPI_BaseURL"]}
+        info[ATTR_PROPERTIES] = properties
 
         return info
