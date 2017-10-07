@@ -1,4 +1,5 @@
 """Discover Songpal devices."""
+import logging
 from . import SSDPDiscoverable
 from . import ATTR_PROPERTIES
 
@@ -19,13 +20,19 @@ class Discoverable(SSDPDiscoverable):
         cached_descs = entry.DESCRIPTION_CACHE[entry.location]
 
         device_info_element = "X_ScalarWebAPI_DeviceInfo"
+        baseurl_element = "X_ScalarWebAPI_BaseURL"
         device_element = "device"
-        if device_element in cached_descs:
-            if device_info_element in cached_descs[device_element]:
-                scalarweb = cached_descs[device_element][device_info_element]
+        if device_element in cached_descs and \
+                device_info_element in cached_descs[device_element]:
+            scalarweb = cached_descs[device_element][device_info_element]
 
-        properties = {"scalarwebapi": scalarweb,
-                      "endpoint": scalarweb["X_ScalarWebAPI_BaseURL"]}
-        info[ATTR_PROPERTIES] = properties
+            properties = {"scalarwebapi": scalarweb}
+            if baseurl_element in scalarweb:
+                properties["endpoint"] = scalarweb[baseurl_element]
+            else:
+                logging.warning("Unable to find %s", baseurl_element)
+            info[ATTR_PROPERTIES] = properties
+        else:
+            logging.warning("Unable to find ScalarWeb element from desc.")
 
         return info
