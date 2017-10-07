@@ -18,11 +18,11 @@ class Discoverable(SSDPDiscoverable):
 
         cached_descs = entry.DESCRIPTION_CACHE[entry.location]
 
-        DEVICEINFO = "X_ScalarWebAPI_DeviceInfo"
-        DEVICE = "device"
-        if DEVICE in cached_descs:
-            if DEVICEINFO in cached_descs[DEVICE]:
-                scalarweb = cached_descs[DEVICE][DEVICEINFO]
+        device_info_element = "X_ScalarWebAPI_DeviceInfo"
+        device_element = "device"
+        if device_element in cached_descs:
+            if device_info_element in cached_descs[device_element]:
+                scalarweb = cached_descs[device_element][device_info_element]
 
         properties = {"scalarwebapi": scalarweb,
                       "endpoint": scalarweb["X_ScalarWebAPI_BaseURL"]}
