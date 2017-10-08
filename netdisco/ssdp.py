@@ -204,7 +204,7 @@ def ssdp_request(ssdp_st, ssdp_mx=SSDP_MX):
         '', '']).encode('utf-8')
 
 
-# pylint: disable=invalid-name,too-many-locals
+# pylint: disable=invalid-name,too-many-locals,too-many-branches
 def scan(timeout=DISCOVER_TIMEOUT):
     """Send a message over the network to discover uPnP devices.
 
