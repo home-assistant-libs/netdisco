@@ -252,8 +252,11 @@ def scan(timeout=DISCOVER_TIMEOUT):
 
             for sock in ready:
                 try:
-                    response = sock.recv(1024).decode("utf-8")
+                    data, address = sock.recvfrom(1024)
+                    response = data.decode("utf-8")
                 except UnicodeDecodeError:
+                    logging.getLogger(__name__).debug(
+                        'Ignoring invalid unicode response from %s', address)
                     continue
                 except socket.error:
                     logging.getLogger(__name__).exception(
