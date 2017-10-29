@@ -206,7 +206,7 @@ def ssdp_request(ssdp_st, ssdp_mx=SSDP_MX):
         '', '']).encode('utf-8')
 
 
-# pylint: disable=invalid-name,too-many-locals
+# pylint: disable=invalid-name,too-many-locals,too-many-branches
 def scan(timeout=DISCOVER_TIMEOUT):
     """Send a message over the network to discover uPnP devices.
 
@@ -254,7 +254,12 @@ def scan(timeout=DISCOVER_TIMEOUT):
 
             for sock in ready:
                 try:
-                    response = sock.recv(1024).decode("utf-8")
+                    data, address = sock.recvfrom(1024)
+                    response = data.decode("utf-8")
+                except UnicodeDecodeError:
+                    logging.getLogger(__name__).debug(
+                        'Ignoring invalid unicode response from %s', address)
+                    continue
                 except socket.error:
                     logging.getLogger(__name__).exception(
                         "Socket error while discovering SSDP devices")
