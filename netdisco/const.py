@@ -20,6 +20,7 @@ FRONTIER_SILICON = "frontier_silicon"
 APPLE_TV = "apple_tv"
 HARMONY = "harmony"
 BLUESOUND = "bluesound"
+ZIGGO_MEDIABOX_XL = "ziggo_mediabox_xl"
 
 ATTR_NAME = 'name'
 ATTR_HOST = 'host'
