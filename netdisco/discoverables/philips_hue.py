@@ -9,5 +9,6 @@ class Discoverable(SSDPDiscoverable):
         """Get all the Hue bridge uPnP entries."""
         return self.find_by_device_description({
             "manufacturer": "Royal Philips Electronics",
+            "manufacturerURL": "http://www.philips.com",
             "modelNumber": ["929000226503", "BSB002"]
         })
