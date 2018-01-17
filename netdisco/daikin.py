@@ -72,12 +72,17 @@ class Daikin(object):
                     if 'name' in entry:
                         entry['name'] = unquote(entry['name'])
 
+                    # in case the device was not configured to have an id
+                    # then use the mac address
+                    if 'id' in entry and entry['id'] == '':
+                        entry['id'] = entry['mac']
+
                     entries.append({
-                        'id': entry['id'].encode("UTF-8"),
-                        'name': entry['name'].encode("UTF-8"),
+                        'id': entry['id'],
+                        'name': entry['name'],
                         'ip': address,
-                        'mac': entry['mac'].encode("UTF-8"),
-                        'ver': entry['ver'].encode("UTF-8"),
+                        'mac': entry['mac'],
+                        'ver': entry['ver'],
                     })
 
                 except socket.timeout:
