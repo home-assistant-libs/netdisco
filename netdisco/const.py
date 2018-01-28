@@ -6,6 +6,7 @@ GOOGLE_CAST = "google_cast"
 PHILIPS_HUE = "philips_hue"
 PMS = 'plex_mediaserver'
 LMS = 'logitech_mediaserver'
+ASUS_ROUTER = "asus_router"
 NETGEAR_ROUTER = "netgear_router"
 SONOS = "sonos"
 PANASONIC_VIERA = "panasonic_viera"
