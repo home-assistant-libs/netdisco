@@ -1,4 +1,4 @@
-"""Discover Netgear routers."""
+"""Discover Harmony Hub remotes."""
 from . import SSDPDiscoverable
 
 
