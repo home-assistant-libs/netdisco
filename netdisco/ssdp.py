@@ -16,7 +16,7 @@ DISCOVER_TIMEOUT = 2
 SSDP_MX = DISCOVER_TIMEOUT
 SSDP_TARGET = ("239.255.255.250", 1900)
 
-RESPONSE_REGEX = re.compile(r'\n(.*)\: (.*)\r')
+RESPONSE_REGEX = re.compile(r'\n(.*?)\: *(.*)\r')
 
 MIN_TIME_BETWEEN_SCANS = timedelta(seconds=59)
 
