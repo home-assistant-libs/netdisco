@@ -23,6 +23,7 @@ HARMONY = "harmony"
 BLUESOUND = "bluesound"
 ZIGGO_MEDIABOX_XL = "ziggo_mediabox_xl"
 DECONZ = "deconz"
+TIVO_DVR = "tivo_dvr"
 
 ATTR_NAME = 'name'
 ATTR_HOST = 'host'
