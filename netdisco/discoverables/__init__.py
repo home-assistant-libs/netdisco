@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 from ..const import (
     ATTR_NAME, ATTR_MODEL_NAME, ATTR_HOST, ATTR_PORT, ATTR_SSDP_DESCRIPTION,
     ATTR_SERIAL, ATTR_MODEL_NUMBER, ATTR_HOSTNAME, ATTR_MAC_ADDRESS,
-    ATTR_PROPERTIES, ATTR_MANUFACTURER)
+    ATTR_PROPERTIES, ATTR_MANUFACTURER, ATTR_UDN)
 
 
 class BaseDiscoverable(object):
@@ -57,6 +57,7 @@ class SSDPDiscoverable(BaseDiscoverable):
             info[ATTR_MODEL_NUMBER] = device.get('modelNumber')
             info[ATTR_SERIAL] = device.get('serialNumber')
             info[ATTR_MANUFACTURER] = device.get('manufacturer')
+            info[ATTR_UDN] = device.get('UDN')
 
         return info
 
