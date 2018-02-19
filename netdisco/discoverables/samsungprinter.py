@@ -1,6 +1,7 @@
 """Discover Samsung Printers"""
 from . import SSDPDiscoverable
 
+
 class Discoverable(SSDPDiscoverable):
     """Support for the discovery of Samsung Printers"""
 
