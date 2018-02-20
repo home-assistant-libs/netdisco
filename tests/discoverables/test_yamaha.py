@@ -40,7 +40,8 @@ class TestYamaha(unittest.TestCase):
                 'name': 'RX-V481 XXXXXX',
                 'port': 80,
                 'serial': 'XXXXXXXX',
-                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
+                'udn': 'uuid:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
             })
 
     def test_info_from_entry_single_service(self):
@@ -59,7 +60,8 @@ class TestYamaha(unittest.TestCase):
                 'name': 'single service friendly name',
                 'port': 80,
                 'serial': None,
-                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
+                'udn': None
             })
 
     def test_info_from_entry_multiple_services_remote_control_last(self):
@@ -78,7 +80,8 @@ class TestYamaha(unittest.TestCase):
                 'name': 'multi service friendly name',
                 'port': 80,
                 'serial': None,
-                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
+                'udn': None
             })
 
     def test_info_from_entry_multiple_services_no_remote_control(self):
@@ -97,5 +100,6 @@ class TestYamaha(unittest.TestCase):
                 'name': 'multi service friendly name',
                 'port': 80,
                 'serial': None,
-                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml'
+                'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
+                'udn': None
             })
