@@ -41,7 +41,7 @@ class TestYamaha(unittest.TestCase):
                 'port': 80,
                 'serial': 'XXXXXXXX',
                 'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
-                'udn': None
+                'udn': 'uuid:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
             })
 
     def test_info_from_entry_single_service(self):
