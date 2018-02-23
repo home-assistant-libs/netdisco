@@ -30,7 +30,6 @@ python3 -m netdisco dump
 In your script:
 
 ```python
-import time
 from netdisco.discovery import NetworkDiscovery
 
 netdis = NetworkDiscovery()
