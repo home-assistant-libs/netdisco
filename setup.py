@@ -7,6 +7,6 @@ setup(name='netdisco',
       author='Paulus Schoutsen',
       author_email='Paulus@PaulusSchoutsen.nl',
       license='Apache License 2.0',
-      install_requires=['requests>=2.0', 'zeroconf==0.19.1'],
+      install_requires=['requests>=2.0', 'zeroconf>=0.19.1'],
       packages=find_packages(exclude=['tests', 'tests.*']),
       zip_safe=False)
