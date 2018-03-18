@@ -10,8 +10,20 @@ class Discoverable(SSDPDiscoverable):
 
     def get_entries(self):
         """Get all the Songpal devices."""
-        return self.find_by_st(
+        devs = self.find_by_st(
             "urn:schemas-sony-com:service:ScalarWebAPI:1")
+
+        # At least some Bravia televisions use this API for communication.
+        # Based on some examples they always seem to lack modelNumber,
+        # so we use it here to keep them undiscovered for now.
+        non_bravias = []
+        for dev in devs:
+            if 'device' in dev.description:
+                device = dev.description['device']
+                if 'modelNumber' in device:
+                    non_bravias.append(dev)
+
+        return non_bravias
 
     def info_from_entry(self, entry):
         """Get information for a device.."""
