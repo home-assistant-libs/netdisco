@@ -27,6 +27,8 @@ class Discoverable(MDNSDiscoverable):
             device_type = "bedside"
         elif entry.name.startswith("yeelink-light-ceiling1_"):
             device_type = "ceiling"
+        elif entry.name.startswith("yeelink-light-lamp1_"):
+            device_type = "desk"
         else:
             logging.warning("Unknown miio device found: %s", entry)
 
