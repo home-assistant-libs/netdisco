@@ -1,5 +1,4 @@
 """Discover Yeelight bulbs, based on Kodi discoverable."""
-import logging
 from . import MDNSDiscoverable
 from ..const import ATTR_DEVICE_TYPE
 
