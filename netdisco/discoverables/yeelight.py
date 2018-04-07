@@ -32,7 +32,7 @@ class Discoverable(MDNSDiscoverable):
             device_type = "ceiling2"
         else:
             device_type = \
-            entry.name.replace(DEVICE_NAME_PREFIX, '').rsplit('_', 1)[0]
+                entry.name.replace(DEVICE_NAME_PREFIX, '').rsplit('_', 1)[0]
 
         info[ATTR_DEVICE_TYPE] = device_type
         return info
