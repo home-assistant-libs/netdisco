@@ -1,8 +1,7 @@
 """ Discover Cambridge Audio StreamMagic devices. """
-
-from urllib.parse import urlparse
 from . import SSDPDiscoverable
-from ..const import ATTR_NAME,ATTR_MODEL_NAME
+from ..const import ATTR_NAME, ATTR_MODEL_NAME
+
 
 class Discoverable(SSDPDiscoverable):
     """Add support for discovering Cambridge Audio StreamMagic devices."""
