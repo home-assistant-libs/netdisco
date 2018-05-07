@@ -19,7 +19,7 @@ class Discoverable(MDNSDiscoverable):
 
         # Example name: yeelink-light-ceiling4_mibt72799069._miio._udp.local.
         info[ATTR_DEVICE_TYPE] = \
-            entry.name.replace(DEVICE_NAME_PREFIX, '').rsplit('_', 1)[0]
+            entry.name.replace(DEVICE_NAME_PREFIX, '').split('_', 1)[0]
 
         return info
 
