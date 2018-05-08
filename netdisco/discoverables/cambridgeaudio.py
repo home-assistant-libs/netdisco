@@ -1,6 +1,5 @@
 """ Discover Cambridge Audio StreamMagic devices. """
 from . import SSDPDiscoverable
-from ..const import ATTR_NAME, ATTR_MODEL_NAME
 
 
 class Discoverable(SSDPDiscoverable):
@@ -16,6 +15,4 @@ class Discoverable(SSDPDiscoverable):
     def info_from_entry(self, entry):
         """Get most important info, which is name, model and host."""
         info = super().info_from_entry(entry)
-        info[ATTR_NAME] = entry.description['device']['friendlyName']
-        info[ATTR_MODEL_NAME] = entry.description['device']['modelName']
         return info
