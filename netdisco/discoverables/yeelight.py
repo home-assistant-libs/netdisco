@@ -1,28 +1,27 @@
-"""Discover Yeelight bulbs, based on Kodi discoverable."""
-from . import MDNSDiscoverable
-from ..const import ATTR_DEVICE_TYPE
+"""Discover Yeelight devices."""
+from . import SSDPDiscoverable
+from ..const import ATTR_DEVICE_TYPE, ATTR_SERIAL
 
-DEVICE_NAME_PREFIX = 'yeelink-light-'
+ATTR_FIRMWARE_VERSION = 'firmware_version'
+ATTR_SUPPORT = 'support'
 
 
 # pylint: disable=too-few-public-methods
-class Discoverable(MDNSDiscoverable):
+class Discoverable(SSDPDiscoverable):
     """Add support for discovering Yeelight."""
 
-    def __init__(self, nd):
-        """Initialize the Yeelight discovery."""
-        super(Discoverable, self).__init__(nd, '_miio._udp.local.')
-
     def info_from_entry(self, entry):
-        """Return most important info from mDNS entries."""
+        """Return most important info from SSDP entries."""
         info = super().info_from_entry(entry)
 
-        # Example name: yeelink-light-ceiling4_mibt72799069._miio._udp.local.
-        info[ATTR_DEVICE_TYPE] = \
-            entry.name.replace(DEVICE_NAME_PREFIX, '').split('_', 1)[0]
+        # The model doesn't align with the mDNS model names (color vs. color1)
+        info[ATTR_DEVICE_TYPE] = entry.model
+        info[ATTR_SERIAL] = entry.id
+        info[ATTR_FIRMWARE_VERSION] = entry.fw_ver
+        info[ATTR_SUPPORT] = entry.support
 
         return info
 
     def get_entries(self):
-        """ Return yeelight devices. """
-        return self.find_by_device_name(DEVICE_NAME_PREFIX)
+        """Get all the Yeelight compliant device SSDP entries."""
+        return self.find_by_location("yeelight://")

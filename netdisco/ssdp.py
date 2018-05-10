@@ -15,6 +15,7 @@ DISCOVER_TIMEOUT = 2
 # bound by our discovery timeout.
 SSDP_MX = DISCOVER_TIMEOUT
 SSDP_TARGET = ("239.255.255.250", 1900)
+SSDP_TARGET_YEELIGHT = ("239.255.255.250", 1982)
 
 RESPONSE_REGEX = re.compile(r'\n(.*?)\: *(.*)\r')
 
@@ -26,6 +27,8 @@ ST_ALL = "ssdp:all"
 # Devices only, some devices will only respond to this query
 ST_ROOTDEVICE = "upnp:rootdevice"
 
+# Required ST of the yeelight SSDP protocol implementation
+ST_YEELIGHT = "wifi_bulb"
 
 class SSDP(object):
     """Control the scanning of uPnP devices and services and caches output."""
@@ -55,6 +58,13 @@ class SSDP(object):
 
         return [entry for entry in self.entries
                 if entry.st == st]
+
+    def find_by_location(self, location):
+        """Return a list of entries that match the location."""
+        self.update()
+
+        return [entry for entry in self.entries
+                if entry.location.startswith(location)]
 
     def find_by_device_description(self, values):
         """Return a list of entries that match the description.
@@ -195,14 +205,14 @@ class UPNPEntry(object):
         return "<UPNPEntry {} - {}>".format(self.location or '', self.st or '')
 
 
-def ssdp_request(ssdp_st, ssdp_mx=SSDP_MX):
+def ssdp_request(ssdp_st, ssdp_mx=SSDP_MX, ssdp_target=SSDP_TARGET):
     """Return request bytes for given st and mx."""
     return "\r\n".join([
         'M-SEARCH * HTTP/1.1',
         'ST: {}'.format(ssdp_st),
         'MX: {:d}'.format(ssdp_mx),
         'MAN: "ssdp:discover"',
-        'HOST: {}:{}'.format(*SSDP_TARGET),
+        'HOST: {}:{}'.format(*ssdp_target),
         '', '']).encode('utf-8')
 
 
@@ -216,7 +226,8 @@ def scan(timeout=DISCOVER_TIMEOUT):
     Protocol explanation:
     https://embeddedinn.wordpress.com/tutorials/upnp-device-architecture/
     """
-    ssdp_requests = ssdp_request(ST_ALL), ssdp_request(ST_ROOTDEVICE)
+    ssdp_requests = ssdp_request(ST_ALL), ssdp_request(ST_ROOTDEVICE), \
+                    ssdp_request(ST_YEELIGHT, ssdp_target=SSDP_TARGET_YEELIGHT)
 
     stop_wait = datetime.now() + timedelta(seconds=timeout)
 

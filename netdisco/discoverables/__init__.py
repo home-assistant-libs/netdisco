@@ -68,6 +68,10 @@ class SSDPDiscoverable(BaseDiscoverable):
         """Find entries by ST (the device identifier)."""
         return self.netdis.ssdp.find_by_st(st)
 
+    def find_by_location(self, location):
+        """Find entries by location."""
+        return self.netdis.ssdp.find_by_location(location)
+
     def find_by_device_description(self, values):
         """Find entries based on values from their description."""
         return self.netdis.ssdp.find_by_device_description(values)
