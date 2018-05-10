@@ -30,6 +30,7 @@ ST_ROOTDEVICE = "upnp:rootdevice"
 # Required ST of the yeelight SSDP protocol implementation
 ST_YEELIGHT = "wifi_bulb"
 
+
 class SSDP(object):
     """Control the scanning of uPnP devices and services and caches output."""
 
@@ -227,7 +228,7 @@ def scan(timeout=DISCOVER_TIMEOUT):
     https://embeddedinn.wordpress.com/tutorials/upnp-device-architecture/
     """
     ssdp_requests = ssdp_request(ST_ALL), ssdp_request(ST_ROOTDEVICE), \
-                    ssdp_request(ST_YEELIGHT, ssdp_target=SSDP_TARGET_YEELIGHT)
+        ssdp_request(ST_YEELIGHT, ssdp_target=SSDP_TARGET_YEELIGHT)
 
     stop_wait = datetime.now() + timedelta(seconds=timeout)
 
