@@ -41,7 +41,8 @@ class TestYamaha(unittest.TestCase):
                 'port': 80,
                 'serial': 'XXXXXXXX',
                 'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
-                'udn': 'uuid:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
+                'udn': 'uuid:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+                'upnp_device_type': 'urn:schemas-upnp-org:device:MediaRenderer:1',
             })
 
     def test_info_from_entry_single_service(self):
@@ -61,7 +62,8 @@ class TestYamaha(unittest.TestCase):
                 'port': 80,
                 'serial': None,
                 'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
-                'udn': None
+                'udn': None,
+                'upnp_device_type': None,
             })
 
     def test_info_from_entry_multiple_services_remote_control_last(self):
@@ -81,7 +83,8 @@ class TestYamaha(unittest.TestCase):
                 'port': 80,
                 'serial': None,
                 'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
-                'udn': None
+                'udn': None,
+                'upnp_device_type': None,
             })
 
     def test_info_from_entry_multiple_services_no_remote_control(self):
@@ -101,5 +104,6 @@ class TestYamaha(unittest.TestCase):
                 'port': 80,
                 'serial': None,
                 'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
-                'udn': None
+                'udn': None,
+                'upnp_device_type': None,
             })
