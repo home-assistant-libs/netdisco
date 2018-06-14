@@ -1,10 +1,10 @@
-"""Discover myStrom devices."""
+"""Discover Homekit devices."""
 from . import MDNSDiscoverable
 
 
 # pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
-    """Add support for discovering myStrom switches."""
+    """Add support for discovering HomeKit devices."""
 
     def __init__(self, nd):
         super(Discoverable, self).__init__(nd, '_hap._tcp.local.')
