@@ -1,6 +1,8 @@
 """Discover Homekit devices."""
 from . import MDNSDiscoverable
 
+from ..const import ATTR_NAME
+
 
 # pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
@@ -8,3 +10,10 @@ class Discoverable(MDNSDiscoverable):
 
     def __init__(self, nd):
         super(Discoverable, self).__init__(nd, '_hap._tcp.local.')
+
+    def info_from_entry(self, entry):
+        info = super(Discoverable, self).info_from_entry(entry)
+        name = entry.name
+        name = name.replace('._hap._tcp.local.', '')
+        info[ATTR_NAME] = name
+        return info
