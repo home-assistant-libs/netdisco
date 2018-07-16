@@ -13,7 +13,7 @@ from .daikin import Daikin
 _LOGGER = logging.getLogger(__name__)
 
 
-class NetworkDiscovery(object):
+class NetworkDiscovery:
     """Scan the network for devices.
 
     mDNS scans in a background thread.

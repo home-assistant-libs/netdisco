@@ -20,7 +20,7 @@ DISCOVERY_ADDRESS = '<broadcast>'
 DISCOVERY_TIMEOUT = timedelta(seconds=2)
 
 
-class Daikin(object):
+class Daikin:
     """Base class to discover Daikin devices."""
 
     def __init__(self):

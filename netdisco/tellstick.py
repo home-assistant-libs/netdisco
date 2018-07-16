@@ -9,7 +9,7 @@ DISCOVERY_PAYLOAD = b"D"
 DISCOVERY_TIMEOUT = timedelta(seconds=2)
 
 
-class Tellstick(object):
+class Tellstick:
     """Base class to discover Tellstick devices."""
 
     def __init__(self):

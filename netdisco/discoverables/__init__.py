@@ -9,7 +9,7 @@ from ..const import (
     ATTR_PROPERTIES, ATTR_MANUFACTURER, ATTR_UDN, ATTR_UPNP_DEVICE_TYPE)
 
 
-class BaseDiscoverable(object):
+class BaseDiscoverable:
     """Base class for discoverable services or device types."""
 
     def is_discovered(self):

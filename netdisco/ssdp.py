@@ -27,7 +27,7 @@ ST_ALL = "ssdp:all"
 ST_ROOTDEVICE = "upnp:rootdevice"
 
 
-class SSDP(object):
+class SSDP:
     """Control the scanning of uPnP devices and services and caches output."""
 
     def __init__(self):
@@ -96,7 +96,7 @@ class SSDP(object):
                         if not entry.is_expired]
 
 
-class UPNPEntry(object):
+class UPNPEntry:
     """Found uPnP entry."""
 
     DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
