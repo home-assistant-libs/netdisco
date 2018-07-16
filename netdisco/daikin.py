@@ -53,6 +53,7 @@ class Daikin:
                 try:
                     data, (address, _) = sock.recvfrom(1024)
 
+                    # pylint: disable=consider-using-dict-comprehension
                     entry = dict([e.split('=')
                                   for e in data.decode("UTF-8").split(',')])
 
