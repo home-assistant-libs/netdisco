@@ -2,7 +2,6 @@
 from . import SSDPDiscoverable
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(SSDPDiscoverable):
     """Add support for discovering Viera TV devices."""
 

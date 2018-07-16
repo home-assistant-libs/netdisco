@@ -10,7 +10,7 @@ import socket
 import struct
 
 
-class GDM(object):
+class GDM:
     """Base class to discover GDM services."""
 
     def __init__(self):
@@ -95,7 +95,6 @@ class GDM(object):
 
 def main():
     """Test GDM discovery."""
-    # pylint: disable=invalid-name
     from pprint import pprint
 
     gdm = GDM()

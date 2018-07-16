@@ -2,7 +2,7 @@
 import zeroconf
 
 
-class MDNS(object):
+class MDNS:
     """Base class to discover mDNS services."""
 
     def __init__(self):

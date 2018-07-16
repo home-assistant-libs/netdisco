@@ -7,7 +7,7 @@ DISCOVERY_PORT = 3483
 DEFAULT_DISCOVERY_TIMEOUT = 2
 
 
-class LMS(object):
+class LMS:
     """Base class to discover Logitech Media servers."""
 
     def __init__(self):
@@ -67,7 +67,6 @@ def main():
     """Test LMS discovery."""
     from pprint import pprint
 
-    # pylint: disable=invalid-name
     lms = LMS()
 
     pprint("Scanning for Logitech Media Servers...")

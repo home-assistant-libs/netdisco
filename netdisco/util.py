@@ -37,7 +37,6 @@ def interface_addresses(family=netifaces.AF_INET):
     Gathering of addresses which are bound to a local interface that has
     broadcast (and probably multicast) capability.
     """
-    # pylint: disable=no-member
     return [addr['addr']
             for i in netifaces.interfaces()
             for addr in netifaces.ifaddresses(i).get(family) or []

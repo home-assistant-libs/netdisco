@@ -4,7 +4,6 @@ from . import MDNSDiscoverable
 from ..const import ATTR_NAME
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
     """Add support for discovering HomeKit devices."""
 

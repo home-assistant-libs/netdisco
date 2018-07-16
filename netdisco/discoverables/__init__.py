@@ -9,7 +9,7 @@ from ..const import (
     ATTR_PROPERTIES, ATTR_MANUFACTURER, ATTR_UDN, ATTR_UPNP_DEVICE_TYPE)
 
 
-class BaseDiscoverable(object):
+class BaseDiscoverable:
     """Base class for discoverable services or device types."""
 
     def is_discovered(self):
@@ -28,7 +28,6 @@ class BaseDiscoverable(object):
         """Return an object with important info from the entry."""
         return entry
 
-    # pylint: disable=no-self-use
     def get_entries(self):
         """Return all the discovered entries."""
         raise NotImplementedError()

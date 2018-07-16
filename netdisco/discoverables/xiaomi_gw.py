@@ -3,7 +3,6 @@ from . import MDNSDiscoverable
 from ..const import ATTR_MAC_ADDRESS, ATTR_PROPERTIES
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
     """Add support for discovering Xiaomi Gateway"""
 

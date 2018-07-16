@@ -1,7 +1,6 @@
 """Daikin device discovery."""
 import socket
 
-# pylint: disable=unused-import, import-error, no-name-in-module
 try:
     # Py2
     from urlparse import unquote  # noqa
@@ -20,7 +19,7 @@ DISCOVERY_ADDRESS = '<broadcast>'
 DISCOVERY_TIMEOUT = timedelta(seconds=2)
 
 
-class Daikin(object):
+class Daikin:
     """Base class to discover Daikin devices."""
 
     def __init__(self):
@@ -53,6 +52,7 @@ class Daikin(object):
                 try:
                     data, (address, _) = sock.recvfrom(1024)
 
+                    # pylint: disable=consider-using-dict-comprehension
                     entry = dict([e.split('=')
                                   for e in data.decode("UTF-8").split(',')])
 

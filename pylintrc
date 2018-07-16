@@ -1,11 +1,5 @@
-[BASIC]
-module-naming-style=snake_case
-module-rgx=(([a-z_][a-z0-9_]*)|(?:DLNA))$
-
 [MASTER]
-reports=no
+disable=duplicate-code
 
-disable=locally-disabled,duplicate-code
-
-[EXCEPTIONS]
-overgeneral-exceptions=Exception
+[BASIC]
+module-rgx=(([a-z_][a-z0-9_]*)|(?:DLNA))$
