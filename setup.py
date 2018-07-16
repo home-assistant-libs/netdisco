@@ -8,5 +8,6 @@ setup(name='netdisco',
       author_email='Paulus@PaulusSchoutsen.nl',
       license='Apache License 2.0',
       install_requires=['requests>=2.0', 'zeroconf>=0.19.1'],
+      python_requires='>=3',
       packages=find_packages(exclude=['tests', 'tests.*']),
       zip_safe=False)
