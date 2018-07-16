@@ -4,7 +4,7 @@ import select
 import socket
 import logging
 from datetime import datetime, timedelta
-import xml.etree.ElementTree as ElementTree
+from xml.etree import ElementTree
 
 import requests
 
