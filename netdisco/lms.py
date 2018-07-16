@@ -67,7 +67,6 @@ def main():
     """Test LMS discovery."""
     from pprint import pprint
 
-    # pylint: disable=invalid-name
     lms = LMS()
 
     pprint("Scanning for Logitech Media Servers...")

@@ -2,7 +2,6 @@
 from . import MDNSDiscoverable
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
     """Add support for discovering Bose SoundTouch devices."""
 

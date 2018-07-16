@@ -1,7 +1,6 @@
 """Daikin device discovery."""
 import socket
 
-# pylint: disable=unused-import, import-error, no-name-in-module
 try:
     # Py2
     from urlparse import unquote  # noqa

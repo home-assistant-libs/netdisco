@@ -28,7 +28,6 @@ class BaseDiscoverable:
         """Return an object with important info from the entry."""
         return entry
 
-    # pylint: disable=no-self-use
     def get_entries(self):
         """Return all the discovered entries."""
         raise NotImplementedError()

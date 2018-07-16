@@ -2,7 +2,6 @@
 from . import MDNSDiscoverable
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
     """Add support for discovering Lutron Caseta Smart Bridge
     and Smart Bridge Pro devices."""

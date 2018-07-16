@@ -5,7 +5,6 @@ from ..const import ATTR_DEVICE_TYPE
 DEVICE_NAME_PREFIX = 'yeelink-light-'
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
     """Add support for discovering Yeelight."""
 

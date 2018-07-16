@@ -3,7 +3,6 @@ from . import MDNSDiscoverable
 from ..const import ATTR_NAME, ATTR_PROPERTIES
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
     """Add support for Apple TV devices."""
 

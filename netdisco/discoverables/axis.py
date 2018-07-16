@@ -5,7 +5,6 @@ from ..const import (
     ATTR_HOST, ATTR_PORT, ATTR_HOSTNAME, ATTR_PROPERTIES)
 
 
-# pylint: disable=too-few-public-methods
 class Discoverable(MDNSDiscoverable):
     """Add support for discovering Axis devices."""
 

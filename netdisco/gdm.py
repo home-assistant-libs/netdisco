@@ -95,7 +95,6 @@ class GDM:
 
 def main():
     """Test GDM discovery."""
-    # pylint: disable=invalid-name
     from pprint import pprint
 
     gdm = GDM()
