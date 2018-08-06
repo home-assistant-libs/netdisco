@@ -1,14 +1,8 @@
 """Daikin device discovery."""
 import socket
 
-try:
-    # Py2
-    from urlparse import unquote  # noqa
-except ImportError:
-    # Py3
-    from urllib.parse import unquote  # noqa
-
 from datetime import timedelta
+from urllib.parse import unquote
 
 DISCOVERY_MSG = b"DAIKIN_UDP/common/basic_info"
 
