@@ -1,7 +1,8 @@
 """Constants of services that can be discovered."""
 
 BELKIN_WEMO = "belkin_wemo"
-DLNA = "DLNA"
+DLNA_DMS = "DLNA_DMS"
+DLNA_DMR = "DLNA_DMR"
 GOOGLE_CAST = "google_cast"
 PHILIPS_HUE = "philips_hue"
 PMS = 'plex_mediaserver'
