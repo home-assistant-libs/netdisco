@@ -27,6 +27,7 @@ ZIGGO_MEDIABOX_XL = "ziggo_mediabox_xl"
 DECONZ = "deconz"
 TIVO_DVR = "tivo_dvr"
 FREEBOX = "freebox"
+XBOX_ONE = "xbox_one"
 
 ATTR_NAME = 'name'
 ATTR_HOST = 'host'

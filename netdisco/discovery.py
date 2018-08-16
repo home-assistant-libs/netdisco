@@ -9,6 +9,7 @@ from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
 from .daikin import Daikin
+from .xboxone import XboxOneSmartGlass
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class NetworkDiscovery:
     GDM scans in the foreground.
     LMS scans in the foreground.
     Tellstick scans in the foreground
+    Xbox One scans in the foreground
 
     start: is ready to scan
     scan: scan the network
@@ -38,6 +40,7 @@ class NetworkDiscovery:
         self.lms = None
         self.tellstick = None
         self.daikin = None
+        self.xboxone = None
 
         self.is_discovering = False
         self.discoverables = None
@@ -68,6 +71,9 @@ class NetworkDiscovery:
         self.daikin = Daikin()
         self.daikin.scan()
 
+        self.xboxone = XboxOneSmartGlass()
+        self.xboxone.scan()
+
     def stop(self):
         """Turn discovery off."""
         if not self.is_discovering:
@@ -81,6 +87,7 @@ class NetworkDiscovery:
         self.lms = None
         self.tellstick = None
         self.daikin = None
+        self.xboxone = None
         self.discoverables = None
         self.is_discovering = False
 
