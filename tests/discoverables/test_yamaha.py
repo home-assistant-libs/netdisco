@@ -1,5 +1,6 @@
 """The tests for discovering Yamaha Receivers."""
 import unittest
+from unittest.mock import MagicMock
 import xml.etree.ElementTree as ElementTree
 
 from netdisco.discoverables.yamaha import Discoverable
@@ -107,3 +108,16 @@ class TestYamaha(unittest.TestCase):
                 'udn': None,
                 'upnp_device_type': None,
             })
+
+    def test_get_entries_incompatible_models(self):
+        supported_model = MockUPNPEntry("desc_multiple_services_no_remote_control.xml")
+        devices = [
+            supported_model,
+            MockUPNPEntry("desc_incompatible_device.xml")
+        ]
+
+        discoverable = Discoverable(None)
+        discoverable.INCOMPATIBLE_MODELS = ["aaa"]
+        discoverable.find_by_device_description = MagicMock(return_value=devices)
+
+        self.assertEqual(discoverable.get_entries(), [supported_model])

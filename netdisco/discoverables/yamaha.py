@@ -5,6 +5,8 @@ from . import SSDPDiscoverable
 class Discoverable(SSDPDiscoverable):
     """Add support for discovering Yamaha Receivers."""
 
+    INCOMPATIBLE_MODELS = set('N301')
+
     REMOTE_CONTROL_SPEC_TYPE =\
         'urn:schemas-yamaha-com:service:X_YamahaRemoteControl:1'
 
@@ -30,7 +32,11 @@ class Discoverable(SSDPDiscoverable):
 
     def get_entries(self):
         """Get all the Yamaha uPnP entries."""
-        return self.find_by_device_description({
+        devices = self.find_by_device_description({
             "manufacturer": "Yamaha Corporation",
             "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1"
         })
+
+        return [device for device in devices if
+                device.description['device'].get('modelNumber', '') not in
+                self.INCOMPATIBLE_MODELS]
