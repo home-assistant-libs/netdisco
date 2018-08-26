@@ -1,5 +1,2 @@
 [MASTER]
 disable=duplicate-code
-
-[BASIC]
-module-rgx=(([a-z_][a-z0-9_]*)|(?:DLNA))$
