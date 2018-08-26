@@ -7,7 +7,4 @@ class Discoverable(SSDPDiscoverable):
 
     def get_entries(self):
         """Return all Konnected entries."""
-        results = []
-        results.extend(
-            self.find_by_st('urn:schemas-konnected-io:device:Security:1'))
-        return results
+        return self.find_by_st('urn:schemas-konnected-io:device:Security:1')
