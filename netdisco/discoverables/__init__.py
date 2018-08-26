@@ -88,10 +88,6 @@ class MDNSDiscoverable(BaseDiscoverable):
         """Reset found services."""
         self.services.clear()
 
-    def is_discovered(self):
-        """Return True if any device has been discovered."""
-        return len(self.get_entries()) > 0
-
     # pylint: disable=unused-argument
     def remove_service(self, zconf, typ, name):
         """Callback when a service is removed."""
