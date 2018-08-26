@@ -11,8 +11,3 @@ class Discoverable(SSDPDiscoverable):
             "manufacturer": "Cambridge Audio",
             "deviceType": "urn:schemas-upnp-org:device:MediaRenderer:1"
         })
-
-    def info_from_entry(self, entry):
-        """Get most important info, which is name, model and host."""
-        info = super().info_from_entry(entry)
-        return info

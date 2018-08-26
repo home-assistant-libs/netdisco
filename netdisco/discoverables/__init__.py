@@ -41,7 +41,7 @@ class SSDPDiscoverable(BaseDiscoverable):
         self.netdis = netdis
 
     def info_from_entry(self, entry):
-        """Get most important info, by default the description location."""
+        """Get most important info."""
         url = urlparse(entry.location)
         info = {
             ATTR_HOST: url.hostname,
@@ -87,10 +87,6 @@ class MDNSDiscoverable(BaseDiscoverable):
     def reset(self):
         """Reset found services."""
         self.services.clear()
-
-    def is_discovered(self):
-        """Return True if any device has been discovered."""
-        return len(self.get_entries()) > 0
 
     # pylint: disable=unused-argument
     def remove_service(self, zconf, typ, name):
