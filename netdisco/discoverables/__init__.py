@@ -142,13 +142,6 @@ class GDMDiscoverable(BaseDiscoverable):
         """Initialize GDMDiscoverable."""
         self.netdis = netdis
 
-    def info_from_entry(self, entry):
-        """Get most important info, by default the description location."""
-        return {
-            ATTR_HOST: entry.values['location'],
-            ATTR_PORT: entry.values['port'],
-        }
-
     def find_by_content_type(self, value):
         """Find entries based on values from their content_type."""
         return self.netdis.gdm.find_by_content_type(value)
