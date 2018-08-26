@@ -41,7 +41,7 @@ class SSDPDiscoverable(BaseDiscoverable):
         self.netdis = netdis
 
     def info_from_entry(self, entry):
-        """Get most important info, by default the description location."""
+        """Get most important info."""
         url = urlparse(entry.location)
         info = {
             ATTR_HOST: url.hostname,

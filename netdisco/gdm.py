@@ -45,14 +45,16 @@ class GDM:
     def update(self):
         """Scan for new GDM services.
 
-        Example of the dict list returned by this function:
-        [{'data': 'Content-Type: plex/media-server'
-                  'Host: 53f4b5b6023d41182fe88a99b0e714ba.plex.direct'
-                  'Name: myfirstplexserver'
-                  'Port: 32400'
-                  'Resource-Identifier: 646ab0aa8a01c543e94ba975f6fd6efadc36b7'
-                  'Updated-At: 1444852697'
-                  'Version: 0.9.12.13.1464-4ccd2ca'
+        Example of the dict list assigned to self.entries by this function:
+        [{'data': {
+             'Content-Type': 'plex/media-server',
+             'Host': '53f4b5b6023d41182fe88a99b0e714ba.plex.direct',
+             'Name': 'myfirstplexserver',
+             'Port': '32400',
+             'Resource-Identifier': '646ab0aa8a01c543e94ba975f6fd6efadc36b7',
+             'Updated-At': '1444852697',
+             'Version': '0.9.12.13.1464-4ccd2ca',
+          },
           'from': ('10.10.10.100', 32414)}]
         """
 
