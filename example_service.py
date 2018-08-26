@@ -22,6 +22,7 @@ def new_service_listener(discoverable, service):
     print("{} - Found new service: {} {}".format(
         datetime.now(), discoverable, service))
 
+
 nd.add_listener(new_service_listener)
 
 nd.start()

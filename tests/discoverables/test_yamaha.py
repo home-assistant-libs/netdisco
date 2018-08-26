@@ -43,7 +43,8 @@ class TestYamaha(unittest.TestCase):
                 'serial': 'XXXXXXXX',
                 'ssdp_description': 'http://192.168.XXX.XXX:80/desc.xml',
                 'udn': 'uuid:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
-                'upnp_device_type': 'urn:schemas-upnp-org:device:MediaRenderer:1',
+                'upnp_device_type':
+                'urn:schemas-upnp-org:device:MediaRenderer:1',
             })
 
     def test_info_from_entry_single_service(self):
@@ -110,7 +111,8 @@ class TestYamaha(unittest.TestCase):
             })
 
     def test_get_entries_incompatible_models(self):
-        supported_model = MockUPNPEntry("desc_multiple_services_no_remote_control.xml")
+        supported_model = MockUPNPEntry(
+            "desc_multiple_services_no_remote_control.xml")
         devices = [
             supported_model,
             MockUPNPEntry("desc_incompatible_device.xml")
@@ -118,6 +120,7 @@ class TestYamaha(unittest.TestCase):
 
         discoverable = Discoverable(None)
         discoverable.INCOMPATIBLE_MODELS = ["aaa"]
-        discoverable.find_by_device_description = MagicMock(return_value=devices)
+        discoverable.find_by_device_description = MagicMock(
+            return_value=devices)
 
         self.assertEqual(discoverable.get_entries(), [supported_model])
