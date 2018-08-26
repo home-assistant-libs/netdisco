@@ -5,8 +5,6 @@ Will scan every 10 seconds and print out new found entries.
 Will quit after 2 minutes.
 
 """
-from __future__ import print_function
-
 import logging
 from datetime import datetime
 import time
