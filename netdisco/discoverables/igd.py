@@ -1,4 +1,4 @@
-"""Discover DLNA services."""
+"""Discover IGD services."""
 from . import SSDPDiscoverable
 
 
