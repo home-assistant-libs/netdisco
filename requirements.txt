@@ -1,4 +1,2 @@
-zeroconf>=0.19.1
+zeroconf>=0.21.0
 requests>=2.0
-# For now we depend on netifaces via zeroconf
-# netifaces
