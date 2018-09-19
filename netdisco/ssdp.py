@@ -7,8 +7,9 @@ from datetime import datetime, timedelta
 from xml.etree import ElementTree
 
 import requests
+import zeroconf
 
-from netdisco.util import etree_to_dict, interface_addresses
+from netdisco.util import etree_to_dict
 
 DISCOVER_TIMEOUT = 2
 # MX is a suggested random wait time for a device to reply, so should be
@@ -221,7 +222,7 @@ def scan(timeout=DISCOVER_TIMEOUT):
     stop_wait = datetime.now() + timedelta(seconds=timeout)
 
     sockets = []
-    for addr in interface_addresses():
+    for addr in zeroconf.get_all_addresses():
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 

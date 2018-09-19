@@ -6,5 +6,7 @@ build
 pyvenv.cfg
 bin
 lib
+lib64
 pip-selfcheck.json
 .tox
+.pytest_cache/
