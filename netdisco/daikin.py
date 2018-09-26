@@ -35,6 +35,7 @@ class Daikin:
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.settimeout(DISCOVERY_TIMEOUT.seconds)
         sock.bind(("", UDP_SRC_PORT))
 
