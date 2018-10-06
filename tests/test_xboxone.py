@@ -34,7 +34,8 @@ class TestXboxOne(unittest.TestCase):
         """
         Test discovery response parsing
         """
-        response = XboxSmartGlass.parse_discovery_response(self.discovery_response)
+        response = XboxSmartGlass.parse_discovery_response(
+            self.discovery_response)
 
         self.assertEqual(response['device_type'], 1)
         self.assertEqual(response['flags'], 2)
@@ -49,9 +50,10 @@ class TestXboxOne(unittest.TestCase):
         """
         Test discovery response verification
         """
-        valid_parse = XboxSmartGlass._verify_packet(self.discovery_response)
-        invalid_length = XboxSmartGlass._verify_packet(unhexlify(b'41'))
-        invalid_magic = XboxSmartGlass._verify_packet(unhexlify(b'aabbccddeeff00'))
+        valid_parse = XboxSmartGlass.verify_packet(self.discovery_response)
+        invalid_length = XboxSmartGlass.verify_packet(unhexlify(b'41'))
+        invalid_magic = XboxSmartGlass.verify_packet(
+            unhexlify(b'aabbccddeeff00'))
 
         self.assertIsNotNone(valid_parse)
         self.assertIsNone(invalid_length)

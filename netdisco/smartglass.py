@@ -103,7 +103,7 @@ class XboxSmartGlass:
         return self.entries
 
     @staticmethod
-    def _verify_packet(data):
+    def verify_packet(data):
         """Parse packet if it has correct magic"""
         if len(data) < 2:
             return None
@@ -131,7 +131,7 @@ class XboxSmartGlass:
             try:
                 data, (address, _) = sock.recvfrom(1024)
 
-                response = self._verify_packet(data)
+                response = self.verify_packet(data)
                 if response:
                     entries.append((address, response))
 
