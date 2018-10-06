@@ -9,7 +9,7 @@ from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
 from .daikin import Daikin
-from .xboxone import XboxOneSmartGlass
+from .smartglass import XboxSmartGlass
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class NetworkDiscovery:
         self.lms = None
         self.tellstick = None
         self.daikin = None
-        self.xboxone = None
+        self.xbox_smartglass = None
 
         self.is_discovering = False
         self.discoverables = None
@@ -71,8 +71,8 @@ class NetworkDiscovery:
         self.daikin = Daikin()
         self.daikin.scan()
 
-        self.xboxone = XboxOneSmartGlass()
-        self.xboxone.scan()
+        self.xbox_smartglass = XboxSmartGlass()
+        self.xbox_smartglass.scan()
 
     def stop(self):
         """Turn discovery off."""
@@ -87,7 +87,7 @@ class NetworkDiscovery:
         self.lms = None
         self.tellstick = None
         self.daikin = None
-        self.xboxone = None
+        self.xbox_smartglass = None
         self.discoverables = None
         self.is_discovering = False
 
@@ -143,3 +143,6 @@ class NetworkDiscovery:
         print("")
         print("Tellstick")
         pprint(self.tellstick.entries)
+        print("")
+        print("Xbox SmartGlass")
+        pprint(self.xbox_smartglass.entries)

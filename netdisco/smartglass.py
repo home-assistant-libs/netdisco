@@ -25,11 +25,11 @@ Android = 8
 DISCOVERY_CLIENT_TYPE = 4
 
 
-class XboxOneSmartGlass:
-    """Base class to discover Xbox One SmartGlass devices."""
+class XboxSmartGlass:
+    """Base class to discover Xbox SmartGlass devices."""
 
     def __init__(self):
-        """Initialize the Xbox One SmartGlass discovery."""
+        """Initialize the Xbox SmartGlass discovery."""
         self.entries = []
         self._discovery_payload = self.discovery_packet()
 
@@ -102,7 +102,7 @@ class XboxOneSmartGlass:
         return self.entries
 
     def update(self):
-        """Scan network for Xbox One SmartGlass devices."""
+        """Scan network for Xbox SmartGlass devices."""
         entries = []
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -118,7 +118,7 @@ class XboxOneSmartGlass:
                 if len(data) < 2:
                     continue
 
-                pkt_type = struct.unpack('>H', data)
+                pkt_type = struct.unpack_from('>H', data)[0]
                 if pkt_type != DISCOVERY_RESPONSE:
                     continue
 
@@ -137,7 +137,7 @@ class XboxOneSmartGlass:
 def main():
     """Test XboxOne discovery."""
     from pprint import pprint
-    xbsmartglass = XboxOneSmartGlass()
+    xbsmartglass = XboxSmartGlass()
     pprint("Scanning for Xbox One SmartGlass consoles devices..")
     xbsmartglass.update()
     pprint(xbsmartglass.entries)

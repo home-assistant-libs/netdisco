@@ -1,8 +1,8 @@
-"""The tests for discovering Xbox One gaming consoles."""
+"""The tests for discovering Xbox gaming consoles via SmartGlass protocol."""
 import unittest
 from binascii import unhexlify
 
-from netdisco.xboxone import XboxOneSmartGlass
+from netdisco.smartglass import XboxSmartGlass
 
 
 class TestXboxOne(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestXboxOne(unittest.TestCase):
         """
         Verify discovery request assembly
         """
-        packet = XboxOneSmartGlass.discovery_packet()
+        packet = XboxSmartGlass.discovery_packet()
 
         self.assertEqual(
             packet,
@@ -25,7 +25,7 @@ class TestXboxOne(unittest.TestCase):
         with open('tests/xboxone_files/discovery_response', 'rb') as content:
             packet = content.read()
 
-        response = XboxOneSmartGlass.parse_discovery_response(packet)
+        response = XboxSmartGlass.parse_discovery_response(packet)
         self.assertEqual(response['device_type'], 1)
         self.assertEqual(response['flags'], 2)
         self.assertEqual(response['name'], 'XboxOne')
