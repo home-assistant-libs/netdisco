@@ -6,7 +6,8 @@ from datetime import timedelta
 
 
 DISCOVERY_PORT = 5050
-DISCOVERY_ADDRESS = '<broadcast>'
+DISCOVERY_ADDRESS_BCAST = '<broadcast>'
+DISCOVERY_ADDRESS_MCAST = '239.255.255.250'
 DISCOVERY_REQUEST = 0xDD00
 DISCOVERY_RESPONSE = 0xDD01
 DISCOVERY_TIMEOUT = timedelta(seconds=2)
@@ -101,6 +102,18 @@ class XboxSmartGlass:
         self.scan()
         return self.entries
 
+    @staticmethod
+    def _verify_packet(data):
+        """Parse packet if it has correct magic"""
+        if len(data) < 2:
+            return None
+
+        pkt_type = struct.unpack_from('>H', data)[0]
+        if pkt_type != DISCOVERY_RESPONSE:
+            return None
+
+        return XboxSmartGlass.parse_discovery_response(data)
+
     def update(self):
         """Scan network for Xbox SmartGlass devices."""
         entries = []
@@ -110,19 +123,15 @@ class XboxSmartGlass:
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.settimeout(DISCOVERY_TIMEOUT.seconds)
         sock.sendto(self._discovery_payload,
-                    (DISCOVERY_ADDRESS, DISCOVERY_PORT))
+                    (DISCOVERY_ADDRESS_BCAST, DISCOVERY_PORT))
+        sock.sendto(self._discovery_payload,
+                    (DISCOVERY_ADDRESS_MCAST, DISCOVERY_PORT))
 
         while True:
             try:
                 data, (address, _) = sock.recvfrom(1024)
-                if len(data) < 2:
-                    continue
 
-                pkt_type = struct.unpack_from('>H', data)[0]
-                if pkt_type != DISCOVERY_RESPONSE:
-                    continue
-
-                response = self.parse_discovery_response(data)
+                response = self._verify_packet(data)
                 if response:
                     entries.append((address, response))
 

@@ -7,9 +7,21 @@ from netdisco.smartglass import XboxSmartGlass
 
 class TestXboxOne(unittest.TestCase):
     """Test the Xbox One Discoverable."""
+    def setUp(self):
+        """
+        Setup test class
+        """
+        with open('tests/xboxone_files/discovery_response', 'rb') as content:
+            packet = content.read()
+
+        if not packet:
+            raise Exception('Failed to read test data')
+
+        self.discovery_response = packet
+
     def test_assemble_request(self):
         """
-        Verify discovery request assembly
+        Test discovery request assembly
         """
         packet = XboxSmartGlass.discovery_packet()
 
@@ -20,12 +32,10 @@ class TestXboxOne(unittest.TestCase):
 
     def test_parse_response(self):
         """
-        Verify discovery response parsing
+        Test discovery response parsing
         """
-        with open('tests/xboxone_files/discovery_response', 'rb') as content:
-            packet = content.read()
+        response = XboxSmartGlass.parse_discovery_response(self.discovery_response)
 
-        response = XboxSmartGlass.parse_discovery_response(packet)
         self.assertEqual(response['device_type'], 1)
         self.assertEqual(response['flags'], 2)
         self.assertEqual(response['name'], 'XboxOne')
@@ -34,3 +44,15 @@ class TestXboxOne(unittest.TestCase):
         self.assertEqual(response['last_error'], 0)
         self.assertEqual(response['certificate'][:8], '30820203')
         self.assertEqual(len(unhexlify(response['certificate'])), 519)
+
+    def test_verify_response(self):
+        """
+        Test discovery response verification
+        """
+        valid_parse = XboxSmartGlass._verify_packet(self.discovery_response)
+        invalid_length = XboxSmartGlass._verify_packet(unhexlify(b'41'))
+        invalid_magic = XboxSmartGlass._verify_packet(unhexlify(b'aabbccddeeff00'))
+
+        self.assertIsNotNone(valid_parse)
+        self.assertIsNone(invalid_length)
+        self.assertIsNone(invalid_magic)
