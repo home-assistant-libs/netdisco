@@ -1,6 +1,7 @@
 """Tellstick device discovery."""
 import socket
 from datetime import timedelta
+import logging
 
 
 DISCOVERY_PORT = 30303
@@ -47,6 +48,11 @@ class Tellstick:
 
             except socket.timeout:
                 break
+            except UnicodeDecodeError:
+                # Catch invalid responses
+                logging.getLogger(__name__).debug(
+                    'Ignoring invalid unicode response from %s', address)
+                continue
 
             self.entries = entries
 
