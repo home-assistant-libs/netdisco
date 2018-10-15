@@ -152,13 +152,13 @@ class UPNPEntry:
                 UPNPEntry.DESCRIPTION_CACHE[url] = \
                     etree_to_dict(tree).get('root', {})
             except requests.RequestException:
-                logging.getLogger(__name__).warning(
+                logging.getLogger(__name__).debug(
                     "Error fetching description at %s", url)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = {}
 
             except ElementTree.ParseError:
-                logging.getLogger(__name__).warning(
+                logging.getLogger(__name__).debug(
                     "Found malformed XML at %s: %s", url, xml)
 
                 UPNPEntry.DESCRIPTION_CACHE[url] = {}
