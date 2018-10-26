@@ -64,7 +64,7 @@ incorporated within the Work.
 
 Subject to the terms and conditions of this License, each Contributor hereby
 grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free,
-irrevocable copyright license to reproduce, prepare Derivative Works of,
+irrevocable copyright license to reproduce, prepare Derivative works of,
 publicly display, publicly perform, sublicense, and distribute the Work and such
 Derivative Works in Source or Object form.
 
