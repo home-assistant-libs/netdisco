@@ -56,7 +56,8 @@ class HF_LPB100:
                 controller = self._parse_discovery_response(message)
                 if controller is not None:
                     entries.append(controller)
-            except:
+            # pylint: disable=W0702
+            except:  # noqa: E722
                 print("Error parsing discovery message: %s" % message)
                 return None
 
