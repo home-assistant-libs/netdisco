@@ -9,6 +9,7 @@ from .gdm import GDM
 from .lms import LMS
 from .tellstick import Tellstick
 from .daikin import Daikin
+from .hf_lpb100 import HF_LPB100
 from .smartglass import XboxSmartGlass
 
 _LOGGER = logging.getLogger(__name__)
@@ -40,6 +41,7 @@ class NetworkDiscovery:
         self.lms = None
         self.tellstick = None
         self.daikin = None
+        self.hf_lpb100 = None
         self.xbox_smartglass = None
 
         self.is_discovering = False
@@ -71,6 +73,9 @@ class NetworkDiscovery:
         self.daikin = Daikin()
         self.daikin.scan()
 
+        self.hf_lpb100 = HF_LPB100()
+        self.hf_lpb100.scan()
+
         self.xbox_smartglass = XboxSmartGlass()
         self.xbox_smartglass.scan()
 
@@ -87,6 +92,7 @@ class NetworkDiscovery:
         self.lms = None
         self.tellstick = None
         self.daikin = None
+        self.hf_lpb100 = None
         self.xbox_smartglass = None
         self.discoverables = None
         self.is_discovering = False
