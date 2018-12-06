@@ -10,6 +10,7 @@ Current methods of scanning:
  - Logitech Media Server discovery protocol
  - Daikin discovery protocol
  - Web OS discovery protocol
+ - Twinkly using XLED discovery protocol
 
 It is the library that powers the device discovery within [Home Assistant](https://home-assistant.io/).
 

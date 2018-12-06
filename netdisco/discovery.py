@@ -10,6 +10,7 @@ from .lms import LMS
 from .tellstick import Tellstick
 from .daikin import Daikin
 from .smartglass import XboxSmartGlass
+from .xled import XLED
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -23,6 +24,7 @@ class NetworkDiscovery:
     LMS scans in the foreground.
     Tellstick scans in the foreground
     Xbox One scans in the foreground
+    XLED scans in the foreground
 
     start: is ready to scan
     scan: scan the network
@@ -41,6 +43,7 @@ class NetworkDiscovery:
         self.tellstick = None
         self.daikin = None
         self.xbox_smartglass = None
+        self.xled = None
 
         self.is_discovering = False
         self.discoverables = None
@@ -74,6 +77,9 @@ class NetworkDiscovery:
         self.xbox_smartglass = XboxSmartGlass()
         self.xbox_smartglass.scan()
 
+        self.xled = XLED()
+        self.xled.scan()
+
     def stop(self):
         """Turn discovery off."""
         if not self.is_discovering:
@@ -88,6 +94,7 @@ class NetworkDiscovery:
         self.tellstick = None
         self.daikin = None
         self.xbox_smartglass = None
+        self.xled = None
         self.discoverables = None
         self.is_discovering = False
 
@@ -146,3 +153,6 @@ class NetworkDiscovery:
         print("")
         print("Xbox SmartGlass")
         pprint(self.xbox_smartglass.entries)
+        print("")
+        print("XLED")
+        pprint(self.xled.entries)
