@@ -4,6 +4,7 @@ import select
 import socket
 import logging
 from datetime import datetime, timedelta
+from typing import Dict  # noqa: F401
 from xml.etree import ElementTree
 
 import requests
@@ -100,7 +101,7 @@ class SSDP:
 class UPNPEntry:
     """Found uPnP entry."""
 
-    DESCRIPTION_CACHE = {'_NO_LOCATION': {}}
+    DESCRIPTION_CACHE = {'_NO_LOCATION': {}}  # type: Dict[str, Dict]
 
     def __init__(self, values):
         """Initialize the discovery."""
