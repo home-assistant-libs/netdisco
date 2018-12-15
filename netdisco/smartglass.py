@@ -3,6 +3,7 @@ import socket
 import struct
 import binascii
 from datetime import timedelta
+from typing import Any, Dict, List, Optional, Tuple  # noqa: F401
 
 
 DISCOVERY_PORT = 5050
@@ -25,13 +26,15 @@ Android = 8
 """
 DISCOVERY_CLIENT_TYPE = 4
 
+_Response = Dict[str, Any]
+
 
 class XboxSmartGlass:
     """Base class to discover Xbox SmartGlass devices."""
 
     def __init__(self):
         """Initialize the Xbox SmartGlass discovery."""
-        self.entries = []
+        self.entries = []  # type: List[Tuple[str, Optional[_Response]]]
         self._discovery_payload = self.discovery_packet()
 
     @staticmethod

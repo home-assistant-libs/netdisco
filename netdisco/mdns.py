@@ -1,4 +1,6 @@
 """Add support for discovering mDNS services."""
+from typing import List  # noqa: F401
+
 import zeroconf
 
 
@@ -8,8 +10,8 @@ class MDNS:
     def __init__(self):
         """Initialize the discovery."""
         self.zeroconf = None
-        self.services = []
-        self._browsers = []
+        self.services = []  # type: List[zeroconf.ServiceInfo]
+        self._browsers = []  # type: List[zeroconf.ServiceBrowser]
 
     def register_service(self, service):
         """Register a mDNS service."""

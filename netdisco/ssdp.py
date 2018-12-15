@@ -4,7 +4,7 @@ import select
 import socket
 import logging
 from datetime import datetime, timedelta
-from typing import Dict  # noqa: F401
+from typing import Dict, List, Optional, Set  # noqa: F401
 from xml.etree import ElementTree
 
 import requests
@@ -34,7 +34,7 @@ class SSDP:
 
     def __init__(self):
         """Initialize the discovery."""
-        self.entries = []
+        self.entries = []  # type: List[UPNPEntry]
         self.last_scan = None
 
     def scan(self):
@@ -66,7 +66,7 @@ class SSDP:
         """
         self.update()
 
-        seen = set()
+        seen = set()  # type: Set[Optional[str]]
         results = []
 
         # Make unique based on the location since we don't care about ST here

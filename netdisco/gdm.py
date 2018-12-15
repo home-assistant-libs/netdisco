@@ -8,13 +8,14 @@ Inspired by
 """
 import socket
 import struct
+from typing import Any, Dict, List  # noqa: F401
 
 
 class GDM:
     """Base class to discover GDM services."""
 
     def __init__(self):
-        self.entries = []
+        self.entries = []  # type: List[Dict[str, Any]]
         self.last_scan = None
 
     def scan(self):
@@ -81,13 +82,13 @@ class GDM:
             # Look for responses from all recipients
             while True:
                 try:
-                    data, server = sock.recvfrom(1024)
-                    data = data.decode('utf-8')
+                    bdata, server = sock.recvfrom(1024)
+                    data = bdata.decode('utf-8')
                     if '200 OK' in data.splitlines()[0]:
-                        data = {k: v.strip() for (k, v) in (
+                        ddata = {k: v.strip() for (k, v) in (
                             line.split(':') for line in
                             data.splitlines() if ':' in line)}
-                        self.entries.append({'data': data,
+                        self.entries.append({'data': ddata,
                                              'from': server})
                 except socket.timeout:
                     break
