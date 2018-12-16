@@ -1,12 +1,16 @@
 """Provides helpful stuff for discoverables."""
 # pylint: disable=abstract-method
 import ipaddress
+from typing import Dict, TYPE_CHECKING  # noqa: F401
 from urllib.parse import urlparse
 
 from ..const import (
     ATTR_NAME, ATTR_MODEL_NAME, ATTR_HOST, ATTR_PORT, ATTR_SSDP_DESCRIPTION,
     ATTR_SERIAL, ATTR_MODEL_NUMBER, ATTR_HOSTNAME, ATTR_MAC_ADDRESS,
     ATTR_PROPERTIES, ATTR_MANUFACTURER, ATTR_UDN, ATTR_UPNP_DEVICE_TYPE)
+
+if TYPE_CHECKING:
+    from zeroconf import ServiceInfo  # noqa: F401
 
 
 class BaseDiscoverable:
@@ -80,7 +84,7 @@ class MDNSDiscoverable(BaseDiscoverable):
         """Initialize MDNSDiscoverable."""
         self.netdis = netdis
         self.typ = typ
-        self.services = {}
+        self.services = {}  # type: Dict[str, ServiceInfo]
 
         netdis.mdns.register_service(self)
 

@@ -1,5 +1,6 @@
 """Squeezebox/Logitech Media server discovery."""
 import socket
+from typing import Dict, List, Union  # noqa: F401
 
 from .const import ATTR_HOST, ATTR_PORT
 
@@ -12,7 +13,7 @@ class LMS:
 
     def __init__(self):
         """Initialize the Logitech discovery."""
-        self.entries = []
+        self.entries = []  # type: List[Dict[str, Union[str, int]]]
         self.last_scan = None
 
     def scan(self):
@@ -49,7 +50,8 @@ class LMS:
                         # Where YY is length of port string (ie 4)
                         # And XXXX is the web interface port (ie 9000)
                         port = None
-                        if data.startswith(b'JSON', 1):
+                        # https://github.com/python/typeshed/pull/2696
+                        if data.startswith(b'JSON', 1):  # type: ignore
                             length = data[5:6][0]
                             port = int(data[0-length:])
                         entries.append({

@@ -2,6 +2,7 @@
 import socket
 from datetime import timedelta
 import logging
+from typing import List, Tuple  # noqa: F401
 
 
 DISCOVERY_PORT = 30303
@@ -15,7 +16,7 @@ class Tellstick:
 
     def __init__(self):
         """Initialize the Tellstick discovery."""
-        self.entries = []
+        self.entries = []  # type: List[Tuple[str]]
 
     def scan(self):
         """Scan the network."""
@@ -43,8 +44,8 @@ class Tellstick:
                 # expecting product, mac, activation code, version
                 if len(entry) != 4:
                     continue
-                entry = (address,) + tuple(entry)
-                entries.append(entry)
+                entry.insert(0, address)
+                entries.append(tuple(entry))
 
             except socket.timeout:
                 break

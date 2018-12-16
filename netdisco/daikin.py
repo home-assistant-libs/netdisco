@@ -2,6 +2,7 @@
 import socket
 
 from datetime import timedelta
+from typing import Dict, List  # noqa: F401
 from urllib.parse import unquote
 
 DISCOVERY_MSG = b"DAIKIN_UDP/common/basic_info"
@@ -18,7 +19,7 @@ class Daikin:
 
     def __init__(self):
         """Initialize the Daikin discovery."""
-        self.entries = []
+        self.entries = []  # type: List[Dict[str, str]]
 
     def scan(self):
         """Scan the network."""
@@ -47,9 +48,9 @@ class Daikin:
                 try:
                     data, (address, _) = sock.recvfrom(1024)
 
-                    # pylint: disable=consider-using-dict-comprehension
-                    entry = dict([e.split('=')
-                                  for e in data.decode("UTF-8").split(',')])
+                    entry = {x[0]: x[1] for x in (
+                        e.split('=', 1)
+                        for e in data.decode("UTF-8").split(','))}
 
                     # expecting product, mac, activation code, version
                     if 'ret' not in entry or entry['ret'] != 'OK':
