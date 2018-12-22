@@ -13,7 +13,7 @@ Current methods of scanning:
 
 It is the library that powers the device discovery within [Home Assistant](https://home-assistant.io/).
 
-### We are no longer accepting PRs that implement custom discovery protocols. Only PRs that use mDNS or uPnP are supported.
+### We are no longer accepting PRs that implement custom discovery protocols. Only PRs that use mDNS or uPnP are supported. See [this issue](https://github.com/home-assistant/netdisco/issues/230)
 
 ## Installation
 
