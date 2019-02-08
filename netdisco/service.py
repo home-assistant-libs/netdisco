@@ -3,6 +3,7 @@ import logging
 import threading
 import time
 from collections import defaultdict
+from typing import Any, Callable, Dict, List  # noqa: F401
 
 from .discovery import NetworkDiscovery
 
@@ -25,7 +26,7 @@ class DiscoveryService(threading.Thread):
         self.interval = interval
 
         # Listeners for new services
-        self.listeners = []
+        self.listeners = []  # type: List[Callable[[str, Any], None]]
 
         # To track when we have to stop
         self._stop = threading.Event()
@@ -38,7 +39,7 @@ class DiscoveryService(threading.Thread):
 
         # Dict to keep track of found services. We do not want to
         # broadcast the same found service twice.
-        self._found = defaultdict(list)
+        self._found = defaultdict(list)  # type: Dict[str, List]
 
     def add_listener(self, listener):
         """Add a listener for new services."""

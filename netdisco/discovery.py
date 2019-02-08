@@ -123,7 +123,8 @@ class NetworkDiscovery:
             module = importlib.import_module(
                 discoverables_format.format(module_name))
 
-            self.discoverables[module_name] = module.Discoverable(self)
+            self.discoverables[module_name] = \
+                getattr(module, 'Discoverable')(self)
 
     def print_raw_data(self):
         """Helper method to show what is discovered in your network."""
