@@ -14,12 +14,16 @@ class Discoverable(SSDPDiscoverable):
             "urn:schemas-sony-com:service:ScalarWebAPI:1")
 
         # At least some Bravia televisions use this API for communication.
-        # Based on some examples they always seem to lack modelNumber,
-        # so we use it here to keep them undiscovered for now.
+        # We filter here based on the friendly name and the model number,
+        # which some of the devices lack.
         non_bravias = []
         for dev in devs:
             if 'device' in dev.description:
                 device = dev.description['device']
+                # friendlyname is required per upnp spec, skip bravias.
+                friendly_name = device['friendlyName']
+                if 'bravia' in friendly_name.lower():
+                    continue
                 if 'modelNumber' in device:
                     non_bravias.append(dev)
 
