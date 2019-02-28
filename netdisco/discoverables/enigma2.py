@@ -8,6 +8,3 @@ class Discoverable(MDNSDiscoverable):
     def __init__(self, nd):
         """Initialize the Enigma2 discovery."""
         super(Discoverable, self).__init__(nd, '_e2stream._tcp.local.')
-
-    def get_entries(self):
-        return self.services.values()
