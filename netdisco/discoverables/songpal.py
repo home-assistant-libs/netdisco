@@ -13,21 +13,24 @@ class Discoverable(SSDPDiscoverable):
         devs = self.find_by_st(
             "urn:schemas-sony-com:service:ScalarWebAPI:1")
 
-        # At least some Bravia televisions use this API for communication.
-        # We filter here based on the friendly name and the model number,
-        # which some of the devices lack.
-        non_bravias = []
+        # At least some Bravia televisions use the same API for communication,
+        # but are handled by another platforms, so we filter them out here.
+        supported = []
         for dev in devs:
             if 'device' in dev.description:
                 device = dev.description['device']
-                # friendlyname is required per upnp spec, skip bravias.
-                friendly_name = device['friendlyName']
-                if 'bravia' in friendly_name.lower():
-                    continue
-                if 'modelNumber' in device:
-                    non_bravias.append(dev)
+                scalarweb_info = device.get("X_ScalarWebAPI_DeviceInfo", None)
 
-        return non_bravias
+                if scalarweb_info:
+                    services = scalarweb_info["X_ScalarWebAPI_ServiceList"]
+                    service_types = services["X_ScalarWebAPI_ServiceType"]
+                    # Sony Bravias offer appControl service, soundbars do not
+                    if 'appControl' in service_types:
+                        continue
+
+                supported.append(dev)
+
+        return supported
 
     def info_from_entry(self, entry):
         """Get information for a device.."""
