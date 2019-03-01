@@ -51,7 +51,7 @@ class LMS:
                         # And XXXX is the web interface port (ie 9000)
                         port = None
                         # https://github.com/python/typeshed/pull/2696
-                        if data.startswith(b'JSON', 1):
+                        if data.startswith(b'JSON', 1):  # type: ignore
                             length = data[5:6][0]
                             port = int(data[0-length:])
                         entries.append({
