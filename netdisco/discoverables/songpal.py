@@ -24,8 +24,8 @@ class Discoverable(SSDPDiscoverable):
                 if scalarweb_info:
                     services = scalarweb_info["X_ScalarWebAPI_ServiceList"]
                     service_types = services["X_ScalarWebAPI_ServiceType"]
-                    # Sony Bravias offer appControl service, soundbars do not
-                    if 'appControl' in service_types:
+                    # Sony Bravias offer videoScreen service, soundbars do not
+                    if 'videoScreen' in service_types:
                         continue
 
                 supported.append(dev)
