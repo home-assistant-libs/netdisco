@@ -27,6 +27,8 @@ From command-line:
 python3 -m netdisco
 # To see all raw data:
 python3 -m netdisco dump
+# To see as json:
+python3 -m netdisco json
 ```
 
 In your script:
