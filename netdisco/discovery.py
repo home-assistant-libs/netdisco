@@ -147,3 +147,10 @@ class NetworkDiscovery:
         print("")
         print("Xbox SmartGlass")
         pprint(self.xbox_smartglass.entries)
+
+    def to_json(self):
+        from json import dumps
+        devices = {}
+        for device in self.discover():
+            devices[device] = self.get_info(device)
+        return dumps(devices)

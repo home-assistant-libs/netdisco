@@ -11,22 +11,25 @@ def main():
 
     netdisco.scan()
 
-    print("Discovered devices:")
-    count = 0
-    for dev in netdisco.discover():
-        count += 1
-        print('{}:'.format(dev))
-        pprint(netdisco.get_info(dev))
-        print()
-    print("Discovered {} devices".format(count))
+    if sys.argv[-1] == 'json':
+        print(netdisco.to_json())
+    else:
+        print("Discovered devices:")
+        count = 0
+        for dev in netdisco.discover():
+            count += 1
+            print('{}:'.format(dev))
+            pprint(netdisco.get_info(dev))
+            print()
+        print("Discovered {} devices".format(count))
 
-    # Pass in command line argument dump to get the raw data
-    if sys.argv[-1] == 'dump':
-        print()
-        print()
-        print("Raw Data")
-        print()
-        netdisco.print_raw_data()
+        # Pass in command line argument dump to get the raw data
+        if sys.argv[-1] == 'dump':
+            print()
+            print()
+            print("Raw Data")
+            print()
+            netdisco.print_raw_data()
 
     netdisco.stop()
 
