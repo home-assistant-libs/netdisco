@@ -149,6 +149,7 @@ class NetworkDiscovery:
         pprint(self.xbox_smartglass.entries)
 
     def to_json(self):
+        """Helper method to show what is discovered in your network and output as json."""
         from json import dumps
         devices = {}
         for device in self.discover():
