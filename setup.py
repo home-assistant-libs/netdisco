@@ -9,7 +9,7 @@ with open(os.path.join(here, 'README.md'), encoding='utf-8') as readme_file:
 
 setup(
     name='netdisco',
-    version='2.3.0',
+    version='2.4.0',
     description='Discover devices on your local network',
     long_description=long_description,
     long_description_content_type='text/markdown',
