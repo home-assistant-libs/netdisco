@@ -5,7 +5,7 @@ from . import SSDPDiscoverable
 class Discoverable(SSDPDiscoverable):
     """Add support for discovering Yamaha Receivers."""
 
-    INCOMPATIBLE_MODELS = set('N301')
+    COMPATIBLE_MODELS = "RX-V"
 
     REMOTE_CONTROL_SPEC_TYPE =\
         'urn:schemas-yamaha-com:service:X_YamahaRemoteControl:1'
@@ -38,5 +38,4 @@ class Discoverable(SSDPDiscoverable):
         })
 
         return [device for device in devices if
-                device.description['device'].get('modelNumber', '') not in
-                self.INCOMPATIBLE_MODELS]
+                device.description['device'].get('modelName', '').startswith(self.COMPATIBLE_MODELS)]
