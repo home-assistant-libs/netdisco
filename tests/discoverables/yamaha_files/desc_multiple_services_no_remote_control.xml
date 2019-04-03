@@ -1,7 +1,7 @@
 <root xmlns="urn:schemas-upnp-org:device-1-0" xmlns:yamaha="urn:schemas-yamaha-com:device-1-0">
 <device>
 <friendlyName>multi service friendly name</friendlyName>
-<modelName>multi service model name</modelName>
+<modelName>RX-V multi service model name</modelName>
 </device>
 <yamaha:X_device>
 <yamaha:X_URLBase>http://192.168.1.2:80/</yamaha:X_URLBase>

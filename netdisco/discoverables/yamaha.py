@@ -38,4 +38,5 @@ class Discoverable(SSDPDiscoverable):
         })
 
         return [device for device in devices if
-                device.description['device'].get('modelName', '').startswith(self.COMPATIBLE_MODELS)]
+                device.description['device'].get('modelName', '')
+                .startswith(self.COMPATIBLE_MODELS)]
