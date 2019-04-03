@@ -5,7 +5,7 @@
 </specVersion>
 <device>
 <friendlyName>single service friendly name</friendlyName>
-<modelName>single service model name</modelName>
+<modelName>RX-V single service model name</modelName>
 </device>
 <yamaha:X_device>
 <yamaha:X_URLBase>http://192.168.1.2:80/</yamaha:X_URLBase>

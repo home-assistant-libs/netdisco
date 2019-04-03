@@ -57,7 +57,7 @@ class TestYamaha(unittest.TestCase):
                 'description_url':
                 'http://192.168.1.2:80/YamahaRemoteControl/single_desc.xml',
                 'host': '192.168.xxx.xxx',
-                'model_name': 'single service model name',
+                'model_name': 'RX-V single service model name',
                 'model_number': None,
                 'manufacturer': None,
                 'name': 'single service friendly name',
@@ -78,7 +78,7 @@ class TestYamaha(unittest.TestCase):
                 'description_url':
                 'http://192.168.1.2:80/YamahaRemoteControl/multi_desc.xml',
                 'host': '192.168.xxx.xxx',
-                'model_name': 'multi service model name',
+                'model_name': 'RX-V multi service model name',
                 'model_number': None,
                 'manufacturer': None,
                 'name': 'multi service friendly name',
@@ -99,7 +99,7 @@ class TestYamaha(unittest.TestCase):
                 'description_url':
                 'http://192.168.1.2:80/YamahaNewControl/desc.xml',
                 'host': '192.168.xxx.xxx',
-                'model_name': 'multi service model name',
+                'model_name': 'RX-V multi service model name',
                 'model_number': None,
                 'manufacturer': None,
                 'name': 'multi service friendly name',
@@ -112,14 +112,13 @@ class TestYamaha(unittest.TestCase):
 
     def test_get_entries_incompatible_models(self):
         supported_model = MockUPNPEntry(
-            "desc_multiple_services_no_remote_control.xml")
+            "desc_RX-V481.xml")
         devices = [
             supported_model,
-            MockUPNPEntry("desc_incompatible_device.xml")
+            MockUPNPEntry("desc_R-N602.xml")
         ]
 
         discoverable = Discoverable(None)
-        discoverable.INCOMPATIBLE_MODELS = ["aaa"]
         discoverable.find_by_device_description = MagicMock(
             return_value=devices)
 
