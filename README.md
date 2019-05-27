@@ -1,3 +1,5 @@
+## This library is deprecated. We will no longer release new versions, fix bugs or accept pull requests. If you are looking to make your Home Assistant integration discoverable, use [the zeroconf and SSDP manifest options](https://developers.home-assistant.io/docs/en/next/creating_integration_manifest.html#zeroconf).
+
 # NetDisco
 
 NetDisco is a Python 3 library to discover local devices and services. It allows to scan on demand or offer a service that will scan the network in the background in a set interval.
