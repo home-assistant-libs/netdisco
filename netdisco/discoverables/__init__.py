@@ -122,7 +122,7 @@ class MDNSDiscoverable(BaseDiscoverable):
             properties[key.decode('utf-8')] = value
 
         info = {
-            ATTR_HOST: str(ipaddress.ip_address(entry.address)),
+            ATTR_HOST: str(ipaddress.ip_address(entry.addresses[0])),
             ATTR_PORT: entry.port,
             ATTR_HOSTNAME: entry.server,
             ATTR_PROPERTIES: properties,
