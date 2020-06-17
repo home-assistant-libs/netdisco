@@ -97,6 +97,10 @@ class MDNSDiscoverable(BaseDiscoverable):
         """Callback when a service is removed."""
         self.services.pop(name, None)
 
+    def update_service(self, zconf, typ, name):
+        """Callback when a service is updated."""
+        pass
+            
     def add_service(self, zconf, typ, name):
         """Callback when a service is found."""
         service = None
