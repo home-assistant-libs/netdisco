@@ -1,15 +1,24 @@
 """Add support for discovering mDNS services."""
 from typing import List  # noqa: F401
 
-from zeroconf import Zeroconf, ServiceBrowser, ServiceInfo, DNSRecord
+from zeroconf import (
+    Zeroconf,
+    ServiceBrowser,
+    ServiceInfo,
+    DNSRecord,
+    DNSPointer,
+    ServiceStateChange,
+)
 
 
 class FastServiceBrowser(ServiceBrowser):
     """ServiceBrowser that does not process record updates."""
 
     def update_record(self, zc: Zeroconf, now: float, record: DNSRecord) -> None:
-        """Ignore record updates as we only care about the cache anyways."""
-        return
+        """Ignore record updates for non-ptrs."""
+        if record.name not in self.types or not isinstance(record, DNSPointer):
+            return
+        super().update_record(zc, now, record)
 
 
 class MDNS:
@@ -33,8 +42,19 @@ class MDNS:
                 self.zeroconf = Zeroconf()
                 self._created_zeroconf = True
 
-            def _service_update(*args, **kwargs):
-                return
+            services_by_type = {}
+
+            for service in self.services:
+                services_by_type.setdefault(service.typ, [])
+                services_by_type[service.typ].append(service)
+
+            def _service_update(zeroconf, service_type, name, state_change):
+                if state_change == ServiceStateChange.Added:
+                    for service in services_by_type[service_type]:
+                        service.add_service(zeroconf, service_type, name)
+                elif state_change == ServiceStateChange.Removed:
+                    for service in services_by_type[service_type]:
+                        service.remove_service(zeroconf, service_type, name)
 
             types = [service.typ for service in self.services]
             self._browser = FastServiceBrowser(
