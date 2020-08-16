@@ -1,14 +1,12 @@
 """Add support for discovering mDNS services."""
+import logging
 from typing import List  # noqa: F401
 
-from zeroconf import (
-    Zeroconf,
-    ServiceBrowser,
-    ServiceInfo,
-    DNSRecord,
-    DNSPointer,
-    ServiceStateChange,
-)
+from zeroconf import DNSPointer, DNSRecord
+from zeroconf import Error as ZeroconfError
+from zeroconf import ServiceBrowser, ServiceInfo, ServiceStateChange, Zeroconf
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class FastServiceBrowser(ServiceBrowser):
@@ -51,7 +49,10 @@ class MDNS:
             def _service_update(zeroconf, service_type, name, state_change):
                 if state_change == ServiceStateChange.Added:
                     for service in services_by_type[service_type]:
-                        service.add_service(zeroconf, service_type, name)
+                        try:
+                            service.add_service(zeroconf, service_type, name)
+                        except ZeroconfError:
+                            _LOGGER.exception("Failed to add service %s", name)
                 elif state_change == ServiceStateChange.Removed:
                     for service in services_by_type[service_type]:
                         service.remove_service(zeroconf, service_type, name)
