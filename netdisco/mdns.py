@@ -1,4 +1,5 @@
 """Add support for discovering mDNS services."""
+import itertools
 import logging
 from typing import List  # noqa: F401
 
@@ -81,4 +82,11 @@ class MDNS:
     @property
     def entries(self):
         """Return all entries in the cache."""
-        return self.zeroconf.cache.entries()
+        return list(
+            itertools.chain(
+                *[
+                    self.zeroconf.cache.entries_with_name(name)
+                    for name in self.zeroconf.cache.names()
+                ]
+            )
+        )
