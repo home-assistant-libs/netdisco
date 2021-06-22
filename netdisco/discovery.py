@@ -45,7 +45,7 @@ class NetworkDiscovery:
         self.is_discovering = False
         self.discoverables = None
 
-    def scan(self, zeroconf_instance=None):
+    def scan(self, zeroconf_instance=None, suppress_mdns_types=None):
         """Start and tells scanners to scan."""
         self.is_discovering = True
 
@@ -53,6 +53,10 @@ class NetworkDiscovery:
 
         # Needs to be after MDNS init
         self._load_device_support()
+
+        if suppress_mdns_types:
+            for type_ in suppress_mdns_types:
+                self.mdns.unregister_type(type_)
 
         self.mdns.start()
 
