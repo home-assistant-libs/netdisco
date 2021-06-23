@@ -34,6 +34,15 @@ class MDNS:
         """Register a mDNS service."""
         self.services.append(service)
 
+    def unregister_type(self, type_):
+        """Unregister a mDNS type."""
+        removes = []
+        for service in self.services:
+            if service.typ == type_:
+                removes.append(service)
+        for service in removes:
+            self.services.remove(service)
+
     def start(self):
         """Start discovery."""
         try:
